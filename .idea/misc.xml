@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/taotao_service_business" />
+    <file type="web" url="file://$PROJECT_DIR$/taotao_service_config" />
+    <file type="web" url="file://$PROJECT_DIR$/taotao_service_goods" />
+    <file type="web" url="file://$PROJECT_DIR$/taotao_service_order" />
+    <file type="web" url="file://$PROJECT_DIR$/taotao_service_system" />
+    <file type="web" url="file://$PROJECT_DIR$/taotao_service_user" />
+    <file type="web" url="file://$PROJECT_DIR$/taotao_web_manager" />
+  </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/classes" />
+  </component>
+</project>

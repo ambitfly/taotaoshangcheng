@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="taotao_common" />
+        <module name="taotao_common_service" />
+        <module name="taotao_common_web" />
+        <module name="taotao_interface" />
+        <module name="taotao_pojo" />
+        <module name="taotao_service_business" />
+        <module name="taotao_service_config" />
+        <module name="taotao_service_goods" />
+        <module name="taotao_service_order" />
+        <module name="taotao_service_system" />
+        <module name="taotao_service_user" />
+        <module name="taotao_web_manager" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="taotao_common" target="1.5" />
+      <module name="taotao_common_service" target="1.5" />
+      <module name="taotao_common_web" target="1.5" />
+      <module name="taotao_interface" target="1.5" />
+      <module name="taotao_parent" target="1.5" />
+      <module name="taotao_pojo" target="1.5" />
+      <module name="taotao_service_business" target="1.5" />
+      <module name="taotao_service_config" target="1.5" />
+      <module name="taotao_service_goods" target="1.5" />
+      <module name="taotao_service_order" target="1.8" />
+      <module name="taotao_service_system" target="1.5" />
+      <module name="taotao_service_user" target="1.5" />
+      <module name="taotao_web_manager" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

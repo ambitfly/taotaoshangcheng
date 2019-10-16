@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/taotao_common/taotao_common.iml" filepath="$PROJECT_DIR$/taotao_common/taotao_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_common_service/taotao_common_service.iml" filepath="$PROJECT_DIR$/taotao_common_service/taotao_common_service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_common_web/taotao_common_web.iml" filepath="$PROJECT_DIR$/taotao_common_web/taotao_common_web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_interface/taotao_interface.iml" filepath="$PROJECT_DIR$/taotao_interface/taotao_interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_parent.iml" filepath="$PROJECT_DIR$/taotao_parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_pojo/taotao_pojo.iml" filepath="$PROJECT_DIR$/taotao_pojo/taotao_pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_service_business/taotao_service_business.iml" filepath="$PROJECT_DIR$/taotao_service_business/taotao_service_business.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_service_config/taotao_service_config.iml" filepath="$PROJECT_DIR$/taotao_service_config/taotao_service_config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_service_goods/taotao_service_goods.iml" filepath="$PROJECT_DIR$/taotao_service_goods/taotao_service_goods.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_service_order/taotao_service_order.iml" filepath="$PROJECT_DIR$/taotao_service_order/taotao_service_order.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_service_system/taotao_service_system.iml" filepath="$PROJECT_DIR$/taotao_service_system/taotao_service_system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_service_user/taotao_service_user.iml" filepath="$PROJECT_DIR$/taotao_service_user/taotao_service_user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_web_manager/taotao_web_manager.iml" filepath="$PROJECT_DIR$/taotao_web_manager/taotao_web_manager.iml" />
+    </modules>
+  </component>
+</project>

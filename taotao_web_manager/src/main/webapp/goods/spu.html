@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>spu管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- 上传图片框样式，不使用上传组件可以删除此样式 -->
+    <style>
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 150px;
+            height: 70px;
+            line-height: 150px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 70px;
+            display: block;
+        }
+
+        el-radio-button {
+        }
+
+    </style>
+</head>
+<body class="hold-transition">
+
+<div id="app">
+
+    <div class="content-header">
+        <h1>管理
+            <small>商品列表</small>
+        </h1>
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>管理</el-breadcrumb-item>
+            <el-breadcrumb-item>商品列表</el-breadcrumb-item>
+        </el-breadcrumb>
+    </div>
+
+    <div class="app-container">
+        <div class="box">
+
+            <template>
+
+                <!--<el-radio-group v-model="tabPosition" style="margin-bottom: 30px;margin-top: 30px;margin-left: 10px">
+                    <el-radio-button label="top" @click="fetchData()">全部商品</el-radio-button>
+                    <el-radio-button label="right" @click="searchMap:{'isMarketable':'1'};fetchData()">已上架</el-radio-button>
+                    <el-radio-button label="bottom" @click="searchMap:{'isMarketable':'0'};fetchData()">未上架</el-radio-button>
+                    <el-radio-button label="left" @click="searchMap:{searchMap:{'status':'0'}};fetchData()">待审核</el-radio-button>
+                    <el-radio-button label="t" @click="searchMap:{};fetchData()">未通过</el-radio-button>
+                </el-radio-group>-->
+
+            </template>
+
+            <div class="filter-container">
+                <!--查询表单-->
+                <el-form :inline="true">
+                    <el-form-item label="商品货号">
+                        <el-input v-model="searchMap.sn" placeholder="货号" class="filter-item"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品名称">
+                        <el-input v-model="searchMap.name" placeholder="SPU名" class="filter-item"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品品牌">
+                        <template>
+                            <el-select v-model="searchMap.brandId" filterable placeholder="请选择">
+                                <el-option
+                                        v-for="item in brandList"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-form-item>
+                    <el-form-item label="商品分类">
+                        <template>
+                            <el-select v-model="searchMap.category1Id" filterable placeholder="请选择">
+
+                                <el-option
+                                        v-for="item in category1IdList"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-form-item>
+
+                    <el-button class="dalfBut" @click="fetchData()">查询</el-button>
+                    <el-button type="primary" class="butT" @click="formVisible=true;pojo={}">新增</el-button>
+                </el-form>
+            </div>
+
+            <el-table :data="tableData" border style="width: 100%">
+                <el-table-column prop="id" label="编号" width="180" align="center"></el-table-column>
+                <el-table-column label="商品图片" width="120px">
+                    <template slot-scope="scope">
+                        <img :src="scope.row.image" width="100px" height="100px">
+                    </template>
+                </el-table-column>
+                <el-table-column prop="name" label="商品名称" width="300">
+                    <template slot-scope="scope">
+                        <p>{{scope.row.name}}</p>
+                        <span v-for="brand in brandList">
+                            <p v-if="scope.row.brandId==brand.id">品牌：{{brand.name}}</p>
+                        </span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="sn" label="货号" width="80"></el-table-column>
+                <el-table-column label="标签" width="120">
+
+                    <template slot-scope="scope">
+                       <span v-if="'1'==scope.row.isMarketable">上架：</span>
+                        <span v-if="'1'!=scope.row.isMarketable">下架：</span>
+                        <el-switch
+                                v-model="scope.row.isMarketable"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                                active-value="1"
+                                inactive-value="0"
+                                disabled>
+                        </el-switch>
+                    </template>
+
+                </el-table-column>
+                <el-table-column  label="SKU库存" width="80">
+                   <template slot-scope="scope">
+                       <el-button type="primary" icon="el-icon-edit" circle style="margin-left: 10px" @click="openSkuEdit(scope.row.id)"></el-button>
+                   </template>
+                </el-table-column>
+                <el-table-column prop="saleNum" label="销量" width="100" align="center">
+                </el-table-column>
+                <el-table-column label="审核状态" width="100" align="center">
+                    <template slot-scope="scope" >
+                        <p v-if="scope.row.status=='1'">已审核</p>
+                        <p v-if="scope.row.status!='1'">未审核</p>
+                        <el-button @click="openAudit(scope.row.id)"  type="text" >审核详情</el-button>
+                    </template>
+                </el-table-column>
+
+
+                <el-table-column
+                        label="操作">
+                    <template slot-scope="scope">
+                        <el-button @click="edit(scope.row.id)" size="mini" type="primary" size="small">修改</el-button>
+                        <el-button @click="dele(scope.row.id)" size="mini" type="danger" size="small">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="pagination-container">
+                <el-pagination
+                        class="pagiantion"
+                        @size-change="fetchData"
+                        @current-change="fetchData"
+                        :current-page.sync="currentPage"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="size"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="total">
+                </el-pagination>
+            </div>
+            <div class="add-form">
+                <!--弹出窗口-->
+                <el-dialog title="编辑货品信息" :visible.sync="skuVisible">
+                    <div>
+                        商品货号：<span>{{pojo.sn}}</span>
+                    </div>
+
+                    <!--<el-form ref="variableForm" :model="variable">
+                        <el-table :data="variable.Variable">
+                            <el-table-column label="名称">
+                                <template slot-scope="scope">
+                                    <el-form-item :prop="'Variable.' + scope.$index + '.Name'" :rules='rules.variable_name'>
+                                        <el-input v-model.trim="scope.row.Name"></el-input>
+                                    </el-form-item>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-form>-->
+                </el-dialog>
+
+                <el-dialog title="审核详情" :visible.sync="auditVisible">
+                    <el-table :data="auditTableData" border style="width: 100%">
+                        <el-table-column prop="auditTime" label="审核时间" width="180" align="center"></el-table-column>
+                        <el-table-column prop="auditAdminName" label="审核人员" width="180" align="center"></el-table-column>
+                        <el-table-column prop="auditStatus" label="审核结果" width="180" align="center">
+                            <template slot-scope="scope">
+                                <span v-if="'1'==scope.row.auditStatus">审核通过</span>
+                                <span v-if="'1'!=scope.row.auditStatus">未通过</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="auditDetails" label="反馈详情" width="180" align="center"></el-table-column>
+
+                    </el-table>
+                    <el-button @click="formVisible = false">关闭</el-button>
+                </el-dialog>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
+<script src="/js/elementui.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                tableData: [],
+                auditTableData:[],
+                skuTableData:[],
+                currentPage: 1,
+                total: 10,
+                size: 10,
+                searchMap: {},
+                pojo: {},
+                formVisible: false,
+                auditVisible:false,
+                skuVisible:false,
+                imageUrl: '',
+                activeName: 'second',
+                tabPosition: 'left',
+                brandList:[],
+                category1IdList:[],
+                spec:{}
+
+            }
+        },
+        created() {
+            axios.get(`/brand/findAll.do`).then(response=>{
+                this.brandList = response.data;
+            });
+            axios.get(`/category/findAll1Category.do`).then(response=>{
+                this.category1IdList = response.data;
+            });
+            this.fetchData();
+        },
+        methods: {
+            fetchData() {
+                axios.post(`/spu/findPage.do?page=${this.currentPage}&size=${this.size}`, this.searchMap).then(response => {
+                    this.tableData = response.data.rows;
+                    this.total = response.data.total;
+                });
+            },
+            save() {
+                // this.pojo.image= this.imageUrl; //如页面有图片上传功能放开注释
+                axios.post(`/spu/${this.pojo.id == null ? 'add' : 'update'}.do`, this.pojo).then(response => {
+                    this.fetchData(); //刷新列表
+                    this.formVisible = false;//关闭窗口
+                });
+            },
+            edit(id) {
+                this.formVisible = true // 打开窗口
+                // 调用查询
+                axios.get(`/spu/findById.do?id=${id}`).then(response => {
+                    this.pojo = response.data;
+                    // this.imageUrl=this.pojo.image //显示图片  如页面有图片上传功能放开注释
+                })
+            },
+            dele(id) {
+                this.$confirm('确定要删除此记录吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios.get(`/spu/delete.do?id=${id}`).then(response => {
+                        this.fetchData(); //刷新列表
+                    })
+                })
+            },
+            handleClick() {
+
+            },
+            openAudit(id){
+                axios.get(`/spu/findAuditBySpuId.do?id=${id}`).then(response=>{
+                    this.auditTableData = response.data;
+                    this.auditVisible = true;
+                });
+
+            },
+            openSkuEdit(id){
+                axios.get(`/sku/findBySpuId.do?id=${id}`).then(response=>{
+                    this.skuTableData = response.data;
+                });
+                axios.get(`/spu/findById.do?id=${id}`).then(response=>{
+                    this.pojo = response.data();
+                });
+                this.skuVisible = true;
+            }
+            /* ****图片上传相关代码  如页面有图片上传功能放开注释 ****
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = file.response;
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            }*/
+        }
+    })
+</script>
+</html>

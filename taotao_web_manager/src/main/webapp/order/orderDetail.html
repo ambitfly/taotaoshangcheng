@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单详情</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .topDiv {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border: 1px solid #EEE9E9;
+            background-color: #F7F7F7;
+            margin-bottom: 40px;
+        }
+
+        .strip {
+            display: inline-block;
+            background-color: #1E90FF;
+            width: 5px;
+            height: 22px;
+            margin-left: 200px;
+        }
+
+        .stripText {
+            position: absolute;
+            display: inline-block;
+            margin-left: 10px;
+            padding-bottom: 2px;
+            text-align: center;
+            color: #A3A3A3;
+        }
+
+        .button {
+            cursor: pointer;
+            display: inline-block;
+            background-color: white;
+            border: 1px solid #EEE9E9;
+            width: 80px;
+            height: 25px;
+            margin-left: 20px;
+            color: #5e5e5e;
+        }
+
+        .button:hover {
+            background-color: #F7F7F7;
+        }
+
+        .button span {
+            display: inline-block;
+            margin-left: 5px;
+            font-size: 13px;
+        }
+
+        .button i {
+            display: inline-block;
+            margin-left: 2px;
+            font-size: 20px;
+        }
+
+        .stepImage {
+            width: 60%;
+            margin: 0px auto;
+            margin-bottom: 40px;
+        }
+
+        .tableHead {
+            margin: 0px auto;
+            width: 70%;
+            border: 1px solid #EEE9E9;
+            background-color: #F7F7F7;
+            padding-bottom: 20px;
+            padding-top: 20px;
+            color: #EE0000;
+        }
+
+        .tableBody {
+            margin: 0px auto;
+            width: 70%;
+            border: 1px solid #EEE9E9;
+            padding-top: 15px;
+        }
+
+        .orderMessage {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .orderMessage span {
+            display: inline-block;
+            color: #A3A3A3;
+            margin-bottom: 17px;
+            margin-left: 52px;
+        }
+
+        table.gridtable {
+
+            font-size: 16px;
+            color: #666666;
+            border-width: 1px;
+            border-color: #EEE9E9;
+            border-collapse: collapse;
+            width: 90%;
+            margin: 0px auto;
+        }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 12px;
+            border-style: solid;
+            border-color: #EEE9E9;
+            background-color: #F9FAFC;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 0px;
+            border-style: solid;
+            border-color: #EEE9E9;
+            background-color: #ffffff;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="topDiv">
+        <span class="strip"></span>
+        <span class="stripText">订单详情</span>
+        <div class="button" style="margin-left: 850px" @click="refresh">
+            <i class="el-icon-refresh-left"></i>
+            <span>刷新</span>
+        </div>
+        <div class="button" @click="close">
+            <i class="el-icon-close"></i>
+            <span>关闭</span>
+        </div>
+    </div>
+    <div class="stepImage">
+        <el-steps :space="200" :active="orderOrderItem.order.orderStatus" finish-status="success">
+            <el-step title="提交订单" :description="orderOrderItem.order.createTime"></el-step>
+            <el-step title="支付订单" :description="orderOrderItem.order.payTime"></el-step>
+            <el-step title="平台发货" :description="orderOrderItem.order.consignTime"></el-step>
+            <el-step title="确认收货" :description="orderOrderItem.order.endTime"></el-step>
+            <el-step title="完成评价" :description="orderOrderItem.order.closeTime"></el-step>
+        </el-steps>
+    </div>
+    <div class="tableHead">
+        <i class="el-icon-warning" style="margin-left: 10px"></i>
+        <span>当前订单状态：
+                <span v-if="'1'==orderOrderItem.order.orderStatus">待付款</span>
+                <span v-if="'2'==orderOrderItem.order.orderStatus">待发货</span>
+                <span v-if="'3'==orderOrderItem.order.orderStatus">已发货</span>
+                <span v-if="'4'==orderOrderItem.order.orderStatus">已完成</span>
+                <span v-if="'5'==orderOrderItem.order.orderStatus">已关闭</span>
+            </span>
+        <el-button plain size="small" style="margin-left: 90px">修改发票信息</el-button>
+        <el-button plain size="small">修改收货人信息</el-button>
+        <el-button plain size="small">修改商品信息</el-button>
+        <el-button plain size="small">修改费用信息</el-button>
+        <el-button plain size="small">发送站内信</el-button>
+        <el-button plain size="small">关闭订单</el-button>
+        <el-button plain size="small">备注订单</el-button>
+
+    </div>
+
+    <div class="tableBody">
+
+        <div class="orderMessage">
+                <span>
+                    <img src="../img/002order.png" width="18">
+                    基本信息
+                </span>
+
+
+            <table class="gridtable">
+                <tr>
+                    <th>订单编号</th>
+                    <th>交易流水号</th>
+                    <th>用户名</th>
+                    <th>支付方式</th>
+                    <th>订单来源</th>
+                    <th>物流名称</th>
+                </tr>
+                <tr>
+                    <td>{{orderOrderItem.order.id}}</td>
+                    <td>{{orderOrderItem.order.transactionId}}</td>
+                    <td>{{orderOrderItem.order.username}}</td>
+                    <td>
+                        <p v-if="'1'==orderOrderItem.order.payType">微信支付</p>
+                        <p v-if="'0'==orderOrderItem.order.payType">货到付款</p>
+                        <p v-if="'2'==orderOrderItem.order.payType">支付宝</p>
+                        <p v-if="'3'==orderOrderItem.order.payType">银联支付</p>
+                    </td>
+                    <td>
+                        <p v-if="'1'==orderOrderItem.order.sourceType">网页订单</p>
+                        <p v-if="'2'==orderOrderItem.order.sourceType">App订单</p>
+                        <p v-if="'3'==orderOrderItem.order.sourceType">微信公众号</p>
+                        <p v-if="'4'==orderOrderItem.order.sourceType">微信小程序</p>
+                        <p v-if="'5'==orderOrderItem.order.sourceType">H5手机页面</p>
+                    </td>
+                    <td>
+                        <p v-if="orderOrderItem.order.shippingName!=null">{{orderOrderItem.order.shippingName}}</p>
+                        <p v-if="orderOrderItem.order.shippingName==null">未发货</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>物流单号</th>
+                    <th>交易关闭时间</th>
+                    <th>自动确认收货时间</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>
+                        <p v-if="orderOrderItem.order.shippingName!=null">{{orderOrderItem.order.shippingCode}}</p>
+                        <p v-if="orderOrderItem.order.shippingName==null">未发货</p>
+                    </td>
+                    <td>{{orderOrderItem.order.closeTime}}</td>
+                    <td>15天</td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="orderMessage">
+                <span>
+                    <img src="../img/002order.png" width="18">
+                    收货人信息
+                </span>
+
+
+            <table class="gridtable">
+                <tr>
+                    <th>收货人</th>
+                    <th>手机号码</th>
+                    <th>邮政编码</th>
+                    <th>收货地址</th>
+
+                </tr>
+                <tr>
+                    <td><p>{{orderOrderItem.order.receiverContact}}</p></td>
+                    <td>{{orderOrderItem.order.receiverMobile}}</td>
+                    <td>123456</td>
+                    <td>
+                        {{orderOrderItem.order.receiverAddress}}
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+
+
+        <div class="orderMessage">
+            <span>
+                <img src="../img/002order.png" width="18">
+                 商品信息
+            </span>
+
+            <el-table :data="orderOrderItem.orderItems" border style="width: 90%;margin-left: 52px" border="true" :header-cell-style="{background:'#F9FAFC'}">
+
+                <el-table-column label="商品图片"  align='center'style="background-color: #F9FAFC;">
+                    <template slot-scope="scope">
+                        <img src="scope.row.image" width="80px" height="50px">
+                    </template>
+                </el-table-column>
+                <el-table-column  prop="name" label="商品名称" width="260px" align='center'></el-table-column>
+                <el-table-column prop="createTime" label="价格/货号"  align='center'>
+                    <template slot-scope="scope">
+                        <p>{{scope.row.money/100}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="createTime" label="属性"  align='center'></el-table-column>
+                <el-table-column prop="createTime" label="数量"  align='center'></el-table-column>
+                <el-table-column prop="createTime" label="库存" align='center'></el-table-column>
+                <el-table-column prop="createTime" label="小计"  align='center'></el-table-column>
+            </el-table>
+
+
+        </div>
+
+
+        <div class="orderMessage">
+                <span>
+                    <img src="../img/002order.png" width="18">
+                    费用信息
+                </span>
+
+
+            <table class="gridtable">
+                <tr>
+                    <th>商品合计</th>
+                    <th>运费</th>
+                    <th>优惠券</th>
+                    <th>活动优惠</th>
+
+                </tr>
+                <tr>
+                    <td><p>￥{{orderOrderItem.order.totalMoney/100}}</p></td>
+                    <td>￥{{orderOrderItem.order.postFee/100}}</td>
+                    <td>-¥0.00</td>
+                    <td>
+                        -￥{{orderOrderItem.order.preMoney/100}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>订单总金额</th>
+                    <th>应付款金额</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td><p>￥{{orderOrderItem.order.totalMoney/100}}</p></td>
+                    <td>￥{{orderOrderItem.order.payMoney/100}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</div>
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
+<script src="/js/elementui.js"></script>
+<script src="/js/util.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                orderOrderItem: {},
+                skuMap:[],
+                spuMap:[],
+                brandMap:{},
+                ids:0,
+            }
+        },
+        created() {
+            var id = getQueryString("id");
+            axios.get(`/order/findOrderOrderItemById.do?id=${id}`).then(response => {
+                this.orderOrderItem = response.data;
+                var orderItems = response.data.orderItems;
+                for(var i=0;i<orderItems.length;i++) {
+                    axios.get(`/spu/findById.do?id=${orderItems[i].spuId}`).then(response1 => {
+                        this.spuMap.key = orderItems[i].spuId;
+                        this.spuMap.value = response1.data;
+                    });
+                    var spuId = orderItems[i].spuId;
+                    axios.get(`/brand/findById.do?${this.spuMap.get(spuId).brandId}`).then(response1 => {
+                        this.brandMap.key = this.spuMap.get(spuId).brandId;
+                        this.brandMap.value = response1.data;
+                    });
+                    axios.get(`/sku/findById.do?id=${orderItems[i].skuId}`).then(response1 => {
+                        this.skuMap.key = orderItems[i].skuId;
+                        this.skuMap.value = response1.data;
+                    });
+                }
+            });
+
+
+            /*for(var item in this.orderItems) {
+                this.ids = 1;
+                axios.get(`/spu/findById.do?id=${item.spuId}`).then(response => {
+                    this.spuMap.key = item.spuId;
+                    this.spuMap.value = response.data;
+                });
+                var spuId = item.spuId;
+                axios.get(`/brand/findById.do?${this.spuMap.get(spuId).brandId}`).then(response => {
+                    this.brandMap.key = this.spuMap.get(spuId).brandId;
+                    this.brandMap.value = response.data;
+                });
+                axios.get(`/sku/findById.do?id=${item.skuId}`).then(response => {
+                    this.skuMap.key = item.skuId;
+                    this.skuMap.value = response.data;
+                });
+            }*/
+
+
+
+        },
+        methods: {
+            refresh() {
+                location.reload();
+            },
+            close() {
+                if
+                (confirm("您确定要关闭本页吗？")) {
+                    window.opener = null;
+                    window.open('', '_self');
+                    window.close();
+                }
+                else {
+                }
+            }
+
+        }
+    });
+</script>
+</html>
