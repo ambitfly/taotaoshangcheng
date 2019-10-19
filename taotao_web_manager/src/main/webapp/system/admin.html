@@ -119,7 +119,7 @@
 
     <div class="app-container">
 
-        <div class="box" style="width: 85%;margin: 0px auto">
+        <div style="width: 85%;margin: 0px auto">
 
             <div style="border: 1px solid #EEE9E9;background-color: #F7F7F7;padding-bottom: 10px;padding-top: 10px;padding-left: 10px;">
                 <i class="el-icon-search"></i>
@@ -203,7 +203,7 @@
                         @current-change="fetchData"
                         :current-page.sync="currentPage"
                         :page-sizes="[5, 10, 15, 20]"
-                        :page-size="size"
+                        :page-size.sync="pageSizes"
                         layout="total, sizes, prev, pager, next, jumper"
                         :total="total">
                 </el-pagination>
@@ -232,7 +232,7 @@
                 tableData: [],
                 currentPage: 1,
                 total: 10,
-                size: 5,
+                pageSizes: 5,
                 searchMap: {},
                 pojo: {},
                 formVisible: false,
@@ -251,14 +251,14 @@
         },
         methods: {
             fetchData() {
-                axios.post(`/admin/findPage.do?page=${this.currentPage}&size=${this.size}`, this.searchMap).then(response => {
+                axios.post(`/admin/findPage.do?page=${this.currentPage}&size=${this.pageSizes}`, this.searchMap).then(response => {
                     this.tableData = response.data.rows;
                     this.total = response.data.total;
                 });
 
             },
             findByRoleId(){
-                axios.get(`/admin/findByRoleId.do?roleId=${this.roleId}&page=${this.currentPage}&size=${this.size}`).then(response=>{
+                axios.get(`/admin/findByRoleId.do?roleId=${this.roleId}&page=${this.currentPage}&size=${this.pageSizes}`).then(response=>{
                     this.tableData = response.data.rows;
                     this.total = response.data.total;
                 })

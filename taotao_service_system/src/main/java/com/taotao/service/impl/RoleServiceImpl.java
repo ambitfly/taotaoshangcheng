@@ -2,17 +2,22 @@ package com.taotao.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.taotao.dao.AdminRoleMapper;
 import com.taotao.dao.RoleMapper;
+import com.taotao.dao.RoleResourceMapper;
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.system.Role;
+import com.taotao.pojo.system.RoleResource;
 import com.taotao.service.system.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Service(interfaceClass = RoleService.class)
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
@@ -47,6 +52,8 @@ public class RoleServiceImpl implements RoleService {
         Example example = createExample(searchMap);
         return roleMapper.selectByExample(example);
     }
+    @Autowired
+    AdminRoleMapper adminRoleMapper;
 
     /**
      * 分页+条件查询
@@ -58,7 +65,14 @@ public class RoleServiceImpl implements RoleService {
     public PageResult<Role> findPage(Map<String, Object> searchMap, int page, int size) {
         PageHelper.startPage(page,size);
         Example example = createExample(searchMap);
-        Page<Role> roles = (Page<Role>) roleMapper.selectByExample(example);
+        List<Role> roleList = roleMapper.selectByExample(example);
+        //统计成员数量
+        for(Role role:roleList){
+            role.setAdminNumber(adminRoleMapper.countAdmin(role.getId()));
+            //System.out.println(role);
+        }
+
+        Page<Role> roles = (Page<Role>) roleList;
         return new PageResult<Role>(roles.getTotal(),roles.getResult());
     }
 
@@ -117,5 +131,36 @@ public class RoleServiceImpl implements RoleService {
         }
         return example;
     }
+    @Autowired
+    RoleResourceMapper roleResourceMapper;
+    @Override
+    @Transactional
+    public void saveRoleResource(Integer roleId, List<Integer> menusIds) {
+        //先删除roleId的行
+        Example example = new Example(RoleResource.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("roleId",roleId);
+        roleResourceMapper.deleteByExample(example);
 
+        for(Integer resourceId:menusIds){
+            RoleResource roleResource = new RoleResource();
+            roleResource.setResourceId(resourceId);
+            roleResource.setRoleId(roleId);
+            roleResourceMapper.insert(roleResource);
+        }
+    }
+
+    @Override
+    public List<Integer> findResourceIdsByRoleId(Integer roleId) {
+        Example example = new Example(RoleResource.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("roleId",roleId);
+
+        List<RoleResource> roleResources = roleResourceMapper.selectByExample(example);
+        List<Integer> list = new ArrayList();
+        for(RoleResource roleResource:roleResources){
+            list.add(roleResource.getResourceId());
+        }
+        return list;
+    }
 }

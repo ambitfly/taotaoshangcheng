@@ -9,6 +9,8 @@ import com.taotao.service.system.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -126,4 +128,24 @@ public class ResourceServiceImpl implements ResourceService {
         return example;
     }
 
+
+    public List<Map<String, Object>> listResource() {
+        List<Resource> resources = resourceMapper.selectAll();
+
+        return findByParentId(resources,0);
+    }
+    private List<Map<String,Object>> findByParentId(List<Resource> resourceList,Integer parentId){
+        List<Map<String,Object>> mapList = new ArrayList();
+        for(Resource resource:resourceList){
+            if(resource.getParentId()==parentId){
+                Map<String,Object> map = new HashMap();
+                map.put("id",resource.getId());
+                map.put("resKey",resource.getResKey());
+                map.put("resName",resource.getResName());
+                map.put("children",findByParentId(resourceList,resource.getId()));
+                mapList.add(map);
+            }
+        }
+        return mapList;
+    }
 }

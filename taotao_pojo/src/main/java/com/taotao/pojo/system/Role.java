@@ -1,6 +1,7 @@
 package com.taotao.pojo.system;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 /**
  * role实体类
@@ -17,7 +18,8 @@ public class Role implements Serializable{
 	
 
 	private String name;//角色名称
-
+	@Transient
+	private Integer adminNumber;
 	
 	public Integer getId() {
 		return id;
@@ -33,6 +35,20 @@ public class Role implements Serializable{
 		this.name = name;
 	}
 
+	public Integer getAdminNumber() {
+		return adminNumber;
+	}
 
-	
+	public void setAdminNumber(Integer adminNumber) {
+		this.adminNumber = adminNumber;
+	}
+
+	@Override
+	public String toString() {
+		return "Role{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", adminNumber=" + adminNumber +
+				'}';
+	}
 }

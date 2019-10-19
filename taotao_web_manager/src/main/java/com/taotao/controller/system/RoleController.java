@@ -3,6 +3,7 @@ package com.taotao.controller.system;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.taotao.entity.PageResult;
 import com.taotao.entity.Result;
+import com.taotao.pojo.system.Resource;
 import com.taotao.pojo.system.Role;
 import com.taotao.service.system.RoleService;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ public class RoleController {
 
     @PostMapping("/findPage")
     public PageResult<Role> findPage(@RequestBody Map<String,Object> searchMap,int page, int size){
+        //System.out.println(roleService.findPage(searchMap,page,size).getRows());
         return  roleService.findPage(searchMap,page,size);
     }
 
@@ -59,5 +61,14 @@ public class RoleController {
         roleService.delete(id);
         return new Result();
     }
+    @PostMapping("/saveRoleResource")
+    public Result saveRoleResource(Integer roleId, @RequestBody  List<Integer> menusIds){
+        roleService.saveRoleResource(roleId,menusIds);
+        return new Result();
+    }
 
+    @GetMapping("/findResourceIdsByRoleId")
+    public List<Integer> findResourceIdsByRoleId(Integer roleId){
+        return  roleService.findResourceIdsByRoleId(roleId);
+    }
 }

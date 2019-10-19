@@ -60,4 +60,8 @@ public class ResourceController {
         return new Result();
     }
 
+    @GetMapping("/listResource")
+    public List<Map<String, Object>> listResource(){
+        return resourceService.listResource();
+    }
 }

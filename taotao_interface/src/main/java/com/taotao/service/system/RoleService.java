@@ -32,4 +32,7 @@ public interface RoleService {
 
     public void delete(Integer id);
 
+    public void saveRoleResource(Integer roleId,List<Integer> menusIds);
+
+    public List<Integer> findResourceIdsByRoleId(Integer roleId);
 }

@@ -32,4 +32,6 @@ public interface ResourceService {
 
     public void delete(Integer id);
 
+    public List<Map<String,Object>> listResource();
+
 }
