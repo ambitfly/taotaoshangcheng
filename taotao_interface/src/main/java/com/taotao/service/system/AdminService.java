@@ -24,12 +24,19 @@ public interface AdminService {
 
     public Admin findById(Integer id);
 
-    public void add(Admin admin);
+    public void add(Map<String,Object> pojo);
 
 
     public void update(Map<String,Object> pojo);
 
-
+    void updateIncludeRole(Map<String,Object> pojo);
     public void delete(Integer id);
+
+    public Date lastLoginTime(String userName);
+
+    public PageResult<Admin> findByRoleId(Integer roleId,int page, int size);
+
+    Map<String,Object> loadAdminById(Integer id);
+    public boolean confirmIsExistLoginName(String name);
 
 }

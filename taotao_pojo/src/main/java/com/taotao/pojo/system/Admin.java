@@ -1,7 +1,9 @@
 package com.taotao.pojo.system;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
 /**
  * admin实体类
  * @author Administrator
@@ -11,6 +13,7 @@ import java.io.Serializable;
 public class Admin implements Serializable{
 
 	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)//主键自增
 	private Integer id;//id
 
 
@@ -21,7 +24,10 @@ public class Admin implements Serializable{
 	private String password;//密码
 
 	private String status;//状态
-
+	@Transient
+	private List<Role> roles;
+	@Transient
+	private Date lastLoginTime;
 	
 	public Integer getId() {
 		return id;
@@ -51,6 +57,31 @@ public class Admin implements Serializable{
 		this.status = status;
 	}
 
+	public List<Role> getRoles() {
+		return roles;
+	}
 
-	
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+
+	@Override
+	public String toString() {
+		return "Admin{" +
+				"id=" + id +
+				", loginName='" + loginName + '\'' +
+				", password='" + password + '\'' +
+				", status='" + status + '\'' +
+				", roles=" + roles +
+				", lastLoginTime=" + lastLoginTime +
+				'}';
+	}
 }

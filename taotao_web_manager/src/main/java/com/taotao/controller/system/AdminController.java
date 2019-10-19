@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
 import java.util.*;
 
 @RestController
@@ -42,6 +43,12 @@ public class AdminController {
         return  adminService.findPage(searchMap,page,size);
     }
 
+    @GetMapping("/findByRoleId")
+    public  PageResult<Admin> findByRoleId(Integer roleId,int page, int size){
+
+        return adminService.findByRoleId(roleId,page,size);
+    }
+
     @GetMapping("/findById")
     public Admin findById(Integer id){
         return adminService.findById(id);
@@ -49,17 +56,28 @@ public class AdminController {
 
 
     @PostMapping("/add")
-    public Result add(@RequestBody Admin admin){
-        adminService.add(admin);
+    public Result add(@RequestBody Map<String,Object> pojo){
+        /*
+         * 前后端约定格式：
+         * {"loginName":"xxxxx",
+         *  "password":"xxxxx",
+         *  "roleId":"xxxxx",
+         * }
+         * */
+        //密码加密p
+        String encodePwd = BCrypt.hashpw((String)pojo.get("newPassword"),BCrypt.gensalt());
+        pojo.put("newPassword",encodePwd);
+
+        adminService.add(pojo);
         return new Result();
     }
 
     @PostMapping("/update")
     public Result update(@RequestBody Map<String,Object> pojo){
-        System.out.println("===================="+pojo);
+       // System.out.println("===================="+pojo);
         String encodePwd = BCrypt.hashpw((String)pojo.get("newPassword"),BCrypt.gensalt());
         pojo.put("newPassword",encodePwd);
-        System.out.println("===================="+pojo);
+        //System.out.println("===================="+pojo);
         adminService.update(pojo);
         return new Result();
     }
@@ -92,6 +110,38 @@ public class AdminController {
             return new Result(0,"密码校验正确！");
         }else{
             return new Result(1,"密码输入错误！");
+        }
+    }
+    @GetMapping("/lastLoginTime")
+    public Map<String,Object> lastLoginTime(String userName){
+        Map<String,Object> map = new HashMap();
+        DateFormat df = DateFormat.getDateTimeInstance();
+
+        map.put("lastLoginTime",df.format(adminService.lastLoginTime(userName)));
+        return map;
+    }
+
+    @GetMapping("/loadAdminById")
+    public Map<String, Object> loadAdminById(Integer id){
+        return  adminService.loadAdminById(id);
+    }
+
+    @PostMapping("/updateIncludeRole")
+    public Result updateIncludeRole(@RequestBody Map<String, Object> pojo){
+        System.out.println(pojo);
+        String encodePwd = BCrypt.hashpw((String)pojo.get("newPassword"),BCrypt.gensalt());
+        pojo.put("newPassword",encodePwd);
+        adminService.updateIncludeRole(pojo);
+        return new Result();
+    }
+
+    @GetMapping("/confirmIsExistLoginName")
+    public Result confirmIsExistLoginName(String loginName){
+        boolean flag = adminService.confirmIsExistLoginName(loginName);
+        if(flag){
+            return new Result(1,"用户名重复！");
+        }else{
+            return new Result();
         }
     }
 
