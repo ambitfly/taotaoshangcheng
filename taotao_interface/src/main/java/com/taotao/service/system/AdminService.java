@@ -39,4 +39,7 @@ public interface AdminService {
     Map<String,Object> loadAdminById(Integer id);
     public boolean confirmIsExistLoginName(String name);
 
+    public List<String> findResKeysByLoginName(String loginName);
+
+    public void addData();
 }

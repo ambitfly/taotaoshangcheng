@@ -1,4 +1,5 @@
 package com.taotao.pojo.system;
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -17,11 +18,11 @@ public class Menu implements Serializable{
 	
 
 	private String name;//菜单名称
-
+	@Column(name="icon")
 	private String icon;//图标
-
+	@Column(name="url")
 	private String url;//URL
-
+	@Column(name="parent_id")
 	private String parentId;//上级菜单ID
 
 	
@@ -60,6 +61,14 @@ public class Menu implements Serializable{
 		this.parentId = parentId;
 	}
 
-
-	
+	@Override
+	public String toString() {
+		return "Menu{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", icon='" + icon + '\'' +
+				", url='" + url + '\'' +
+				", parentId='" + parentId + '\'' +
+				'}';
+	}
 }

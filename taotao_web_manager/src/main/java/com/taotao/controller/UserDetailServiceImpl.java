@@ -31,7 +31,11 @@ public class UserDetailServiceImpl implements UserDetailsService{
 
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-
+        /*List<String> resKeyList = adminService.findResKeysByLoginName(s);
+        for(String resKey:resKeyList){
+            System.out.println("resKey======"+resKey);
+            grantedAuthorities.add(new SimpleGrantedAuthority(resKey));
+        }*/
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         return new User(s,admins.get(0).getPassword(),grantedAuthorities);
     }

@@ -295,4 +295,23 @@ public class AdminServiceImpl implements AdminService {
             return false;
         }
     }
+
+    @Override
+    public List<String> findResKeysByLoginName(String loginName) {
+        return adminMapper.findResKeysByLoginName(loginName);
+    }
+    @Autowired
+    MenuMapper menuMapper;
+    @Autowired
+    ResourceMenuMapper resourceMenuMapper;
+    @Override
+    public void addData() {
+        List<Menu> menuList = menuMapper.selectAll();
+        for(Menu menu:menuList){
+            ResourceMenu resourceMenu = new ResourceMenu();
+            resourceMenu.setResourceId(23);
+            resourceMenu.setMenuId(menu.getId());
+            resourceMenuMapper.insert(resourceMenu);
+        }
+    }
 }

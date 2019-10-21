@@ -6,6 +6,8 @@ import com.taotao.entity.Result;
 import com.taotao.pojo.system.Admin;
 import com.taotao.service.system.AdminImageService;
 import com.taotao.service.system.AdminService;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
@@ -143,6 +145,17 @@ public class AdminController {
         }else{
             return new Result();
         }
+    }
+
+    @GetMapping("/addData")
+    public Result addData(){
+        adminService.addData();
+        return new Result();
+    }
+
+    @Test
+    public void fun(){
+        System.out.println(BCrypt.hashpw("123456",BCrypt.gensalt()));
     }
 
 

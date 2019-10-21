@@ -34,4 +34,6 @@ public interface MenuService {
 
     public List<Map<String,Object>> findAllMenu();
 
+    public List<Map<String,Object>> findMenu(String loginName);
+
 }

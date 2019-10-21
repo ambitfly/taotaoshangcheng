@@ -5,6 +5,7 @@ import com.taotao.entity.PageResult;
 import com.taotao.entity.Result;
 import com.taotao.pojo.system.Menu;
 import com.taotao.service.system.MenuService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -60,8 +61,14 @@ public class MenuController {
         return new Result();
     }
 
-    @GetMapping("/findMenu")
+    @GetMapping("/findAllMenu")
     public List<Map<String, Object>> findAllMenu(){
+
         return menuService.findAllMenu();
+    }
+    @GetMapping("/findMenu")
+    public List<Map<String, Object>> findMenu(){
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        return menuService.findMenu(name);
     }
 }

@@ -78,7 +78,7 @@ public class SpuController {
         return new Result();
     }
 
-    @GetMapping("/pull")
+    @GetMapping("/pull")//下架
     public Result pull(String id){
         spuService.pull(id);
         return new Result();

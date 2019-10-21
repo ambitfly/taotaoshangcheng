@@ -16,6 +16,18 @@
     <http>
         <!--所有资源必须有ROLE_ADMIN角色才可以访问-->
         <intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')"></intercept-url>
+        <intercept-url pattern="/*/*.do" access="hasAnyAuthority('role_admin')" />
+        <!--<intercept-url pattern="/*/find*.do" access="hasAnyAuthority()" />
+        <intercept-url pattern="/admin/update.do" access="hasAnyAuthority()" />
+        <intercept-url pattern="/spu/save.do" access="hasAnyAuthority('goods_add','goods_edit')" />
+        <intercept-url pattern="/spu/audit.do" access="hasAnyAuthority('goods_examine')" />
+        <intercept-url pattern="/spu/pull.do" access="hasAnyAuthority('goods_pull')" />
+        <intercept-url pattern="/spu/pull.do" access="hasAnyAuthority('pullMany')" />
+        <intercept-url pattern="/spu/put.do" access="hasAnyAuthority('goods_put')" />
+        <intercept-url pattern="/spu/put.do" access="hasAnyAuthority('putMany')" />
+        <intercept-url pattern="/spu/logicDelete.do" access="hasAnyAuthority('goods_delete')" />
+        <intercept-url pattern="/spu/delete.do" access="hasAnyAuthority('goods_real_delete')" />
+        <intercept-url pattern="/spu/recovery.do" access="hasAnyAuthority('goods_restore')" />-->
         <form-login
                 login-page="/login.html"
                 default-target-url="/main.html"

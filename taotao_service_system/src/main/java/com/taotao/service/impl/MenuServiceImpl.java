@@ -154,4 +154,16 @@ public class MenuServiceImpl implements MenuService {
         }
          return mapList;
     }
+
+    @Override
+    public List<Map<String, Object>> findMenu(String loginName) {
+        /*List<String> menuIds = menuMapper.findMenuIdByLoginName(loginName);
+        Example example = new Example(Menu.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andIn("id",menuIds);
+        List<Menu> menuList = menuMapper.selectByExample(example);*/
+        List<Menu> menuList = menuMapper.findMenuByLoginName(loginName);
+        //System.out.println(menuList);
+        return findMenuListByParentId(menuList,"0");
+    }
 }
