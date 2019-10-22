@@ -20,6 +20,7 @@
         <module>taotao_web_manager</module>
         <module>taotao_common_service</module>
         <module>taotao_common_web</module>
+        <module>taotao_web_portal</module>
     </modules>
 
     <packaging>pom</packaging>
