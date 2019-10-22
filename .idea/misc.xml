@@ -8,6 +8,7 @@
     <file type="web" url="file://$PROJECT_DIR$/taotao_service_system" />
     <file type="web" url="file://$PROJECT_DIR$/taotao_service_user" />
     <file type="web" url="file://$PROJECT_DIR$/taotao_web_manager" />
+    <file type="web" url="file://$PROJECT_DIR$/taotao_web_portal" />
   </component>
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
