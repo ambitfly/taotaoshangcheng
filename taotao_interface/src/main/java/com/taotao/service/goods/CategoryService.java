@@ -33,4 +33,6 @@ public interface CategoryService {
     public void delete(Integer id);
 
     public List<Category> findAll1Category();
+
+    public  List<Map> findCategoryTree();
 }

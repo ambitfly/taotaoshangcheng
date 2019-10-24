@@ -32,4 +32,6 @@ public interface AdService {
 
     public void delete(Integer id);
 
+    public List<Ad> findByPosition(String position);
+
 }

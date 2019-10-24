@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -164,6 +165,26 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 
+    public List<Map> findCategoryTree() {
+        Example example = new Example(Category.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("isShow","1");
+        example.setOrderByClause("seq");//排序
+        List<Category> categories = categoryMapper.selectByExample(example);
+       // System.out.println(categories);
+        return findByParentId(categories,0);
+    }
 
-
+    private List<Map> findByParentId(List<Category> categories,Integer parentId){
+        List<Map> mapList = new ArrayList<Map>();
+        for(Category category:categories){
+            if(category.getParentId().equals(parentId)){
+                Map<String,Object> map = new HashMap();
+                map.put("name",category.getName());
+                map.put("menus",findByParentId(categories,category.getId()));
+                mapList.add(map);
+            }
+        }
+        return mapList;
+    }
 }

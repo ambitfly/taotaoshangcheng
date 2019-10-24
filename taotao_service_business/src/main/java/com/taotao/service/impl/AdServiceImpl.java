@@ -9,6 +9,7 @@ import com.taotao.service.business.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -138,4 +139,14 @@ public class AdServiceImpl implements AdService {
         return example;
     }
 
+    public List<Ad> findByPosition(String position) {
+        Example example = new Example(Ad.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("position",position);
+        criteria.andLessThanOrEqualTo("startTime",new Date()); //startTime less than nowTime
+        criteria.andGreaterThanOrEqualTo("endTime",new Date());//endTime greater than nowTime
+        criteria.andEqualTo("status","1");//the status is activated
+
+        return adMapper.selectByExample(example);
+    }
 }
