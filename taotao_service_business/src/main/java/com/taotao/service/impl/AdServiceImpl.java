@@ -6,9 +6,12 @@ import com.taotao.dao.AdMapper;
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.business.Ad;
 import com.taotao.service.business.AdService;
+import com.taotao.util.CacheKey;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +81,7 @@ public class AdServiceImpl implements AdService {
      */
     public void add(Ad ad) {
         adMapper.insert(ad);
+        saveAdToRedisByPositon(ad.getPosition());
     }
 
     /**
@@ -85,7 +89,12 @@ public class AdServiceImpl implements AdService {
      * @param ad
      */
     public void update(Ad ad) {
+        String oldPosition = adMapper.selectByPrimaryKey(ad.getId()).getPosition();
         adMapper.updateByPrimaryKeySelective(ad);
+        saveAdToRedisByPositon(oldPosition);
+        if(!oldPosition.equals(ad.getPosition())){
+            saveAdToRedisByPositon(ad.getPosition());
+        }
     }
 
     /**
@@ -93,6 +102,8 @@ public class AdServiceImpl implements AdService {
      * @param id
      */
     public void delete(Integer id) {
+        String position = adMapper.selectByPrimaryKey(id).getPosition();
+        saveAdToRedisByPositon(position);
         adMapper.deleteByPrimaryKey(id);
     }
 
@@ -140,6 +151,13 @@ public class AdServiceImpl implements AdService {
     }
 
     public List<Ad> findByPosition(String position) {
+        return (List<Ad>) redisTemplate.boundHashOps(CacheKey.AD).get(position);
+    }
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    public void saveAdToRedisByPositon(String position) {
         Example example = new Example(Ad.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("position",position);
@@ -147,6 +165,20 @@ public class AdServiceImpl implements AdService {
         criteria.andGreaterThanOrEqualTo("endTime",new Date());//endTime greater than nowTime
         criteria.andEqualTo("status","1");//the status is activated
 
-        return adMapper.selectByExample(example);
+        List<Ad> adList = adMapper.selectByExample(example);
+        redisTemplate.boundHashOps(CacheKey.AD).put(position,adList);
+    }
+
+    public void saveAllAdtoRedis() {
+        for(String position:getPosition()){
+            saveAdToRedisByPositon(position);
+        }
+    }
+
+    private List<String> getPosition(){
+        List<String> list = new ArrayList<String>();
+        list.add(AdService.WEBINDEXLB);
+
+        return list;
     }
 }

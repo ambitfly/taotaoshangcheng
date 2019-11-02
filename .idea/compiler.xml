@@ -25,6 +25,7 @@
       <module name="taotao_common" target="1.5" />
       <module name="taotao_common_service" target="1.5" />
       <module name="taotao_common_web" target="1.5" />
+      <module name="taotao_ElasticSearch" target="1.5" />
       <module name="taotao_interface" target="1.5" />
       <module name="taotao_parent" target="1.5" />
       <module name="taotao_pojo" target="1.5" />

@@ -23,7 +23,7 @@ public class IndexController {
     @GetMapping("/index")
     public String index(Model model){
         //轮播图
-        List<Ad> ads =  adService.findByPosition("web_index_lb");
+        List<Ad> ads =  adService.findByPosition(AdService.WEBINDEXLB);
         model.addAttribute("lbt",ads);
         //商品分类
         List<Map> categoryList = categoryService.findCategoryTree();

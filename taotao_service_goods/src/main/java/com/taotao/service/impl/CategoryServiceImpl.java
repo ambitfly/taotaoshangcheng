@@ -6,7 +6,9 @@ import com.taotao.dao.CategoryMapper;
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Category;
 import com.taotao.service.goods.CategoryService;
+import com.taotao.util.CacheKey;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -79,6 +81,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     public void add(Category category) {
         categoryMapper.insert(category);
+        saveCategoryTreeToRedis();
     }
 
     /**
@@ -87,6 +90,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     public void update(Category category) {
         categoryMapper.updateByPrimaryKeySelective(category);
+        saveCategoryTreeToRedis();
     }
 
     /**
@@ -102,6 +106,7 @@ public class CategoryServiceImpl implements CategoryService {
             throw new RuntimeException("存在下级分类不能删除");
         }
         categoryMapper.deleteByPrimaryKey(id);
+        saveCategoryTreeToRedis();
     }
 
     /**
@@ -166,13 +171,8 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     public List<Map> findCategoryTree() {
-        Example example = new Example(Category.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("isShow","1");
-        example.setOrderByClause("seq");//排序
-        List<Category> categories = categoryMapper.selectByExample(example);
-       // System.out.println(categories);
-        return findByParentId(categories,0);
+
+        return (List<Map>) redisTemplate.boundValueOps(CacheKey.CATEGORY_TREE).get();
     }
 
     private List<Map> findByParentId(List<Category> categories,Integer parentId){
@@ -186,5 +186,17 @@ public class CategoryServiceImpl implements CategoryService {
             }
         }
         return mapList;
+    }
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+    public void saveCategoryTreeToRedis() {
+        Example example = new Example(Category.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("isShow","1");
+        example.setOrderByClause("seq");//排序
+        List<Category> categories = categoryMapper.selectByExample(example);
+        List<Map> categoryTree = findByParentId(categories,0);
+        redisTemplate.boundValueOps(CacheKey.CATEGORY_TREE).set(categoryTree);
     }
 }

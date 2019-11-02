@@ -8,7 +8,7 @@ import java.util.*;
  * ad业务逻辑层
  */
 public interface AdService {
-
+    public static final String WEBINDEXLB = "web_index_lb";
 
     public List<Ad> findAll();
 
@@ -33,5 +33,9 @@ public interface AdService {
     public void delete(Integer id);
 
     public List<Ad> findByPosition(String position);
+
+    public void saveAdToRedisByPositon(String position);
+
+    public void saveAllAdtoRedis();
 
 }

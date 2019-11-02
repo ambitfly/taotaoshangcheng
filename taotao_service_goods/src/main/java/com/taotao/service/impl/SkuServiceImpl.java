@@ -1,14 +1,35 @@
 package com.taotao.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.taotao.dao.SkuMapper;
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Sku;
 import com.taotao.service.goods.SkuService;
+import com.taotao.util.CacheKey;
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -185,4 +206,27 @@ public class SkuServiceImpl implements SkuService {
 
         return skuMapper.selectByExample(example);
     }
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    public void saveAllPriceToRedis() {
+        if(!redisTemplate.hasKey(CacheKey.SKU_PRICE)){
+            List<Sku> skuList = skuMapper.selectAll();
+            for(Sku sku:skuList){
+                if("1".equals(sku.getStatus())){
+                    redisTemplate.boundHashOps(CacheKey.SKU_PRICE).put(sku.getId(),sku.getPrice());
+                }
+            }
+        }
+    }
+
+    public Integer findPrice(String id) {
+
+        return (Integer)redisTemplate.boundHashOps(CacheKey.SKU_PRICE).get(id);
+    }
+
+
+
+
 }

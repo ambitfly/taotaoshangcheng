@@ -34,4 +34,10 @@ public interface SkuService {
 
     public List<Sku> findBySpuId(String id);
 
+    public void saveAllPriceToRedis();
+
+    public Integer findPrice(String id);
+
+
+
 }

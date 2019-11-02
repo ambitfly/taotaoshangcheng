@@ -38,7 +38,6 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-jms:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-messaging:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context-support:5.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-test:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: com.alibaba:dubbo:2.6.0" />
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.20.0-GA" />
           <element id="library" level="project" name="Maven: org.jboss.netty:netty:3.2.5.Final" />
@@ -58,8 +57,6 @@
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.0.6.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.0.6.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.0.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.0.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-taglibs:5.0.5.RELEASE" />
@@ -74,6 +71,9 @@
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
           <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.5" />
           <element id="library" level="project" name="Maven: net.sf.ezmorph:ezmorph:1.0.6" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-test:5.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.0.5.RELEASE" />
         </element>
       </element>
       <element id="directory" name="META-INF">

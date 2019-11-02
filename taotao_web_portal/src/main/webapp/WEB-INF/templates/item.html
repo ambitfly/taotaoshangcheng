@@ -14,6 +14,7 @@
 </head>
 
 <body>
+<div id="app">
 	<!-- 头部栏位 -->
 	<!--页面顶部-->
 	<div id="nav-bottom">
@@ -1864,7 +1865,7 @@
 							</div>
 							<div class="fl price">
 								<i>¥</i>
-								<em th:text="${#numbers.formatDecimal(sku.price/100,0,2)}">5299.00</em>
+								<em >{{price}}</em>
 								<span>降价通知</span>
 							</div>
 							<div class="fr remark">
@@ -2760,11 +2761,33 @@
 
 		</div>
 	</div>
-
+</div>
 	<script type="text/javascript" src="./js/plugins/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="./js/plugins/sui/sui.min.js"></script>
 	<script type="text/javascript" src="./js/plugins/jquery.jqzoom/jquery.jqzoom.js"></script>
 	<script type="text/javascript" src="./js/plugins/jquery.jqzoom/zoom.js"></script>
+
 </body>
+
+
+<script src="js/vue.js"></script>
+<script src="js/axios.js"></script>
+<script th:inline="javascript">
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                skuId:/*[[${sku.id}]]*/,
+                price:0
+            }
+        },
+        created(){
+//读取价格
+            axios.get('http://localhost:9102/sku/findPrice.do?id='+this.skuId).then(response=>{
+            	this.price=(response.data/100).toFixed(2);
+			})
+		}
+	});
+</script>
 
 </html>
