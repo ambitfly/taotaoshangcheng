@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/qingcheng_service_sms/qingcheng_service_sms.iml" filepath="$PROJECT_DIR$/qingcheng_service_sms/qingcheng_service_sms.iml" />
       <module fileurl="file://$PROJECT_DIR$/taotao_common/taotao_common.iml" filepath="$PROJECT_DIR$/taotao_common/taotao_common.iml" />
       <module fileurl="file://$PROJECT_DIR$/taotao_common_service/taotao_common_service.iml" filepath="$PROJECT_DIR$/taotao_common_service/taotao_common_service.iml" />
       <module fileurl="file://$PROJECT_DIR$/taotao_common_web/taotao_common_web.iml" filepath="$PROJECT_DIR$/taotao_common_web/taotao_common_web.iml" />

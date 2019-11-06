@@ -70,10 +70,10 @@ public class ItemController {
 
             Map<String,Object> specMap = JSON.parseObject(spu.getSpecItems());  //{"颜色":["金色","黑色","蓝色"],"版本":["6GB+64GB"]}
 
-            for(String key:specMap.keySet()){
+            for(String key:specMap.keySet()){//循环规格名称
                 List<String> list = (List<String>)specMap.get(key);
                 List<Map> mapList = new ArrayList<Map>();
-                for(String value:list){
+                for(String value:list){//循环规格列表
                     Map map = new HashMap();
                     map.put("option",value);
                     if(specItems.get(key).equals(value)){

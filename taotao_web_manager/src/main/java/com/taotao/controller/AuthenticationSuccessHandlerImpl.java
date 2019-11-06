@@ -17,7 +17,7 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
     @Reference
     LoginLogService loginLogService;
 
-    @Override
+
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         //登录之后会调用
         System.out.println("登录成功了！！！！！！");

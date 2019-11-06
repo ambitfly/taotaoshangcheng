@@ -21,6 +21,7 @@
         <module>taotao_common_service</module>
         <module>taotao_common_web</module>
         <module>taotao_web_portal</module>
+        <module>qingcheng_service_sms</module>
 
     </modules>
 

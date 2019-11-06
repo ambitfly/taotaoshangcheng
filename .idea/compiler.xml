@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="qingcheng_service_sms" />
         <module name="taotao_common" />
         <module name="taotao_common_service" />
         <module name="taotao_common_web" />
@@ -22,6 +23,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="qingcheng_service_sms" target="1.5" />
       <module name="taotao_common" target="1.5" />
       <module name="taotao_common_service" target="1.5" />
       <module name="taotao_common_web" target="1.5" />

@@ -1,16 +1,21 @@
 package com.taotao.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.taotao.dao.UserMapper;
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.user.User;
 import com.taotao.service.user.UserService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.List;
-import java.util.Map;
+import javax.jws.soap.SOAPBinding;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -174,4 +179,57 @@ public class UserServiceImpl implements UserService {
         return example;
     }
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    public void sendSms(String phone) {
+        //1.得到六位短信验证码
+        Random random = new Random();
+        int code = random.nextInt(899999)+100000;
+        System.out.println("短信验证码："+code);
+
+        //2.保存到redis里
+        stringRedisTemplate.boundValueOps("code_"+phone).set(code+"");
+        stringRedisTemplate.boundValueOps("code_"+phone).expire(15, TimeUnit.MINUTES);
+        //3.发送给RabbitMQ
+        Map<String,String> map = new HashMap<String, String>();
+        map.put("phone",phone);
+        map.put("code",code+"");
+
+        rabbitTemplate.convertAndSend("","queue.sms", JSON.toJSONString(map));
+
+    }
+
+    public void add(User user, String smsCode) {
+        //比较验证码
+        //获取系统验证码
+        //System.out.println("smsCode"+smsCode);
+        String sysCode = stringRedisTemplate.boundValueOps("code_"+user.getPhone()).get();
+        if(sysCode==null){
+            throw new RuntimeException("验证码未发送或已过期！");
+        }
+        if(!sysCode.equals(smsCode)){
+            throw new RuntimeException("验证码输入错误！");
+        }
+        if(user.getName()==null){
+            user.setUsername(user.getPhone());
+            user.setName(user.getPhone());
+        }
+        User searchUser = new User();
+        searchUser.setName(user.getName());
+        if(userMapper.selectCount(searchUser)>0){
+            throw new RuntimeException("该手机号已注册！");
+        }
+        user.setCreated(new Date());
+        user.setUpdated(new Date());
+        user.setPoints(0);//积分初始值为0
+        user.setStatus("1");//状态1
+        user.setIsEmailCheck("0");//邮箱认证
+        user.setIsMobileCheck("1");//手机认证
+        //System.out.println(user);
+        userMapper.insert(user);
+    }
 }
