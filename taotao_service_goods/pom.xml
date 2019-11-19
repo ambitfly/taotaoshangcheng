@@ -27,6 +27,11 @@
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
             <version>6.2.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>2.1.4.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>

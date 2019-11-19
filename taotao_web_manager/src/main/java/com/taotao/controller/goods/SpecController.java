@@ -60,4 +60,8 @@ public class SpecController {
         return new Result();
     }
 
+    @GetMapping("/findSpecByTemplateId")
+    public List<Map> findSpecByTemplateId(Integer templateId){
+        return specService.findSpecByTemplateId(templateId);
+    }
 }

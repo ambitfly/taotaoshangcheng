@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -198,5 +195,29 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categories = categoryMapper.selectByExample(example);
         List<Map> categoryTree = findByParentId(categories,0);
         redisTemplate.boundValueOps(CacheKey.CATEGORY_TREE).set(categoryTree);
+    }
+
+    public List<Category> findByParentId(Integer id) {
+        Example example = new Example(Category.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("parentId",id);
+        List<Category> categoryList = categoryMapper.selectByExample(example);
+
+        return categoryList;
+    }
+
+    public String[] findNameByIds(Integer[] ids) {
+        Example example = new Example(Category.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andIn("id", Arrays.asList(ids));
+
+        List<Category> categoryList = categoryMapper.selectByExample(example);
+        String[] categorys = new String[3];
+        int i = 0;
+        for(Category category:categoryList){
+            categorys[i] = category.getName();
+            i++;
+        }
+        return categorys;
     }
 }

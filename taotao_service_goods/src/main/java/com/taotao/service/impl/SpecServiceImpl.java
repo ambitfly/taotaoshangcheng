@@ -13,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service(interfaceClass = SpecService.class)//在dubbo使用事务需要加interfaceClass属性
 public class SpecServiceImpl implements SpecService {
@@ -147,4 +146,21 @@ public class SpecServiceImpl implements SpecService {
         return example;
     }
 
+    public List<Map> findSpecByTemplateId(Integer templateId) {
+        Example example = new Example(Spec.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("templateId",templateId);
+        List<Spec> specs = specMapper.selectByExample(example);
+        List<Map> mapList = new ArrayList<Map>();
+        for(Spec spec:specs){
+            Map map = new HashMap();
+            map.put("id",spec.getId());
+            map.put("name",spec.getName());
+            map.put("templateId",spec.getTemplateId());
+            String optionsString = spec.getOptions();
+            map.put("options", Arrays.asList(optionsString.split(",")));
+            mapList.add(map);
+        }
+        return mapList;
+    }
 }

@@ -4,7 +4,7 @@
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="qingcheng_service_sms" />
+          <element id="module-output" name="taotao_service_sms" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.springframework.amqp:spring-rabbit:2.1.4.RELEASE" />
@@ -56,9 +56,9 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/qingcheng_service_sms/target/qingcheng_service_sms-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/taotao_service_sms/target/qingcheng_service_sms-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
       </element>
-      <element id="javaee-facet-resources" facet="qingcheng_service_sms/web/Web" />
+      <element id="javaee-facet-resources" facet="taotao_service_sms/web/Web" />
     </root>
   </artifact>
 </component>

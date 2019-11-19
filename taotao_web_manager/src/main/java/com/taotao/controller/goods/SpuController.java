@@ -78,22 +78,44 @@ public class SpuController {
         return new Result();
     }
 
-    @GetMapping("/pull")//下架
+    /**
+     * 下架
+     * @param id
+     * @return
+     */
+    @GetMapping("/pull")
     public Result pull(String id){
         spuService.pull(id);
         return new Result();
     }
 
-    @GetMapping("/put")//上架
+    /**
+     * 上架
+     * @param id
+     * @return
+     */
+    @GetMapping("/put")
     public Result put(String id){
         spuService.put(id);
         return new Result();
     }
+
+    /**
+     * 批量下架
+     * @param ids
+     * @return
+     */
     @GetMapping("/pullMany")
     public Result pullMany(String[] ids){
         int count = spuService.pullMany(ids);
         return new Result(0,"下架"+count+"个商品");
     }
+
+    /**
+     * 批量上架
+     * @param ids
+     * @return
+     */
     @GetMapping("/putMany")
     public Result putMany(String[] ids){
         int count = spuService.putMany(ids);
@@ -115,5 +137,17 @@ public class SpuController {
     @GetMapping("/findAuditBySpuId")
     public List<Audit> findAuditBySpuId(String id){
         return spuService.findAuditBySpuId(id);
+    }
+
+    @PostMapping("/saveGoodsToRedis")
+    public String saveGoodsToRedis(@RequestBody Map<String,Object> pojo,String uuid){
+
+        String thisUuid = spuService.saveGoodsToRedis(pojo,uuid);
+        return thisUuid;
+    }
+
+    @GetMapping("/findGoodsToRedis")
+    public Map<String,Object> findGoodsToRedis(String uuid){
+        return spuService.findGoodsToRedis(uuid);
     }
 }

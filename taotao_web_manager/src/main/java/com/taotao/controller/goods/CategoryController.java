@@ -71,4 +71,14 @@ public class CategoryController {
     public List<Category> findAll1Category(){
         return categoryService.findAll1Category();
     }
+
+    @GetMapping("/findByParentId")
+    public List<Category> findByParentId(Integer id){
+        return categoryService.findByParentId(id);
+    }
+
+    @GetMapping("/findNameByIds")
+    public String[] findNameByIds(Integer[] ids){
+        return categoryService.findNameByIds(ids);
+    }
 }

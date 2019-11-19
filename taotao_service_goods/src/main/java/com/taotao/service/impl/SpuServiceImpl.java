@@ -8,15 +8,20 @@ import com.taotao.dao.*;
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.*;
 import com.taotao.service.goods.SpuService;
+import com.taotao.util.CacheKey;
 import com.taotao.util.IdWorker;
 
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.text.DateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service(interfaceClass = SpuService.class )
 public class SpuServiceImpl implements SpuService {
@@ -358,14 +363,27 @@ public class SpuServiceImpl implements SpuService {
 
 
         Map<Sku,GoodsLog> map  = writeBeforeGoodsLog(id);
+//==========================================
 
         Date date = new Date();
         Spu spu = new Spu();
         spu.setId(id);
         spu.setIsMarketable("0");
         spuMapper.updateByPrimaryKeySelective(spu);
+        //发送消息
+
+        List<String> skuIds = new ArrayList<String>();
+        Example example = new Example(Sku.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("spuId",spu.getId());
+        List<Sku> skuList = skuMapper.selectByExample(example);
+        for(Sku sku:skuList){
+            skuIds.add(sku.getId());
+        }
+        rabbitTemplate.convertAndSend("exchange.fanout_pull","", JSON.toJSONString(skuIds));
 
 
+//        ===================================
         //3.记录商品日志改之后状态
         DateFormat df = DateFormat.getDateTimeInstance();
         String operInfor = df.format(date);
@@ -373,7 +391,8 @@ public class SpuServiceImpl implements SpuService {
         writeAfterGoodsLog(map,operInfor);
 
     }
-
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
     @Transactional
     public void put(String id) {
 
@@ -388,7 +407,26 @@ public class SpuServiceImpl implements SpuService {
 
         spu.setIsMarketable("1");
         spuMapper.updateByPrimaryKeySelective(spu);
-
+        //发送消息
+        Map<String,String> spuMap = new HashMap<String, String>();
+        spuMap.put("spu",JSON.toJSONString(spu));
+        Example example = new Example(Sku.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("spuId",spu.getId());
+        List<Sku> skuList = skuMapper.selectByExample(example);
+        List<String> skuListString = new ArrayList<String>();
+        for(Sku sku:skuList){
+            skuListString.add(JSON.toJSONString(sku));
+        }
+        spuMap.put("skuList",JSON.toJSONString(skuListString));
+        List<String> categoryList = new ArrayList<String>();
+        categoryList.add(categoryMapper.selectByPrimaryKey(spu.getCategory1Id()).getName());//一级分类
+        categoryList.add(categoryMapper.selectByPrimaryKey(spu.getCategory2Id()).getName());//二级分类
+        categoryList.add(categoryMapper.selectByPrimaryKey(spu.getCategory3Id()).getName());//三级分类
+        spuMap.put("categoryList",JSON.toJSONString(categoryList));
+        String jsonStringSpuMap = JSON.toJSONString(spuMap);
+        System.out.println(jsonStringSpuMap);
+        rabbitTemplate.convertAndSend("exchange.fanout_put","", jsonStringSpuMap);
 
         //3.记录商品日志改之后状态
         DateFormat df = DateFormat.getDateTimeInstance();
@@ -548,7 +586,25 @@ public class SpuServiceImpl implements SpuService {
         }
     }
 
+    @Autowired
+    StringRedisTemplate redisTemplate;
+    public String saveGoodsToRedis(Map<String,Object> pojo,String uuid) {
+        if("".equals(uuid)){
+            uuid = UUID.randomUUID().toString();
+        }
 
+        String pojoString = JSON.toJSONString(pojo);
+        redisTemplate.boundValueOps(uuid).set(pojoString);
+        redisTemplate.boundValueOps(uuid).expire(10, TimeUnit.MINUTES);
+        return uuid;
+    }
+
+    public Map<String, Object> findGoodsToRedis(String uuid) {
+        String pojoString = redisTemplate.boundValueOps(uuid).get();
+        Map<String,Object> pojo = JSON.parseObject(pojoString);
+        System.out.println(pojo);
+        return pojo;
+    }
 
     /*    @Test
     public void fun(){

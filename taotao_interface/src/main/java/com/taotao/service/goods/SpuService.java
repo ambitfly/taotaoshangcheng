@@ -61,5 +61,7 @@ public interface SpuService {
     //恢复
     public void recovery(String id);
 
+    public String saveGoodsToRedis(Map<String,Object> pojo,String uuid);
 
+    public Map<String,Object> findGoodsToRedis(String uuid);
 }

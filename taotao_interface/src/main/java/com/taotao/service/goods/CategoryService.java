@@ -37,4 +37,13 @@ public interface CategoryService {
     public  List<Map> findCategoryTree();
 
     public void saveCategoryTreeToRedis();
+
+    /**
+     * 通过父级分类查询商品分类
+     * @param id   父级id
+     * @return
+     */
+    public List<Category> findByParentId(Integer id);
+
+    public String[] findNameByIds(Integer[] ids);
 }

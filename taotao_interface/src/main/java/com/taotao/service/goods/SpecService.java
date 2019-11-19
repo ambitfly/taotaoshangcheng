@@ -32,4 +32,6 @@ public interface SpecService {
 
     public void delete(Integer id);
 
+    public List<Map> findSpecByTemplateId(Integer templateId);
+
 }

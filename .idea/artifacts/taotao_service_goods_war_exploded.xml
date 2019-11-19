@@ -22,10 +22,6 @@
           <element id="archive" name="taotao_common-1.0-SNAPSHOT.jar">
             <element id="module-output" name="taotao_common" />
           </element>
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.0.5.RELEASE" />
@@ -33,7 +29,6 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-aspects:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.8.13" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jms:5.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-messaging:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context-support:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-test:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: com.alibaba:dubbo:2.6.0" />
@@ -64,7 +59,6 @@
           <element id="library" level="project" name="Maven: org.springframework.data:spring-data-redis:2.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.data:spring-data-keyvalue:2.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.data:spring-data-commons:2.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.0.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-oxm:5.0.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.0.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.2.2" />
@@ -111,6 +105,16 @@
           <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.9.1" />
           <element id="library" level="project" name="Maven: org.elasticsearch.plugin:aggs-matrix-stats-client:6.2.2" />
           <element id="library" level="project" name="Maven: org.elasticsearch.plugin:rank-eval-client:6.2.2" />
+          <element id="library" level="project" name="Maven: org.springframework.amqp:spring-rabbit:2.1.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.amqp:spring-amqp:2.1.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.1.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.1.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.retry:spring-retry:1.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: com.rabbitmq:amqp-client:5.4.3" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-messaging:5.1.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.1.5.RELEASE" />
         </element>
       </element>
       <element id="directory" name="META-INF">

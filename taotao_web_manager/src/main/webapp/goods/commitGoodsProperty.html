@@ -1,0 +1,426 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>订单详情</title>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .topDiv {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border: 1px solid #EEE9E9;
+      background-color: #F7F7F7;
+      margin-bottom: 40px;
+    }
+
+    .strip {
+      display: inline-block;
+      background-color: #1E90FF;
+      width: 5px;
+      height: 22px;
+      margin-left: 200px;
+    }
+
+    .stripText {
+      position: absolute;
+      display: inline-block;
+      margin-left: 10px;
+      padding-bottom: 2px;
+      text-align: center;
+      color: #A3A3A3;
+    }
+
+    .button {
+      cursor: pointer;
+      display: inline-block;
+      background-color: white;
+      border: 1px solid #EEE9E9;
+      width: 80px;
+      height: 25px;
+      margin-left: 20px;
+      color: #5e5e5e;
+    }
+
+    .button:hover {
+      background-color: #F7F7F7;
+    }
+
+    .button span {
+      display: inline-block;
+      margin-left: 5px;
+      font-size: 13px;
+    }
+
+    .button i {
+      display: inline-block;
+      margin-left: 2px;
+      font-size: 20px;
+    }
+
+    .stepImage {
+      width: 60%;
+      margin: 0px auto;
+      margin-bottom: 40px;
+    }
+
+    .tableHead {
+      margin: 0px auto;
+      width: 70%;
+      font-size: 13px;
+      border: 1px solid #EEE9E9;
+      background-color: #F7F7F7;
+      padding-bottom: 14px;
+      padding-top: 14px;
+      color: #A3A3A3;
+    }
+    .tableHead span{
+      display: inline-block;
+      margin-left: 15px;
+    }
+    .tableBody {
+      margin: 0px auto;
+      width: 70%;
+      height: 1000px;
+      border: 1px solid #EEE9E9;
+      padding-top: 15px;
+    }
+
+    .orderMessage {
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+
+    .orderMessage span {
+      display: inline-block;
+      color: #A3A3A3;
+      margin-bottom: 17px;
+      margin-left: 52px;
+    }
+
+    .stepDiv {
+      width: 700px;
+      margin-left: 140px;
+      margin-top: 50px;
+    }
+
+    .titleName {
+      color: #5e5e5e;
+      font-size: 14px;
+      display: inline-block;
+      margin-left: 140px;
+      margin-top: 60px;
+    }
+
+    .specDiv {
+      background-color: #F9FAFC;
+      border: 1px solid #E4E4E4;
+      margin-left: 120px;
+      margin-top: 25px;
+    }
+
+    .starDiv {
+      color: red;
+      display: inline-block;
+    }
+
+    /*.tableHead {
+      margin: 0px auto;
+      width: 70%;
+      border: 1px solid #EEE9E9;
+      background-color: #F7F7F7;
+      padding-bottom: 20px;
+      padding-top: 20px;
+      color: #EE0000;
+    }*/
+
+    .tableBody {
+      margin: 0px auto;
+      width: 70%;
+      border: 1px solid #EEE9E9;
+      padding-top: 15px;
+    }
+
+    table.gridtable {
+
+      font-size: 13px;
+      color: #666666;
+      border-width: 1px;
+      border-color: #EEE9E9;
+      border-collapse: collapse;
+      width: 90%;
+      margin: 0px auto;
+    }
+
+    table.gridtable th {
+      border-width: 1px;
+      padding: 0px;
+      border-style: solid;
+      border-color: #EEE9E9;
+      background-color: #F9FAFC;
+    }
+
+    table.gridtable td {
+      border-width: 1px;
+      padding: 7px;
+      border-style: solid;
+      border-color: #EEE9E9;
+      background-color: #ffffff;
+      text-align: center;
+    }
+
+    .tableDiv {
+      margin-left: 70px;
+    }
+
+    .star {
+      color: red;
+      display: inline-block;
+    }
+
+
+
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="topDiv">
+    <span class="strip"></span>
+    <span class="stripText">添加商品</span>
+    <div class="button" style="margin-left: 850px" @click="refresh">
+      <i class="el-icon-refresh-left"></i>
+      <span>刷新</span>
+    </div>
+  </div>
+
+  <div class="tableHead">
+    <span>填写商品属性</span>
+
+  </div>
+
+  <div class="tableBody">
+    <div class="stepDiv">
+      <el-steps :space="240" :active="3" finish-status="success">
+        <el-step title="选择商品分类"></el-step>
+        <el-step title="填写商品信息"></el-step>
+        <el-step title="填写商品属性"></el-step>
+      </el-steps>
+    </div>
+
+    <div>
+      <div class="goodsProperty">
+        <span class="titleName">选择模板：&nbsp;</span>
+        <el-select v-model="templateId" placeholder="请选择" @blur="findSpec">
+          <el-option
+                  v-for="item in templateList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+          </el-option>
+        </el-select>
+
+        <div class="specDiv">
+            <span class="starDiv" style="margin-left: 20px">*</span><span style="color: #5e5e5e;font-size: 14px;display: inline-block;margin-top: 10px">商品规格：&nbsp;</span><br>
+            <div v-for="spec,index in specList">
+              <span style="color: #5e5e5e;font-size: 14px;margin-left: 20px;margin-top: 10px;display: inline-block">{{spec.name}}：&nbsp;</span>
+              <el-checkbox-group v-model="ss[index]" style="margin-left: 20px;margin-top: 10px" @change="getSpecGoodsList">
+                <div v-for="option in spec.options" style="display: inline-block;margin-left: 5px">
+                  <el-checkbox :label="option" ></el-checkbox>
+                </div>
+              </el-checkbox-group>
+            </div>
+            <div style="margin-top: 20px"></div>
+        </div>
+
+
+        <div class="tableDiv">
+          <table class="gridtable" v-if="pojo.skuList!=null">
+            <tr>
+              <th width="100px" v-for="item in specName">{{item}}</th>
+              <th width="80px"><p class="star">*</p>销售价格</th>
+              <th width="80px"><p class="star">*</p>商品库存</th>
+              <th width="100px"><p class="star">*</p>库存预警值</th>
+              <th  width="130px">SKU编号</th>
+              <th width="110px">操作</th>
+            </tr>
+              <tr v-for="sku in pojo.skuList">
+                <td v-for="(item,key) in sku.spec">{{item}}</td>
+                <td>
+                  <el-input v-model="sku.price"></el-input>
+                </td>
+                <td>
+                  <el-input v-model="sku.num"></el-input>
+                </td>
+                <td>
+                  <el-input v-model="sku.alertNum"></el-input>
+                </td>
+                <td>
+                  <el-input v-model="sku.sn"></el-input>
+                </td>
+                <td>
+                  <a>删除</a>&nbsp;&nbsp;
+                  <el-upload
+                          class="upload-demo"
+                          action="/upload/oss.do"
+                          :show-file-list="false"
+                          :on-success="handleAvatarSuccess"
+                          :before-upload="beforeAvatarUpload"
+                          :data="data1"
+                  >
+                    <el-button size="small" type="primary"  @click="changeClickSpec(sku.spec)">点击上传</el-button>
+                  </el-upload>
+                </td>
+              </tr>
+
+            <!--<div v-for="item in pojo.skuList">
+              <div v-for="(item,key) in item.spec">{{item}}</div>
+            </div>-->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
+<script src="/js/elementui.js"></script>
+<script src="/js/util.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                pojo: {"spu":{},"skuList":[]},
+                uuid: '',
+                templateList: [],
+                templateId: 0,
+                specList: [],
+                specSel: {},
+                ss: [],
+                SpecGoodsList:[],
+                data:{},
+                count:0,
+                specName:[],
+                clickSpec:'',
+                data1: {
+                    "imageType": "GoodsImage"
+                },
+
+            }
+        },
+        created() {
+            this.uuid = getQueryString("uuid");
+            axios.get(`/spu/findGoodsToRedis.do?uuid=${this.uuid}`).then(response=>{
+                this.pojo = response.data;
+                axios.get(`/template/findAll.do`).then(response=>{
+                    this.templateList = response.data;
+                })
+            })
+        },
+        methods: {
+            refresh() {
+                location.reload();
+            },
+            changePojo(){
+
+            },
+            save(){
+                //保存数据到redis
+
+
+
+            },
+            back(){
+                location.href = 'commitGoodsInfor.html';
+            },
+            findSpec(){
+                axios.get(`/spec/findSpecByTemplateId.do?templateId=${this.templateId}`).then(response=>{
+                    this.specList = response.data
+                    for(var i=0;i<this.specList.length;i++){
+                        this.ss[i] = [`${this.specList[i].name}`];
+                    }
+                })
+            },
+            getSpecGoodsList(){
+                this.pojo.spu.specItems = {}
+                this.pojo.skuList = []
+                this.specName = []
+                //specItems
+                for(var i=0;i<this.ss.length;i++){
+                    var arr = [];
+                    for(var j=1;j<this.ss[i].length;j++){
+                        arr.push(this.ss[i][j])
+                    }
+                    this.pojo.spu.specItems[this.ss[i][0]] = arr;
+                }
+                //skuList
+                var count = 0;
+                for(var i=1;i<this.ss.length;i++){
+                    count = count == 0?1:count
+                    count = (this.ss[i].length-1 )* count;
+                }
+                this.count = count;
+                //生成固定列数据
+                if(count!=0){
+                    for(var j=1;j<this.ss[0].length;j++){
+                        for(var i=0;i<count;i++){
+                            this.data = {"spec":{}}
+                            this.data.spec[this.ss[0][0]] = this.ss[0][j]
+                            this.pojo.skuList.push(this.data);
+                        }
+                    }
+                }
+                //填充数据(假如只有两组数据)
+                if(count==this.ss[1].length-1){
+                    for(var j=0,k=0;j<this.pojo.skuList.length/count;j++){
+                        for(var i=1;i<=count;i++,k++){
+                            (this.pojo.skuList[k].spec)[this.ss[1][0]] = this.ss[1][i]
+                        }
+                    }
+
+                    this.specName.push(this.ss[0][0]);
+                    this.specName.push(this.ss[1][0]);
+                }
+
+
+
+
+            },
+            handleAvatarSuccess(res, file) {
+                for(var i=0;i<this.pojo.skuList.length;i++){
+                    if(this.pojo.skuList[i].spec==this.clickSpec){
+                        if(!("image" in this.pojo.skuList[i])){
+                            this.pojo.skuList[i].image = file.response;
+                        }
+                        if(!("images" in this.pojo.skuList[i])){
+                            this.pojo.skuList[i].images = file.response + ","
+                        }else{
+                            this.pojo.skuList[i].images = this.pojo.skuList[i].images + file.response + ","
+                        }
+
+                    }
+                }
+            },
+            beforeAvatarUpload(file) {
+//                const isJPG = file.type === 'image/jpeg';
+                const isLt512kb = file.size / 1024 / 512 < 1;
+
+                /* if (!isJPG) {
+                     this.$message.error('上传头像图片只能是 JPG 格式!');
+                 }*/
+                if (!isLt512kb) {
+                    this.$message.error('上传头像图片大小不能超过 512kb!');
+                }
+                return /*isJPG && */isLt512kb;
+            },
+            changeClickSpec(spec){
+                this.clickSpec = spec;
+            }
+
+        }
+    });
+</script>
+</html>

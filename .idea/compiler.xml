@@ -15,7 +15,10 @@
         <module name="taotao_service_business" />
         <module name="taotao_service_config" />
         <module name="taotao_service_goods" />
+        <module name="taotao_service_index" />
         <module name="taotao_service_order" />
+        <module name="taotao_service_page" />
+        <module name="taotao_service_sms" />
         <module name="taotao_service_system" />
         <module name="taotao_service_user" />
         <module name="taotao_web_manager" />
@@ -23,18 +26,19 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="qingcheng_service_sms" target="1.5" />
       <module name="taotao_common" target="1.5" />
       <module name="taotao_common_service" target="1.5" />
       <module name="taotao_common_web" target="1.5" />
-      <module name="taotao_ElasticSearch" target="1.5" />
       <module name="taotao_interface" target="1.5" />
       <module name="taotao_parent" target="1.5" />
       <module name="taotao_pojo" target="1.5" />
       <module name="taotao_service_business" target="1.5" />
       <module name="taotao_service_config" target="1.5" />
       <module name="taotao_service_goods" target="1.5" />
+      <module name="taotao_service_index" target="1.5" />
       <module name="taotao_service_order" target="1.8" />
+      <module name="taotao_service_page" target="1.5" />
+      <module name="taotao_service_sms" target="1.5" />
       <module name="taotao_service_system" target="1.5" />
       <module name="taotao_service_user" target="1.5" />
       <module name="taotao_web_manager" target="1.5" />

@@ -25,6 +25,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
 import java.io.IOException;
@@ -209,9 +210,10 @@ public class SkuServiceImpl implements SkuService {
 
     @Autowired
     private RedisTemplate redisTemplate;
-
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
     public void saveAllPriceToRedis() {
-        if(!redisTemplate.hasKey(CacheKey.SKU_PRICE)){
+        if(!redisTemplate.hasKey(String.valueOf(CacheKey.SKU_PRICE))){
             List<Sku> skuList = skuMapper.selectAll();
             for(Sku sku:skuList){
                 if("1".equals(sku.getStatus())){
