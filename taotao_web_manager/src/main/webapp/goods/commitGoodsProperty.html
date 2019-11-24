@@ -83,7 +83,7 @@
     .tableBody {
       margin: 0px auto;
       width: 70%;
-      height: 1000px;
+
       border: 1px solid #EEE9E9;
       padding-top: 15px;
     }
@@ -119,6 +119,7 @@
       border: 1px solid #E4E4E4;
       margin-left: 120px;
       margin-top: 25px;
+      margin-right: 120px;
     }
 
     .starDiv {
@@ -172,7 +173,8 @@
     }
 
     .tableDiv {
-      margin-left: 70px;
+      margin-top: 50px;
+      margin-left: 0px;
     }
 
     .star {
@@ -180,6 +182,31 @@
       display: inline-block;
     }
 
+    .imageDiv {
+      width:90%;
+      margin: auto;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      background-color: #F9FAFC;
+      border: 1px solid #E4E4E4;
+
+    }
+
+    .image {
+      display: inline-block;
+      margin-left: 20px;
+      width: 122px;
+      height: 140px;
+    }
+
+    .image img {
+      width: 120px;
+      height: 120px;
+    }
+
+    .image a {
+      font-size: 12px;
+    }
 
 
   </style>
@@ -241,6 +268,7 @@
               <th width="100px" v-for="item in specName">{{item}}</th>
               <th width="80px"><p class="star">*</p>销售价格</th>
               <th width="80px"><p class="star">*</p>商品库存</th>
+              <th width="80px"><p class="star">*</p>重量</th>
               <th width="100px"><p class="star">*</p>库存预警值</th>
               <th  width="130px">SKU编号</th>
               <th width="110px">操作</th>
@@ -254,13 +282,15 @@
                   <el-input v-model="sku.num"></el-input>
                 </td>
                 <td>
+                  <el-input v-model="sku.weight"></el-input>
+                </td>
+                <td>
                   <el-input v-model="sku.alertNum"></el-input>
                 </td>
                 <td>
                   <el-input v-model="sku.sn"></el-input>
                 </td>
                 <td>
-                  <a>删除</a>&nbsp;&nbsp;
                   <el-upload
                           class="upload-demo"
                           action="/upload/oss.do"
@@ -269,7 +299,7 @@
                           :before-upload="beforeAvatarUpload"
                           :data="data1"
                   >
-                    <el-button size="small" type="primary"  @click="changeClickSpec(sku.spec)">点击上传</el-button>
+                    <el-button size="small" type="primary"  @click="changeClickSpec(sku.spec)">上传图片</el-button>
                   </el-upload>
                 </td>
               </tr>
@@ -279,8 +309,88 @@
             </div>-->
           </table>
         </div>
+
+        <div class="imageDiv">
+          <div style="width: 100%;height: 20px;background-color: #F9FAFC"></div>
+          <div class="image" v-for="imageUrl in imageList">
+            <img :src="imageUrl" ><br>
+            <a v-if="imageUrl==image" style="color: red">商品主图</a>
+            <a v-if="imageUrl!=image" style="cursor: pointer" @click="setImage(imageUrl)">设为主图</a>&nbsp;&nbsp;
+            <a style="cursor: pointer" @click="delImage(imageUrl)">删除图片</a>
+          </div>
+          <div style="margin-top: 20px;margin-bottom: 20px">
+            <el-upload
+                  class="upload-demo"
+                  action="/upload/oss.do"
+                  :show-file-list="false"
+                  :on-success="handleAvatarSuccess2"
+                  :before-upload="beforeAvatarUpload"
+                  :data="data1"
+                  style="display: inline-block;margin-left: 30px"
+          >
+            <el-button size="small" type="primary" >上传图片</el-button>
+          </el-upload>
+
+            <el-button size="small" type="primary"  style="margin-left: 20px" @click="openImageStore(1)">从图片库选择</el-button>
+        </div>
+        </div>
+
+
       </div>
     </div>
+    <div style="width: 100%;height: 50px"></div>
+    <div id="editor" >
+
+    </div>
+    <div style="width: 100%;height: 20px"></div>
+    <el-button size="small" type="primary"  @click="getHtml">保存商品详情</el-button>
+    <el-button size="small" type="primary"  @click="openImageStore(2)">从图片库插入详情图片</el-button>
+    <div style="width: 100%;height: 100px"></div>
+    <el-button size="small" type="primary"  style="margin-left: 300px;display: inline-block" @click="back">上一步，填写商品信息</el-button>
+    <el-button size="small" type="primary"  style="margin-left: 20px;display: inline-block" @click="save">提交审核</el-button>
+    <div style="width: 100%;height: 40px"></div>
+  </div>
+
+
+
+
+
+
+  <!-- 图片库-->
+  <div>
+    <!--弹出窗口-->
+    <el-dialog title="从图库选择" :visible.sync="formVisible"   >
+      <el-select v-model="albumId" placeholder="请选择" @blur="findAlbumList">
+        <el-option
+                v-for="album in albumList"
+                :key="album.id"
+                :label="album.title"
+                :value="album.id">
+        </el-option>
+      </el-select>
+      <div style="margin-top: 20px">
+        <el-checkbox-group v-model="checkList">
+          <div class="image" v-for="imageUrl in goodsStoreList">
+            <img :src="imageUrl" ><br>
+            <el-checkbox :label="imageUrl">选择</el-checkbox>
+          </div>
+        </el-checkbox-group>
+      </div>
+      <div style="height: 20px;width: 100%"></div>
+      <el-pagination
+
+              @size-change="findAlbumList"
+              @current-change="findAlbumList"
+              :current-page.sync="currentPage"
+              :page-sizes="[4, 8, 12]"
+              :page-size.sync="pageSizes"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total">
+      </el-pagination>
+      <div style="height: 20px;width: 100%"></div>
+      <el-button size="small" type="primary"  @click="saveData">保存</el-button>
+      <el-button size="small" type="primary"  @click="formVisible=false">关闭</el-button>
+    </el-dialog>
   </div>
 </div>
 </body>
@@ -288,7 +398,12 @@
 <script src="/js/axios.js"></script>
 <script src="/js/elementui.js"></script>
 <script src="/js/util.js"></script>
+<script type="text/javascript" src="/js/wangEditor.min.js"></script>
+<script type="text/javascript">
+
+</script>
 <script>
+    var editor;
     new Vue({
         el: '#app',
         data() {
@@ -308,8 +423,28 @@
                 data1: {
                     "imageType": "GoodsImage"
                 },
+                imageList:[],
+                image:'',
+                goodsStoreList:[],
+                checkList:[],
+                albumList:[],
+                albumId:0,
+                formVisible: false,
+                currentPage: 1,
+                total: 10,
+                pageSizes: 8,
+                html:'',
+                flag:1,
 
             }
+        },
+
+        mounted:function(){
+            var E = window.wangEditor
+            editor = new E('#editor')
+            // 或者 var editor = new E( document.getElementById('editor') )
+            editor.customConfig.zIndex = 1
+            editor.create()
         },
         created() {
             this.uuid = getQueryString("uuid");
@@ -328,13 +463,19 @@
 
             },
             save(){
-                //保存数据到redis
-
+                //提交数据
+                axios.post(`/spu/save.do`,this.pojo).then(response=>{
+                    if(response.data.code==0){
+                        location.href = `spu.html`
+                    }else{
+                        alert(response.data.message)
+                    }
+                })
 
 
             },
             back(){
-                location.href = 'commitGoodsInfor.html';
+                location.href = 'commitGoodsInfor.html?uuid='+this.uuid;
             },
             findSpec(){
                 axios.get(`/spec/findSpecByTemplateId.do?templateId=${this.templateId}`).then(response=>{
@@ -404,6 +545,15 @@
                     }
                 }
             },
+            handleAvatarSuccess2(res, file) {
+                this.imageList.push(file.response)
+                if(!("images" in this.pojo.skuList[i])){
+                    this.pojo.spu.images = file.response + ","
+                }else{
+                    this.pojo.spu.images = this.pojo.images + file.response + ","
+                }
+
+            },
             beforeAvatarUpload(file) {
 //                const isJPG = file.type === 'image/jpeg';
                 const isLt512kb = file.size / 1024 / 512 < 1;
@@ -418,7 +568,67 @@
             },
             changeClickSpec(spec){
                 this.clickSpec = spec;
+            },
+            delImage(imageUrl){
+                for(var i=0;i<this.imageList.length;i++){
+                    if(imageUrl==this.imageList[i]){
+                        this.imageList.splice(i,i);
+                    }
+                }
+                this.pojo.spu.images = '';
+                for(var i=0;i<this.imageList.length;i++){
+                    this.pojo.spu.images = this.pojo.images + this.imageList[i] +","
+                }
+            },
+            setImage(imageUrl){
+                this.image = imageUrl;
+                this.pojo.spu.image = imageUrl;
+            },
+            openImageStore(flag){
+                this.formVisible = true;
+                this.flag = flag;
+                //加载albumId
+                axios.get(`/album/findAll.do`).then(response=>{
+                    this.albumList = response.data;
+                })
+            },
+            findAlbumList(){
+                axios.get(`/album/item/findPage.do?id=${this.albumId}&page=${this.currentPage}&size=${this.pageSizes}`).then(response=>{
+                    this.goodsStoreList = response.data.rows;
+                    this.total  = response.data.total;
+                })
+            },
+            saveData(){
+                if(this.flag==1){
+                    this.saveImage()
+                }
+                if(this.flag==2){
+                    this.saveHtmlImage()
+                }
+            },
+            saveImage(){
+                for(var i=0;i<this.checkList.length;i++){
+                    this.imageList.push(this.checkList[i])
+                }
+
+                this.pojo.spu.images = '';
+                for(var i=0;i<this.imageList.length;i++){
+                    this.pojo.spu.images = this.pojo.images + this.imageList[i] +","
+                }
+
+                this.formVisible = false;
+            },
+            getHtml(){
+                this.html = editor.txt.html();
+                this.pojo.spu.introduction = this.html;
+            },
+            saveHtmlImage(){
+                for(var i=0;i<this.checkList.length;i++){
+                    editor.txt.append(`<p><img src="${this.checkList[i]}"></p>`)
+                }
+                this.formVisible = false;
             }
+
 
         }
     });

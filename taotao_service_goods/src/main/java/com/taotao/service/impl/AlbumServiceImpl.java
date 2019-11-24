@@ -150,9 +150,15 @@ public class AlbumServiceImpl implements AlbumService {
         for(String imgUrl:imageUrlsArray){
             imgList.add(imgUrl);
         }
-        PageHelper.startPage(page,size);
-        Page<String> imgs = (Page<String>)imgList;
-        return new PageResult<String>(imgs.getTotal(),imgs.getResult());
+        //分页数据总数
+        long total = imgList.size();
+        //最大分页数量
+        long totalPage = 0==total%size?(total==0?1:(total<=size?1:total/size)):total/size+1;
+        //当前页第一个数据
+        int start = (page-1)*size;
+        List<String> imgPageList = imgList.subList(start,page==totalPage?(int)total:start+size);
+
+        return new PageResult<String>(total,imgPageList);
     }
 
     public void addItem(String imgUrl,Long id) {
