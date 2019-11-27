@@ -68,5 +68,10 @@ public class SkuController {
         return skuService.findBySpuId(id);
     }
 
+    @GetMapping("findPrice")
+    public Integer findPrice(String id){
+        return skuService.findPrice(id);
+    }
+
 
 }

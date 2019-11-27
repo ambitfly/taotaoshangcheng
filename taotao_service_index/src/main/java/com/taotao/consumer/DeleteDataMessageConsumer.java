@@ -36,12 +36,6 @@ public class DeleteDataMessageConsumer implements MessageListener{
             System.out.println("deleteStatus:"+bulkResponse.status());
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            try {
-                restHighLevelClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
 

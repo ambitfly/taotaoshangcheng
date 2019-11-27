@@ -67,13 +67,6 @@ public class AddDataMessageConsumer implements MessageListener {
             System.out.println("addStatus:"+status);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                restHighLevelClient.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
     }
