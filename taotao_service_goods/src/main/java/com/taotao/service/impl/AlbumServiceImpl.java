@@ -179,7 +179,7 @@ public class AlbumServiceImpl implements AlbumService {
     public void deleteItem(String imgUrl, Long id) {
         Album album = findById(id);
         String imgUrls = album.getImageItems();
-        String temp1 = imgUrls.replace(imgUrl+",","");
+        /*String temp1 = imgUrls.replace(imgUrl+",","");
         if(temp1.equals(imgUrls)){
             String temp2 = imgUrls.replace(","+imgUrl,"");
             if(temp2.equals(imgUrls)&&imgUrls.equals(imgUrls.replace(",",""))){
@@ -189,8 +189,19 @@ public class AlbumServiceImpl implements AlbumService {
             }
         }else{
             imgUrls = temp1;
+        }*/
+        String[] imgStrings = imgUrls.split(",");
+        String imgNewUrls = "";
+        for(String imageUrl:imgStrings){
+            if(imageUrl!=imgUrl){
+                if("".equals(imgNewUrls)){
+                    imgNewUrls = imageUrl;
+                }else{
+                    imgNewUrls = imgNewUrls + "," + imageUrl;
+                 }
+            }
         }
-        album.setImageItems(imgUrls);
+        album.setImageItems(imgNewUrls);
         update(album);
     }
 
