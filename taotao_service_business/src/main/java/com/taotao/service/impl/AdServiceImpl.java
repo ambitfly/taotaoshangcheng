@@ -21,6 +21,8 @@ public class AdServiceImpl implements AdService {
 
     @Autowired
     private AdMapper adMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 返回全部记录
@@ -153,9 +155,6 @@ public class AdServiceImpl implements AdService {
     public List<Ad> findByPosition(String position) {
         return (List<Ad>) redisTemplate.boundHashOps(CacheKey.AD).get(position);
     }
-
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     public void saveAdToRedisByPositon(String position) {
         Example example = new Example(Ad.class);

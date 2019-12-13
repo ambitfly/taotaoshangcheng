@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/taotao_common/taotao_common.iml" filepath="$PROJECT_DIR$/taotao_common/taotao_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_common_cas/taotao_common_cas.iml" filepath="$PROJECT_DIR$/taotao_common_cas/taotao_common_cas.iml" />
       <module fileurl="file://$PROJECT_DIR$/taotao_common_service/taotao_common_service.iml" filepath="$PROJECT_DIR$/taotao_common_service/taotao_common_service.iml" />
       <module fileurl="file://$PROJECT_DIR$/taotao_common_web/taotao_common_web.iml" filepath="$PROJECT_DIR$/taotao_common_web/taotao_common_web.iml" />
       <module fileurl="file://$PROJECT_DIR$/taotao_interface/taotao_interface.iml" filepath="$PROJECT_DIR$/taotao_interface/taotao_interface.iml" />
@@ -17,6 +18,7 @@
       <module fileurl="file://$PROJECT_DIR$/taotao_service_sms/taotao_service_sms.iml" filepath="$PROJECT_DIR$/taotao_service_sms/taotao_service_sms.iml" />
       <module fileurl="file://$PROJECT_DIR$/taotao_service_system/taotao_service_system.iml" filepath="$PROJECT_DIR$/taotao_service_system/taotao_service_system.iml" />
       <module fileurl="file://$PROJECT_DIR$/taotao_service_user/taotao_service_user.iml" filepath="$PROJECT_DIR$/taotao_service_user/taotao_service_user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taotao_web_center/taotao_web_center.iml" filepath="$PROJECT_DIR$/taotao_web_center/taotao_web_center.iml" />
       <module fileurl="file://$PROJECT_DIR$/taotao_web_manager/taotao_web_manager.iml" filepath="$PROJECT_DIR$/taotao_web_manager/taotao_web_manager.iml" />
       <module fileurl="file://$PROJECT_DIR$/taotao_web_portal/taotao_web_portal.iml" filepath="$PROJECT_DIR$/taotao_web_portal/taotao_web_portal.iml" />
     </modules>

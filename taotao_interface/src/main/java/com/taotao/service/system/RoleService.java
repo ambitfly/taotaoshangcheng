@@ -1,8 +1,10 @@
 package com.taotao.service.system;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.system.Role;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * role业务逻辑层
@@ -10,29 +12,29 @@ import java.util.*;
 public interface RoleService {
 
 
-    public List<Role> findAll();
+    List<Role> findAll();
 
 
-    public PageResult<Role> findPage(int page, int size);
+    PageResult<Role> findPage(int page, int size);
 
 
-    public List<Role> findList(Map<String,Object> searchMap);
+    List<Role> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Role> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Role> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Role findById(Integer id);
+    Role findById(Integer id);
 
-    public void add(Role role);
-
-
-    public void update(Role role);
+    void add(Role role);
 
 
-    public void delete(Integer id);
+    void update(Role role);
 
-    public void saveRoleResource(Integer roleId,List<Integer> menusIds);
 
-    public List<Integer> findResourceIdsByRoleId(Integer roleId);
+    void delete(Integer id);
+
+    void saveRoleResource(Integer roleId, List<Integer> menusIds);
+
+    List<Integer> findResourceIdsByRoleId(Integer roleId);
 }

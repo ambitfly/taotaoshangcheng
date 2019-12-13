@@ -1,8 +1,10 @@
 package com.taotao.service.goods;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Pref;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * pref业务逻辑层
@@ -10,26 +12,26 @@ import java.util.*;
 public interface PrefService {
 
 
-    public List<Pref> findAll();
+    List<Pref> findAll();
 
 
-    public PageResult<Pref> findPage(int page, int size);
+    PageResult<Pref> findPage(int page, int size);
 
 
-    public List<Pref> findList(Map<String,Object> searchMap);
+    List<Pref> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Pref> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Pref> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Pref findById(Integer id);
+    Pref findById(Integer id);
 
-    public void add(Pref pref);
-
-
-    public void update(Pref pref);
+    void add(Pref pref);
 
 
-    public void delete(Integer id);
+    void update(Pref pref);
+
+
+    void delete(Integer id);
 
 }

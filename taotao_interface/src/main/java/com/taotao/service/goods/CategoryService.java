@@ -1,8 +1,10 @@
 package com.taotao.service.goods;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Category;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * category业务逻辑层
@@ -10,40 +12,40 @@ import java.util.*;
 public interface CategoryService {
 
 
-    public List<Category> findAll();
+    List<Category> findAll();
 
 
-    public PageResult<Category> findPage(int page, int size);
+    PageResult<Category> findPage(int page, int size);
 
 
-    public List<Category> findList(Map<String,Object> searchMap);
+    List<Category> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Category> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Category> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Category findById(Integer id);
+    Category findById(Integer id);
 
-    public void add(Category category);
-
-
-    public void update(Category category);
+    void add(Category category);
 
 
-    public void delete(Integer id);
+    void update(Category category);
 
-    public List<Category> findAll1Category();
 
-    public  List<Map> findCategoryTree();
+    void delete(Integer id);
 
-    public void saveCategoryTreeToRedis();
+    List<Category> findAll1Category();
+
+    List<Map> findCategoryTree();
+
+    void saveCategoryTreeToRedis();
 
     /**
      * 通过父级分类查询商品分类
      * @param id   父级id
      * @return
      */
-    public List<Category> findByParentId(Integer id);
+    List<Category> findByParentId(Integer id);
 
-    public String[] findNameByIds(Integer[] ids);
+    String[] findNameByIds(Integer[] ids);
 }

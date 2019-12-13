@@ -1922,16 +1922,16 @@
 							<div class="fl title">
 								<div class="control-group">
 									<div class="controls">
-										<input autocomplete="off" type="text" value="1" minnum="1" class="itxt" />
-										<a href="javascript:void(0)" class="increment plus">+</a>
-										<a href="javascript:void(0)" class="increment mins">-</a>
+                                        <input autocomplete="off" type="text" v-model="num" minnum="1" class="itxt"/>
+                                        <a class="increment plus" @click="addNum(1)">+</a>
+                                        <a class="increment mins" @click="addNum(-1)">-</a>
 									</div>
 								</div>
 							</div>
 							<div class="fl">
 								<ul class="btn-choose unstyled">
 									<li>
-										<a href="cart.html" target="_blank" class="sui-btn  btn-danger addshopcar">加入购物车</a>
+                                        <a target="_blank" class="sui-btn  btn-danger addshopcar" @click="toCartList()">加入购物车</a>
 									</li>
 								</ul>
 							</div>
@@ -2189,22 +2189,22 @@
 									<div class="com-tab-type">
 										<ul class="type">
 											<li class="current">
-												<a href="javascript:;">全部评价(123456)</a>
+                                                <a href="javascript:">全部评价(123456)</a>
 											</li>
 											<li>
-												<a href="javascript:;">晒图(500)</a>
+                                                <a href="javascript:">晒图(500)</a>
 											</li>
 											<li>
-												<a href="javascript:;">追评(500)</a>
+                                                <a href="javascript:">追评(500)</a>
 											</li>
 											<li>
-												<a href="javascript:;">好评(500)</a>
+                                                <a href="javascript:">好评(500)</a>
 											</li>
 											<li>
-												<a href="javascript:;">中评(500)</a>
+                                                <a href="javascript:">中评(500)</a>
 											</li>
 											<li>
-												<a href="javascript:;">差评(500)</a>
+                                                <a href="javascript:">差评(500)</a>
 											</li>
 										</ul>
 										<div class="content">
@@ -2778,15 +2778,27 @@
         data(){
             return {
                 skuId:/*[[${sku.id}]]*/,
-                price:0
+                price: 0,
+                num: 1
             }
         },
         created(){
-//读取价格
+            //读取价格
             axios.get('http://localhost:9102/sku/findPrice.do?id='+this.skuId).then(response=>{
             	this.price=(response.data/100).toFixed(2);
 			})
-		}
+        },
+        methods: {
+            addNum(num) {
+                this.num = this.num + num;
+                if (this.num <= 0) {
+                    this.num = 1
+                }
+            },
+            toCartList() {
+                location.href = `http://localhost:9102/cart/buy.do?skuId=${this.skuId}&num=${this.num}`
+            }
+        }
 	});
 </script>
 

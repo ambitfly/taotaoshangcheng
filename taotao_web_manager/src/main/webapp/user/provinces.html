@@ -156,7 +156,7 @@
                 });
             },
             edit (provinceid){
-                this.formVisible = true // 打开窗口
+                this.formVisible = true; // 打开窗口
                 // 调用查询
                 axios.get(`/provinces/findById.do?provinceid=${provinceid}`).then(response => {
                     this.pojo = response.data;

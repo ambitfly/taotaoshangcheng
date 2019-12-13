@@ -13,10 +13,10 @@ import java.util.Map;
 public class LoginController {
 
     @GetMapping("/name")
-    public Map<String,Object> showName(){
+    public Map<String, Object> showName() {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        Map<String,Object> map = new HashMap();
-        map.put("name",name);
+        Map<String, Object> map = new HashMap();
+        map.put("name", name);
         return map;
     }
 }

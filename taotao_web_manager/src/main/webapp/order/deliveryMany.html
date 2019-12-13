@@ -76,10 +76,12 @@
             padding-top: 14px;
             color: #A3A3A3;
         }
-        .tableHead span{
+
+        .tableHead span {
             display: inline-block;
             margin-left: 15px;
         }
+
         .tableBody {
             margin: 0px auto;
             width: 70%;
@@ -98,7 +100,6 @@
             margin-bottom: 17px;
             margin-left: 52px;
         }
-
 
 
     </style>
@@ -126,7 +127,7 @@
     <div class="tableBody">
 
         <div class="app-container">
-            <el-form :model="orderList" >
+            <el-form :model="orderList">
                 <el-table :data="orderList" :header-cell-style="{background:'#F9FAFC'}" :row-style="{height:0+'px'}"
                           :cell-style="{padding:0+'px'}">
                     <el-table-column prop="id" label="订单编号" width="180" align='center' height="50"></el-table-column>
@@ -144,7 +145,7 @@
                     </el-table-column>
                     <el-table-column label="物流单号">
                         <template slot-scope="scope">
-                            <el-form-item  >
+                            <el-form-item>
                                 <el-input v-model="scope.row.shippingCode" size="small"></el-input>
                             </el-form-item>
                         </template>
@@ -152,7 +153,7 @@
                 </el-table>
             </el-form>
             <div style="margin-top: 13px">
-                <el-button  size="small" style="margin-left: 410px" @click="backHtml">取消</el-button>
+                <el-button size="small" style="margin-left: 410px" @click="backHtml">取消</el-button>
                 <el-button type="primary" size="small" style="margin-left: 20px" @click="submitDelivery">确定</el-button>
             </div>
         </div>
@@ -169,17 +170,17 @@
         el: '#app',
         data() {
             return {
-                id:'',
-                orderList:[]
+                id: '',
+                orderList: []
             }
         },
         created() {
-           var id = location.href;
-           var index=id.lastIndexOf("?");
-           this.id = id.substring(index+1,id.length);
-           axios.get(`/order/findByIds.do?${id}`).then(response=>{
-               this.orderList = response.data;
-           });
+            var id = location.href;
+            var index = id.lastIndexOf("?");
+            this.id = id.substring(index + 1, id.length);
+            axios.get(`/order/findByIds.do?${id}`).then(response => {
+                this.orderList = response.data;
+            });
         },
         methods: {
             refresh() {
@@ -195,14 +196,14 @@
                 else {
                 }
             },
-            backHtml(){
+            backHtml() {
                 location.href = 'order.html';
             },
-            submitDelivery(){
-                axios.post(`/order/deliveryMany.do`,this.orderList).then(response=>{
-                    if(response.data.code==0){
+            submitDelivery() {
+                axios.post(`/order/deliveryMany.do`, this.orderList).then(response => {
+                    if (response.data.code == 0) {
                         location.href = 'order.html';
-                    }else{
+                    } else {
                         this.$message.error(response.data.message);
                     }
                 });

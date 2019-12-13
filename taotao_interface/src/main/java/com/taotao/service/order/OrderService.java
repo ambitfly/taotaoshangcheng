@@ -1,9 +1,11 @@
 package com.taotao.service.order;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.order.Order;
 import com.taotao.pojo.order.OrderOrderItem;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * order业务逻辑层
@@ -11,34 +13,34 @@ import java.util.*;
 public interface OrderService {
 
 
-    public List<Order> findAll();
+    List<Order> findAll();
 
 
-    public PageResult<Order> findPage(int page, int size);
+    PageResult<Order> findPage(int page, int size);
 
 
-    public List<Order> findList(Map<String,Object> searchMap);
+    List<Order> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Order> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Order> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Order findById(String id);
+    Order findById(String id);
 
-    public void add(Order order);
-
-
-    public void update(Order order);
+    void add(Order order);
 
 
-    public void delete(String id);
+    void update(Order order);
 
-    public OrderOrderItem findOrderOrderItemById(String id);
 
-    public List<Order> findByIds(String[] ids);
+    void delete(String id);
 
-    public void deliveryMany(List<Order> orders);
+    OrderOrderItem findOrderOrderItemById(String id);
 
-    public void orderTimeOutLogic();
+    List<Order> findByIds(String[] ids);
+
+    void deliveryMany(List<Order> orders);
+
+    void orderTimeOutLogic();
 
 }

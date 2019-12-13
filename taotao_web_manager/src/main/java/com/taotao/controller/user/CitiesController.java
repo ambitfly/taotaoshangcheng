@@ -7,7 +7,8 @@ import com.taotao.pojo.user.Cities;
 import com.taotao.service.user.CitiesService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/cities")

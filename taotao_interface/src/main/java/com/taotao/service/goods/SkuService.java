@@ -1,8 +1,10 @@
 package com.taotao.service.goods;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Sku;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * sku业务逻辑层
@@ -10,33 +12,33 @@ import java.util.*;
 public interface SkuService {
 
 
-    public List<Sku> findAll();
+    List<Sku> findAll();
 
 
-    public PageResult<Sku> findPage(int page, int size);
+    PageResult<Sku> findPage(int page, int size);
 
 
-    public List<Sku> findList(Map<String,Object> searchMap);
+    List<Sku> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Sku> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Sku> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Sku findById(String id);
+    Sku findById(String id);
 
-    public void add(Sku sku);
-
-
-    public void update(Sku sku);
+    void add(Sku sku);
 
 
-    public void delete(String id);
+    void update(Sku sku);
 
-    public List<Sku> findBySpuId(String id);
 
-    public void saveAllPriceToRedis();
+    void delete(String id);
 
-    public Integer findPrice(String id);
+    List<Sku> findBySpuId(String id);
+
+    void saveAllPriceToRedis();
+
+    Integer findPrice(String id);
 
 
 

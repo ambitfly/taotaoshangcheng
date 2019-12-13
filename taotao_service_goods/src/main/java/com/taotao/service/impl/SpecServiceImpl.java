@@ -1,4 +1,5 @@
 package com.taotao.service.impl;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -8,7 +9,6 @@ import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Spec;
 import com.taotao.pojo.goods.Template;
 import com.taotao.service.goods.SpecService;
-import com.taotao.service.goods.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;

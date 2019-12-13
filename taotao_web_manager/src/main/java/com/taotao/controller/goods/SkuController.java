@@ -3,12 +3,12 @@ package com.taotao.controller.goods;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.taotao.entity.PageResult;
 import com.taotao.entity.Result;
-import com.taotao.pojo.goods.Category;
 import com.taotao.pojo.goods.Sku;
 import com.taotao.service.goods.SkuService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sku")

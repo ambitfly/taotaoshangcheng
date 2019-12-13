@@ -25,4 +25,5 @@
         <property name="connectionFactory" ref="jedisConnectionFactory" />
     </bean>
 
+    <bean id="idWork" class="com.taotao.util.IdWorker"></bean>
 </beans>  

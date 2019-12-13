@@ -176,7 +176,7 @@
             }
         },
         created() {
-            this.albumId = getQueryString('id')
+            this.albumId = getQueryString('id');
             this.fetchData();
         },
         methods: {
@@ -187,7 +187,7 @@
                 });
             },
             add() {
-                this.title = "上传图片"
+                this.title = "上传图片";
                 this.imageString = "";
                 this.imageUrl = "";
                 this.formVisible = true;
@@ -213,7 +213,7 @@
             removeAlbum(item) {
                 axios.get(`/album/findAll.do`).then(response => {
                     this.pojos = response.data;
-                })
+                });
                 this.imageString = item;
                 this.formVisible1 = true;
             },

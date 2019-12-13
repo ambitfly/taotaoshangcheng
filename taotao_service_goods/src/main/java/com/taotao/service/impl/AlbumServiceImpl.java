@@ -7,14 +7,11 @@ import com.taotao.dao.AlbumMapper;
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Album;
 import com.taotao.service.goods.AlbumService;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

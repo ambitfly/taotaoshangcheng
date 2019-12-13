@@ -228,7 +228,7 @@
                 });
             },
             edit (username){
-                this.formVisible = true // 打开窗口
+                this.formVisible = true; // 打开窗口
                 // 调用查询
                 axios.get(`/user/findById.do?username=${username}`).then(response => {
                     this.pojo = response.data;

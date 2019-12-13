@@ -1,8 +1,10 @@
 package com.taotao.service.order;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.order.OrderConfig;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * orderConfig业务逻辑层
@@ -10,26 +12,26 @@ import java.util.*;
 public interface OrderConfigService {
 
 
-    public List<OrderConfig> findAll();
+    List<OrderConfig> findAll();
 
 
-    public PageResult<OrderConfig> findPage(int page, int size);
+    PageResult<OrderConfig> findPage(int page, int size);
 
 
-    public List<OrderConfig> findList(Map<String,Object> searchMap);
+    List<OrderConfig> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<OrderConfig> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<OrderConfig> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public OrderConfig findById(Integer id);
+    OrderConfig findById(Integer id);
 
-    public void add(OrderConfig orderConfig);
-
-
-    public void update(OrderConfig orderConfig);
+    void add(OrderConfig orderConfig);
 
 
-    public void delete(Integer id);
+    void update(OrderConfig orderConfig);
+
+
+    void delete(Integer id);
 
 }

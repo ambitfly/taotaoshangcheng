@@ -261,30 +261,30 @@
         </div>
 
 
-
         <div class="orderMessage">
             <span>
                 <img src="../img/002order.png" width="18">
                  商品信息
             </span>
 
-            <el-table :data="orderOrderItem.orderItems" border style="width: 90%;margin-left: 52px" border="true" :header-cell-style="{background:'#F9FAFC'}">
+            <el-table :data="orderOrderItem.orderItems" border style="width: 90%;margin-left: 52px" border="true"
+                      :header-cell-style="{background:'#F9FAFC'}">
 
-                <el-table-column label="商品图片"  align='center'style="background-color: #F9FAFC;">
+                <el-table-column label="商品图片" align='center' style="background-color: #F9FAFC;">
                     <template slot-scope="scope">
                         <img src="scope.row.image" width="80px" height="50px">
                     </template>
                 </el-table-column>
-                <el-table-column  prop="name" label="商品名称" width="260px" align='center'></el-table-column>
-                <el-table-column prop="createTime" label="价格/货号"  align='center'>
+                <el-table-column prop="name" label="商品名称" width="260px" align='center'></el-table-column>
+                <el-table-column prop="createTime" label="价格/货号" align='center'>
                     <template slot-scope="scope">
                         <p>{{scope.row.money/100}}</p>
                     </template>
                 </el-table-column>
-                <el-table-column prop="createTime" label="属性"  align='center'></el-table-column>
-                <el-table-column prop="createTime" label="数量"  align='center'></el-table-column>
+                <el-table-column prop="createTime" label="属性" align='center'></el-table-column>
+                <el-table-column prop="createTime" label="数量" align='center'></el-table-column>
                 <el-table-column prop="createTime" label="库存" align='center'></el-table-column>
-                <el-table-column prop="createTime" label="小计"  align='center'></el-table-column>
+                <el-table-column prop="createTime" label="小计" align='center'></el-table-column>
             </el-table>
 
 
@@ -342,10 +342,10 @@
         data() {
             return {
                 orderOrderItem: {},
-                skuMap:[],
-                spuMap:[],
-                brandMap:{},
-                ids:0,
+                skuMap: [],
+                spuMap: [],
+                brandMap: {},
+                ids: 0,
             }
         },
         created() {
@@ -353,7 +353,7 @@
             axios.get(`/order/findOrderOrderItemById.do?id=${id}`).then(response => {
                 this.orderOrderItem = response.data;
                 var orderItems = response.data.orderItems;
-                for(var i=0;i<orderItems.length;i++) {
+                for (var i = 0; i < orderItems.length; i++) {
                     axios.get(`/spu/findById.do?id=${orderItems[i].spuId}`).then(response1 => {
                         this.spuMap.key = orderItems[i].spuId;
                         this.spuMap.value = response1.data;
@@ -387,7 +387,6 @@
                     this.skuMap.value = response.data;
                 });
             }*/
-
 
 
         },

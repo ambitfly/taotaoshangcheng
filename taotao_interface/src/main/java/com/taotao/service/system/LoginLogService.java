@@ -1,8 +1,10 @@
 package com.taotao.service.system;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.system.LoginLog;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * loginLog业务逻辑层
@@ -10,26 +12,26 @@ import java.util.*;
 public interface LoginLogService {
 
 
-    public List<LoginLog> findAll();
+    List<LoginLog> findAll();
 
 
-    public PageResult<LoginLog> findPage(int page, int size);
+    PageResult<LoginLog> findPage(int page, int size);
 
 
-    public List<LoginLog> findList(Map<String,Object> searchMap);
+    List<LoginLog> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<LoginLog> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<LoginLog> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public LoginLog findById(Integer id);
+    LoginLog findById(Integer id);
 
-    public void add(LoginLog loginLog);
-
-
-    public void update(LoginLog loginLog);
+    void add(LoginLog loginLog);
 
 
-    public void delete(Integer id);
+    void update(LoginLog loginLog);
+
+
+    void delete(Integer id);
 
 }

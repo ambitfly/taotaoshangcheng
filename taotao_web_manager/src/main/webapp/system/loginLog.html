@@ -76,10 +76,12 @@
             padding-top: 14px;
             color: #A3A3A3;
         }
-        .tableHead span{
+
+        .tableHead span {
             display: inline-block;
             margin-left: 15px;
         }
+
         .tableBody {
             margin: 0px auto;
             width: 70%;
@@ -98,7 +100,6 @@
             margin-bottom: 17px;
             margin-left: 52px;
         }
-
 
 
     </style>
@@ -126,7 +127,7 @@
     <div class="tableBody">
 
         <div class="app-container">
-                <!--:header-cell-style="{background:'#F9FAFC'}" -->
+            <!--:header-cell-style="{background:'#F9FAFC'}" -->
             <template>
                 <el-table
                         :data="orderList"
@@ -157,16 +158,16 @@
             </template>
 
 
-                <el-pagination
+            <el-pagination
 
-                        @size-change="fetchData"
-                        @current-change="fetchData"
-                        :current-page.sync="currentPage"
-                        :page-sizes="[5, 10, 20, 30]"
-                        :page-size.sync="pageSizes"
-                        layout="total, sizes, prev, pager, next, jumper"
-                        :total="total">
-                </el-pagination>
+                    @size-change="fetchData"
+                    @current-change="fetchData"
+                    :current-page.sync="currentPage"
+                    :page-sizes="[5, 10, 20, 30]"
+                    :page-size.sync="pageSizes"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
 
         </div>
 
@@ -182,7 +183,7 @@
         el: '#app',
         data() {
             return {
-                orderList:[],
+                orderList: [],
                 currentPage: 1,
                 total: 10,
                 pageSizes: 10,
@@ -194,7 +195,7 @@
         },
         methods: {
             fetchData() {
-                axios.get(`/loginLog/findPageByLogin.do?page=${this.currentPage}&size=${this.pageSizes}`).then(response=>{
+                axios.get(`/loginLog/findPageByLogin.do?page=${this.currentPage}&size=${this.pageSizes}`).then(response => {
                     this.orderList = response.data.rows;
                     this.total = response.data.total;
                 });

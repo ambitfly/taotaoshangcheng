@@ -7,7 +7,8 @@ import com.taotao.pojo.system.Resource;
 import com.taotao.service.system.ResourceService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/resource")

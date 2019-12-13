@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service(interfaceClass = CategoryReportService.class)
-public class CategoryReportServiceImpl implements CategoryReportService{
+public class CategoryReportServiceImpl implements CategoryReportService {
     @Autowired
     CategoryReportMapper categoryReportMapper;
 
@@ -22,7 +22,7 @@ public class CategoryReportServiceImpl implements CategoryReportService{
         LocalDate localDate = LocalDate.now().minusDays(1);
         //LocalDate localDate = LocalDate.of(2019,4,15);
         List<CategoryReport> categoryReports = categoryReportMapper.categoryReport(localDate);
-        for(CategoryReport categoryReport:categoryReports){
+        for (CategoryReport categoryReport : categoryReports) {
             categoryReportMapper.insert(categoryReport);
         }
     }

@@ -12,5 +12,5 @@ public interface SpecMapper extends Mapper<Spec> {
     @Select("SELECT `name`,`options` FROM tb_spec WHERE template_id IN( " +
             " SELECT template_id FROM tb_category WHERE `name` = #{categoryName} " +
             ")")
-    public List<Map> findSpecListByCategoryName(@Param("categoryName") String categoryName);
+    List<Map> findSpecListByCategoryName(@Param("categoryName") String categoryName);
 }

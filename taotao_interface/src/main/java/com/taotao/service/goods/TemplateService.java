@@ -1,8 +1,10 @@
 package com.taotao.service.goods;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Template;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * template业务逻辑层
@@ -10,27 +12,27 @@ import java.util.*;
 public interface TemplateService {
 
 
-    public List<Template> findAll();
+    List<Template> findAll();
 
 
-    public PageResult<Template> findPage(int page, int size);
+    PageResult<Template> findPage(int page, int size);
 
 
-    public List<Template> findList(Map<String,Object> searchMap);
+    List<Template> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Template> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Template> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Template findById(Integer id);
+    Template findById(Integer id);
 
-    public void add(Template template);
-
-
-    public void update(Template template);
+    void add(Template template);
 
 
-    public void delete(Integer id);
+    void update(Template template);
 
-    public Map<Integer,String> idReturnName();
+
+    void delete(Integer id);
+
+    Map<Integer, String> idReturnName();
 }

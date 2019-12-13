@@ -176,7 +176,7 @@
         },
         created() {
             this.templateId = getQueryString('id');
-            this.searchMap = {templateId: getQueryString('id')}
+            this.searchMap = {templateId: getQueryString('id')};
             this.fetchData();
         },
         methods: {
@@ -194,7 +194,7 @@
             ,
             save() {
                 // this.pojo.image= this.imageUrl; //如页面有图片上传功能放开注释
-                this.pojo.options = this.pojo.options.replace(/\n/g,",")
+                this.pojo.options = this.pojo.options.replace(/\n/g, ",");
                 axios.post(`/spec/${this.pojo.id == null ? 'add' : 'update'}.do`, this.pojo).then(response => {
                     this.fetchData(); //刷新列表
                     this.formVisible = false;//关闭窗口
@@ -202,7 +202,7 @@
             },
             edit(id) {
                 this.title = "修改";
-                this.formVisible = true // 打开窗口
+                this.formVisible = true; // 打开窗口
                 // 调用查询
                 axios.get(`/spec/findById.do?id=${id}`).then(response => {
                     this.pojo = response.data;

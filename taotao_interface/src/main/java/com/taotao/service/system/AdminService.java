@@ -1,8 +1,11 @@
 package com.taotao.service.system;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.system.Admin;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * admin业务逻辑层
@@ -10,36 +13,38 @@ import java.util.*;
 public interface AdminService {
 
 
-    public List<Admin> findAll();
+    List<Admin> findAll();
 
 
-    public PageResult<Admin> findPage(int page, int size);
+    PageResult<Admin> findPage(int page, int size);
 
 
-    public List<Admin> findList(Map<String,Object> searchMap);
+    List<Admin> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Admin> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Admin> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Admin findById(Integer id);
+    Admin findById(Integer id);
 
-    public void add(Map<String,Object> pojo);
+    void add(Map<String, Object> pojo);
 
 
-    public void update(Map<String,Object> pojo);
+    void update(Map<String, Object> pojo);
 
     void updateIncludeRole(Map<String,Object> pojo);
-    public void delete(Integer id);
 
-    public Date lastLoginTime(String userName);
+    void delete(Integer id);
 
-    public PageResult<Admin> findByRoleId(Integer roleId,int page, int size);
+    Date lastLoginTime(String userName);
+
+    PageResult<Admin> findByRoleId(Integer roleId, int page, int size);
 
     Map<String,Object> loadAdminById(Integer id);
-    public boolean confirmIsExistLoginName(String name);
 
-    public List<String> findResKeysByLoginName(String loginName);
+    boolean confirmIsExistLoginName(String name);
 
-    public void addData();
+    List<String> findResKeysByLoginName(String loginName);
+
+    void addData();
 }

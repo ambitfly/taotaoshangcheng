@@ -7,7 +7,8 @@ import com.taotao.pojo.user.Provinces;
 import com.taotao.service.user.ProvincesService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/provinces")

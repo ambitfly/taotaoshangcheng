@@ -24,6 +24,8 @@
         <module>taotao_service_sms</module>
         <module>taotao_service_page</module>
         <module>taotao_service_index</module>
+        <module>taotao_common_cas</module>
+        <module>taotao_web_center</module>
 
 
     </modules>

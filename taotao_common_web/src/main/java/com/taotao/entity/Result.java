@@ -16,7 +16,7 @@ public class Result implements Serializable {
     }
 
     public Result() {
-        this.code=0;
+        this.code = 0;
         this.message = "执行成功";
     }
 

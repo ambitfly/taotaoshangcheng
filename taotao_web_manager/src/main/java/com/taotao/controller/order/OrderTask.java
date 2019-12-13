@@ -1,13 +1,6 @@
 package com.taotao.controller.order;
 
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.taotao.service.order.CategoryReportService;
-import com.taotao.service.order.OrderService;
-
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 @Component
 public class OrderTask {

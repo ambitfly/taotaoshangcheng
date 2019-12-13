@@ -245,7 +245,7 @@
         created() {
             axios.get(`/role/findAll.do`).then(response=>{
                 this.role = response.data;
-            })
+            });
             this.fetchData();
 
         },

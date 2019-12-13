@@ -1,11 +1,11 @@
 package com.taotao.service.impl;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.taotao.dao.BrandMapper;
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Brand;
-
 import com.taotao.service.goods.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;

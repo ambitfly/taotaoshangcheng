@@ -1,8 +1,10 @@
 package com.taotao.service.user;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.user.Cities;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * cities业务逻辑层
@@ -10,26 +12,26 @@ import java.util.*;
 public interface CitiesService {
 
 
-    public List<Cities> findAll();
+    List<Cities> findAll();
 
 
-    public PageResult<Cities> findPage(int page, int size);
+    PageResult<Cities> findPage(int page, int size);
 
 
-    public List<Cities> findList(Map<String,Object> searchMap);
+    List<Cities> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Cities> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Cities> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Cities findById(String cityid);
+    Cities findById(String cityid);
 
-    public void add(Cities cities);
-
-
-    public void update(Cities cities);
+    void add(Cities cities);
 
 
-    public void delete(String cityid);
+    void update(Cities cities);
+
+
+    void delete(String cityid);
 
 }

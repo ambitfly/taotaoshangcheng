@@ -75,10 +75,12 @@
             padding-top: 14px;
             color: #A3A3A3;
         }
-        .tableHead span{
+
+        .tableHead span {
             display: inline-block;
             margin-left: 15px;
         }
+
         .tableBody {
             margin: 0px auto;
             width: 70%;
@@ -97,7 +99,6 @@
             margin-bottom: 17px;
             margin-left: 52px;
         }
-
 
 
     </style>
@@ -121,20 +122,20 @@
     <div class="tableHead" style="position: relative">
         <span>商品类目销售分析</span>
 
-            <el-button plain size="mini" class="headButton" style="margin-left: 250px">最近7天</el-button>
-            <el-button plain size="mini" class="headButton">最近30天</el-button>
-            <el-button plain size="mini" class="headButton">最近90天</el-button>
-            <div style="display: inline-block;position: absolute;left: 115px;bottom: 7px">
-                <el-date-picker
-                        v-model="dateRange"
-                        type="daterange"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                        @change="fetchData()"
-                        style="margin-left: 590px;">
-                </el-date-picker>
-            </div>
+        <el-button plain size="mini" class="headButton" style="margin-left: 250px">最近7天</el-button>
+        <el-button plain size="mini" class="headButton">最近30天</el-button>
+        <el-button plain size="mini" class="headButton">最近90天</el-button>
+        <div style="display: inline-block;position: absolute;left: 115px;bottom: 7px">
+            <el-date-picker
+                    v-model="dateRange"
+                    type="daterange"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    @change="fetchData()"
+                    style="margin-left: 590px;">
+            </el-date-picker>
+        </div>
     </div>
 
     <div class="tableBody">
@@ -150,7 +151,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="money" label="销售额" width="170" align="center"></el-table-column>
-                <el-table-column  label="金额比例" width="180" align="center">
+                <el-table-column label="金额比例" width="180" align="center">
                     <template slot-scope="scope">
                         {{(scope.row.money/totalMoney*100).toFixed(2)}}%
                     </template>
@@ -168,32 +169,32 @@
 <script>
     new Vue({
         el: '#app',
-        data(){
-            return{
+        data() {
+            return {
                 tableData: [],
                 dateRange: [],
-                totalNum:0,
-                totalMoney:0,
+                totalNum: 0,
+                totalMoney: 0,
 
             }
         },
-        methods:{
-            fetchData(){
+        methods: {
+            fetchData() {
                 let date1 = this.dateRange[0].Format("yyyy-MM-dd");
                 let date2 = this.dateRange[1].Format("yyyy-MM-dd");
-                axios.get(`/categoryReport/category1Count.do?date1=${date1}&date2=${date2}`).then(response=>{
+                axios.get(`/categoryReport/category1Count.do?date1=${date1}&date2=${date2}`).then(response => {
                     this.tableData = response.data;
                     this.totalNum = 0;
                     this.totalMoney = 0;
                     let nameData = [];
                     let numData = [];
                     let moneyData = [];
-                    for(var i=0;i<this.tableData.length;i++){
+                    for (var i = 0; i < this.tableData.length; i++) {
                         this.totalNum = this.totalNum + this.tableData[i].num;
                         this.totalMoney = this.totalMoney + this.tableData[i].money;
                         nameData.push(this.tableData[i].categoryName);
-                        numData.push({name:this.tableData[i].categoryName,value:this.tableData[i].num});
-                        moneyData.push({name:this.tableData[i].categoryName,value:this.tableData[i].money});
+                        numData.push({name: this.tableData[i].categoryName, value: this.tableData[i].num});
+                        moneyData.push({name: this.tableData[i].categoryName, value: this.tableData[i].money});
                     }
 
 
@@ -201,14 +202,14 @@
 
                     // 指定图表的配置项和数据
                     let option = {
-                        title : {
+                        title: {
                             text: '商品交易统计',
                             subtext: '左销售量，右销售金额',
-                            x:'center',
-                            top:'20',
+                            x: 'center',
+                            top: '20',
 
                         },
-                        tooltip : {
+                        tooltip: {
                             trigger: 'item',
                             formatter: "{a} <br/>{b} : {c} ({d}%)"
                         },
@@ -217,13 +218,13 @@
                             bottom: '45',
                             data: nameData
                         },
-                        series : [
+                        series: [
                             {
                                 name: '销售量',
                                 type: 'pie',
-                                radius : '50%',
+                                radius: '50%',
                                 center: ['25%', '47%'],
-                                data:numData,
+                                data: numData,
                                 itemStyle: {
                                     emphasis: {
                                         shadowBlur: 10,
@@ -235,9 +236,9 @@
                             {
                                 name: '销售金额',
                                 type: 'pie',
-                                radius : '50%',
+                                radius: '50%',
                                 center: ['75%', '47%'],
-                                data:moneyData,
+                                data: moneyData,
                                 itemStyle: {
                                     emphasis: {
                                         shadowBlur: 10,
@@ -250,7 +251,6 @@
                     };
 
 
-
                     // 使用刚指定的配置项和数据显示图表。
                     myChart.setOption(option);
 
@@ -258,7 +258,6 @@
                     // 指定图表的配置项和数据
 
                 });
-
 
 
             }

@@ -7,7 +7,8 @@ import com.taotao.pojo.goods.Spec;
 import com.taotao.service.goods.SpecService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/spec")

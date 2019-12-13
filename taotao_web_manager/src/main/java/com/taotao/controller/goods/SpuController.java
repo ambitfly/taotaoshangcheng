@@ -1,7 +1,6 @@
 package com.taotao.controller.goods;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.sun.org.apache.regexp.internal.RE;
 import com.taotao.entity.PageResult;
 import com.taotao.entity.Result;
 import com.taotao.pojo.goods.Audit;
@@ -10,7 +9,8 @@ import com.taotao.pojo.goods.Spu;
 import com.taotao.service.goods.SpuService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/spu")

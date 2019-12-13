@@ -131,7 +131,7 @@
                 </template>
             </template>          
         </div>`
-    })
+    });
     new Vue({
         el: '#app',
         // router,
@@ -155,10 +155,10 @@
 
         },
         created() {
-            let linkUrl=localStorage.getItem('linkUrl')
-            let activeIndex=localStorage.getItem('activeIndex')
+            let linkUrl = localStorage.getItem('linkUrl');
+            let activeIndex = localStorage.getItem('activeIndex');
             if(linkUrl!=='undefined'){
-                this.linkUrl=linkUrl
+                this.linkUrl = linkUrl;
                 this.defaultActiveIndex=activeIndex
             }
 
@@ -166,13 +166,13 @@
                 // 获取导航数据
                 this.menuList=response.data;
                 // 导航默认选择
-                this.data=response.data[1]
-                let data=[]
+                this.data = response.data[1];
+                let data = [];
                 for(let i=0;i<this.data.children.length;i++){
                     data.push(this.data.children[i].path)
                 }
                 this.openeds=data
-            })
+            });
 
             axios.get(`/admin/findAdmin.do`).then(response=>{
                 this.loginName = response.data.loginName;
@@ -189,16 +189,16 @@
             },
             // 选择顶部导航菜单，联动左侧菜单
             handleSelect(key) {
-                localStorage.setItem('linkUrl',key.linkUrl)
-                localStorage.setItem('activeIndex',key.path)
-                var data=[]
+                localStorage.setItem('linkUrl', key.linkUrl);
+                localStorage.setItem('activeIndex', key.path);
+                var data = [];
                 for(var i=0;i<key.children.length;i++){
-                    data.push(key.children[i].path)
-                    this.defaultActive=key.children[0].children[0].path
+                    data.push(key.children[i].path);
+                    this.defaultActive = key.children[0].children[0].path;
                     this.linkUrl=key.children[0].linkUrl
                     
                 }
-                this.openeds=data
+                this.openeds = data;
                 this.data=key
             },
             exit(){
@@ -207,14 +207,14 @@
                 })
             }
         }
-    })
+    });
     
     window.onload = windowHeight; //页面载入完毕执行函数
     function windowHeight() {
         var wd = 220;
-        var iframepage=document.getElementById("iframepage")
-        var asieHeight=document.getElementById("asieHeight")
-        iframepage.style.width=document.documentElement.clientWidth-wd + 'px'
+        var iframepage = document.getElementById("iframepage");
+        var asieHeight = document.getElementById("asieHeight");
+        iframepage.style.width = document.documentElement.clientWidth - wd + 'px';
         asieHeight.style.height=document.documentElement.clientHeight + 'px'
     }   
 </script>

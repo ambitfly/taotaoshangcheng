@@ -29,6 +29,6 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
         loginLog.setLocation(WebUtil.getCityByIP(ip));
         loginLog.setBrowserName(WebUtil.getBrowserName(httpServletRequest.getHeader("user-agent")));
         loginLogService.add(loginLog);
-        httpServletRequest.getRequestDispatcher("/main.html").forward(httpServletRequest,httpServletResponse);
+        httpServletRequest.getRequestDispatcher("/main.html").forward(httpServletRequest, httpServletResponse);
     }
 }

@@ -21,6 +21,10 @@ import java.util.Map;
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
+    AdminRoleMapper adminRoleMapper;
+    @Autowired
+    RoleResourceMapper roleResourceMapper;
+    @Autowired
     private RoleMapper roleMapper;
 
     /**
@@ -52,8 +56,6 @@ public class RoleServiceImpl implements RoleService {
         Example example = createExample(searchMap);
         return roleMapper.selectByExample(example);
     }
-    @Autowired
-    AdminRoleMapper adminRoleMapper;
 
     /**
      * 分页+条件查询
@@ -131,8 +133,7 @@ public class RoleServiceImpl implements RoleService {
         }
         return example;
     }
-    @Autowired
-    RoleResourceMapper roleResourceMapper;
+
     @Override
     @Transactional
     public void saveRoleResource(Integer roleId, List<Integer> menusIds) {

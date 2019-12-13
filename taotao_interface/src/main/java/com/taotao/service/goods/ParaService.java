@@ -1,8 +1,10 @@
 package com.taotao.service.goods;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Para;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * para业务逻辑层
@@ -10,26 +12,26 @@ import java.util.*;
 public interface ParaService {
 
 
-    public List<Para> findAll();
+    List<Para> findAll();
 
 
-    public PageResult<Para> findPage(int page, int size);
+    PageResult<Para> findPage(int page, int size);
 
 
-    public List<Para> findList(Map<String,Object> searchMap);
+    List<Para> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Para> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Para> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Para findById(Integer id);
+    Para findById(Integer id);
 
-    public void add(Para para);
-
-
-    public void update(Para para);
+    void add(Para para);
 
 
-    public void delete(Integer id);
+    void update(Para para);
+
+
+    void delete(Integer id);
 
 }

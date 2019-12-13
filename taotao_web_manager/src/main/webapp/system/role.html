@@ -233,13 +233,13 @@
                 });
             },
             add() {
-                this.title = "添加部门"
+                this.title = "添加部门";
                 this.pojo = {};
                 this.formVisible = true;
             },
             edit(id) {
                 this.title = "编辑部门";
-                this.formVisible = true // 打开窗口
+                this.formVisible = true; // 打开窗口
                 axios.get(`/role/findById.do?id=${id}`).then(response=>{
                     this.pojo = response.data;
                 })

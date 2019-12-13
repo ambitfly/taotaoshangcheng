@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="qingcheng_service_sms" />
         <module name="taotao_common" />
+        <module name="taotao_common_cas" />
         <module name="taotao_common_service" />
         <module name="taotao_common_web" />
         <module name="taotao_interface" />
@@ -21,12 +22,14 @@
         <module name="taotao_service_sms" />
         <module name="taotao_service_system" />
         <module name="taotao_service_user" />
+        <module name="taotao_web_center" />
         <module name="taotao_web_manager" />
         <module name="taotao_web_portal" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="taotao_common" target="1.5" />
+      <module name="taotao_common_cas" target="1.5" />
       <module name="taotao_common_service" target="1.5" />
       <module name="taotao_common_web" target="1.5" />
       <module name="taotao_interface" target="1.5" />
@@ -41,6 +44,7 @@
       <module name="taotao_service_sms" target="1.5" />
       <module name="taotao_service_system" target="1.5" />
       <module name="taotao_service_user" target="1.5" />
+      <module name="taotao_web_center" target="1.5" />
       <module name="taotao_web_manager" target="1.5" />
       <module name="taotao_web_portal" target="1.5" />
     </bytecodeTargetLevel>

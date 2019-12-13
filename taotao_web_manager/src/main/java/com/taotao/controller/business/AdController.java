@@ -7,7 +7,8 @@ import com.taotao.pojo.business.Ad;
 import com.taotao.service.business.AdService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/ad")

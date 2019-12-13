@@ -15,5 +15,5 @@ public interface BrandMapper extends Mapper<Brand> {
             "  SELECT id FROM tb_category WHERE `name` = #{categoryName} " +
             " ) " +
             ")")
-    public List<Map> findBrandListByCategoryName(@Param("categoryName") String categoryName);
+    List<Map> findBrandListByCategoryName(@Param("categoryName") String categoryName);
 }

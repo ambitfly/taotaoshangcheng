@@ -229,9 +229,9 @@ kik<!DOCTYPE html>
             confirmOldPassword(){
                 axios.post(`/admin/confirmPassword.do?password=${this.oldPassword}`).then(response=>{
                     this.result = response.data;
-                })
+                });
                 if(this.result.code==1){
-                    this.flag1 = false
+                    this.flag1 = false;
                     this.oldPassword = "";
                     this.$message({
                         message: this.result.message,
@@ -239,7 +239,7 @@ kik<!DOCTYPE html>
                         offset: 100
                     });
                 }else{
-                    this.flag1 = true
+                    this.flag1 = true;
                     this.$message({
                         message: this.result.message,
                         type: 'success',
@@ -280,7 +280,7 @@ kik<!DOCTYPE html>
                 this.pojo.image = this.image;
                 axios.post(`/admin/update.do`,this.pojo).then(response=>{
                     this.isEditSuccess= response.data.code;
-                })
+                });
                 if(0==this.isEditSuccess){
                     this.$notify({
                         title: '成功',

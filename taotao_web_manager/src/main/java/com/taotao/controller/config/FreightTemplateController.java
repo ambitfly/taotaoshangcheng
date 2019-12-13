@@ -7,7 +7,8 @@ import com.taotao.pojo.config.FreightTemplate;
 import com.taotao.service.config.FreightTemplateService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/freightTemplate")

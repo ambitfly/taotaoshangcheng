@@ -1,8 +1,10 @@
 package com.taotao.service.goods;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Spec;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * spec业务逻辑层
@@ -10,28 +12,28 @@ import java.util.*;
 public interface SpecService {
 
 
-    public List<Spec> findAll();
+    List<Spec> findAll();
 
 
-    public PageResult<Spec> findPage(int page, int size);
+    PageResult<Spec> findPage(int page, int size);
 
 
-    public List<Spec> findList(Map<String,Object> searchMap);
+    List<Spec> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Spec> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Spec> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Spec findById(Integer id);
+    Spec findById(Integer id);
 
-    public void add(Spec spec);
-
-
-    public void update(Spec spec);
+    void add(Spec spec);
 
 
-    public void delete(Integer id);
+    void update(Spec spec);
 
-    public List<Map> findSpecByTemplateId(Integer templateId);
+
+    void delete(Integer id);
+
+    List<Map> findSpecByTemplateId(Integer templateId);
 
 }

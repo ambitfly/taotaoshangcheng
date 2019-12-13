@@ -1,8 +1,10 @@
 package com.taotao.service.order;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.order.OrderLog;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * orderLog业务逻辑层
@@ -10,26 +12,26 @@ import java.util.*;
 public interface OrderLogService {
 
 
-    public List<OrderLog> findAll();
+    List<OrderLog> findAll();
 
 
-    public PageResult<OrderLog> findPage(int page, int size);
+    PageResult<OrderLog> findPage(int page, int size);
 
 
-    public List<OrderLog> findList(Map<String,Object> searchMap);
+    List<OrderLog> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<OrderLog> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<OrderLog> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public OrderLog findById(String id);
+    OrderLog findById(String id);
 
-    public void add(OrderLog orderLog);
-
-
-    public void update(OrderLog orderLog);
+    void add(OrderLog orderLog);
 
 
-    public void delete(String id);
+    void update(OrderLog orderLog);
+
+
+    void delete(String id);
 
 }

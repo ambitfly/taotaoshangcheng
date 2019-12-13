@@ -18,6 +18,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 返回全部记录
@@ -158,6 +160,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categories1;
     }
+
     private List<Category> findByPatentId(int id){
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
@@ -165,7 +168,6 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categories = categoryMapper.selectByExample(example);
         return categories;
     }
-
 
     public List<Map> findCategoryTree() {
 
@@ -185,8 +187,6 @@ public class CategoryServiceImpl implements CategoryService {
         return mapList;
     }
 
-    @Autowired
-    private RedisTemplate redisTemplate;
     public void saveCategoryTreeToRedis() {
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();

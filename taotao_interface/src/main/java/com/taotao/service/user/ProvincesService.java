@@ -1,8 +1,10 @@
 package com.taotao.service.user;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.user.Provinces;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * provinces业务逻辑层
@@ -10,26 +12,26 @@ import java.util.*;
 public interface ProvincesService {
 
 
-    public List<Provinces> findAll();
+    List<Provinces> findAll();
 
 
-    public PageResult<Provinces> findPage(int page, int size);
+    PageResult<Provinces> findPage(int page, int size);
 
 
-    public List<Provinces> findList(Map<String,Object> searchMap);
+    List<Provinces> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Provinces> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Provinces> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Provinces findById(String provinceid);
+    Provinces findById(String provinceid);
 
-    public void add(Provinces provinces);
-
-
-    public void update(Provinces provinces);
+    void add(Provinces provinces);
 
 
-    public void delete(String provinceid);
+    void update(Provinces provinces);
+
+
+    void delete(String provinceid);
 
 }

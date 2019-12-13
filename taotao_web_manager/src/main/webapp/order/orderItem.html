@@ -212,7 +212,7 @@
                 });
             },
             edit (id){
-                this.formVisible = true // 打开窗口
+                this.formVisible = true; // 打开窗口
                 // 调用查询
                 axios.get(`/orderItem/findById.do?id=${id}`).then(response => {
                     this.pojo = response.data;

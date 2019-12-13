@@ -3,12 +3,12 @@ package com.taotao.controller.system;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.taotao.entity.PageResult;
 import com.taotao.entity.Result;
-import com.taotao.pojo.system.Resource;
 import com.taotao.pojo.system.Role;
 import com.taotao.service.system.RoleService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/role")

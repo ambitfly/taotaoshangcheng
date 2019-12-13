@@ -1,4 +1,5 @@
 package com.taotao.service.impl;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -20,6 +21,7 @@ public class OrderConfigServiceImpl implements OrderConfigService {
 
     /**
      * 返回全部记录
+     *
      * @return
      */
     public List<OrderConfig> findAll() {
@@ -28,18 +30,20 @@ public class OrderConfigServiceImpl implements OrderConfigService {
 
     /**
      * 分页查询
+     *
      * @param page 页码
      * @param size 每页记录数
      * @return 分页结果
      */
     public PageResult<OrderConfig> findPage(int page, int size) {
-        PageHelper.startPage(page,size);
+        PageHelper.startPage(page, size);
         Page<OrderConfig> orderConfigs = (Page<OrderConfig>) orderConfigMapper.selectAll();
-        return new PageResult<OrderConfig>(orderConfigs.getTotal(),orderConfigs.getResult());
+        return new PageResult<OrderConfig>(orderConfigs.getTotal(), orderConfigs.getResult());
     }
 
     /**
      * 条件查询
+     *
      * @param searchMap 查询条件
      * @return
      */
@@ -50,20 +54,22 @@ public class OrderConfigServiceImpl implements OrderConfigService {
 
     /**
      * 分页+条件查询
+     *
      * @param searchMap
      * @param page
      * @param size
      * @return
      */
     public PageResult<OrderConfig> findPage(Map<String, Object> searchMap, int page, int size) {
-        PageHelper.startPage(page,size);
+        PageHelper.startPage(page, size);
         Example example = createExample(searchMap);
         Page<OrderConfig> orderConfigs = (Page<OrderConfig>) orderConfigMapper.selectByExample(example);
-        return new PageResult<OrderConfig>(orderConfigs.getTotal(),orderConfigs.getResult());
+        return new PageResult<OrderConfig>(orderConfigs.getTotal(), orderConfigs.getResult());
     }
 
     /**
      * 根据Id查询
+     *
      * @param id
      * @return
      */
@@ -73,6 +79,7 @@ public class OrderConfigServiceImpl implements OrderConfigService {
 
     /**
      * 新增
+     *
      * @param orderConfig
      */
     public void add(OrderConfig orderConfig) {
@@ -81,6 +88,7 @@ public class OrderConfigServiceImpl implements OrderConfigService {
 
     /**
      * 修改
+     *
      * @param orderConfig
      */
     public void update(OrderConfig orderConfig) {
@@ -88,7 +96,8 @@ public class OrderConfigServiceImpl implements OrderConfigService {
     }
 
     /**
-     *  删除
+     * 删除
+     *
      * @param id
      */
     public void delete(Integer id) {
@@ -97,37 +106,38 @@ public class OrderConfigServiceImpl implements OrderConfigService {
 
     /**
      * 构建查询条件
+     *
      * @param searchMap
      * @return
      */
-    private Example createExample(Map<String, Object> searchMap){
-        Example example=new Example(OrderConfig.class);
+    private Example createExample(Map<String, Object> searchMap) {
+        Example example = new Example(OrderConfig.class);
         Example.Criteria criteria = example.createCriteria();
-        if(searchMap!=null){
+        if (searchMap != null) {
 
             // ID
-            if(searchMap.get("id")!=null ){
-                criteria.andEqualTo("id",searchMap.get("id"));
+            if (searchMap.get("id") != null) {
+                criteria.andEqualTo("id", searchMap.get("id"));
             }
             // 正常订单超时时间（分）
-            if(searchMap.get("orderTimeout")!=null ){
-                criteria.andEqualTo("orderTimeout",searchMap.get("orderTimeout"));
+            if (searchMap.get("orderTimeout") != null) {
+                criteria.andEqualTo("orderTimeout", searchMap.get("orderTimeout"));
             }
             // 秒杀订单超时时间（分）
-            if(searchMap.get("seckillTimeout")!=null ){
-                criteria.andEqualTo("seckillTimeout",searchMap.get("seckillTimeout"));
+            if (searchMap.get("seckillTimeout") != null) {
+                criteria.andEqualTo("seckillTimeout", searchMap.get("seckillTimeout"));
             }
             // 自动收货（天）
-            if(searchMap.get("takeTimeout")!=null ){
-                criteria.andEqualTo("takeTimeout",searchMap.get("takeTimeout"));
+            if (searchMap.get("takeTimeout") != null) {
+                criteria.andEqualTo("takeTimeout", searchMap.get("takeTimeout"));
             }
             // 售后期限
-            if(searchMap.get("serviceTimeout")!=null ){
-                criteria.andEqualTo("serviceTimeout",searchMap.get("serviceTimeout"));
+            if (searchMap.get("serviceTimeout") != null) {
+                criteria.andEqualTo("serviceTimeout", searchMap.get("serviceTimeout"));
             }
             // 自动五星好评
-            if(searchMap.get("commentTimeout")!=null ){
-                criteria.andEqualTo("commentTimeout",searchMap.get("commentTimeout"));
+            if (searchMap.get("commentTimeout") != null) {
+                criteria.andEqualTo("commentTimeout", searchMap.get("commentTimeout"));
             }
 
         }

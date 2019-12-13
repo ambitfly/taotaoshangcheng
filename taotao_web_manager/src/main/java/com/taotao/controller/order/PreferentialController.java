@@ -7,7 +7,8 @@ import com.taotao.pojo.order.Preferential;
 import com.taotao.service.order.PreferentialService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/preferential")

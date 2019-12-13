@@ -8,13 +8,9 @@ import com.taotao.dao.*;
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.*;
 import com.taotao.service.goods.SpuService;
-import com.taotao.util.CacheKey;
 import com.taotao.util.IdWorker;
-
-
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;

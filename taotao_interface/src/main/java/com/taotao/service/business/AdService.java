@@ -1,41 +1,43 @@
 package com.taotao.service.business;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.business.Ad;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ad业务逻辑层
  */
 public interface AdService {
-    public static final String WEBINDEXLB = "web_index_lb";
+    String WEBINDEXLB = "web_index_lb";
 
-    public List<Ad> findAll();
-
-
-    public PageResult<Ad> findPage(int page, int size);
+    List<Ad> findAll();
 
 
-    public List<Ad> findList(Map<String,Object> searchMap);
+    PageResult<Ad> findPage(int page, int size);
 
 
-    public PageResult<Ad> findPage(Map<String,Object> searchMap,int page, int size);
+    List<Ad> findList(Map<String, Object> searchMap);
 
 
-    public Ad findById(Integer id);
-
-    public void add(Ad ad);
+    PageResult<Ad> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public void update(Ad ad);
+    Ad findById(Integer id);
+
+    void add(Ad ad);
 
 
-    public void delete(Integer id);
+    void update(Ad ad);
 
-    public List<Ad> findByPosition(String position);
 
-    public void saveAdToRedisByPositon(String position);
+    void delete(Integer id);
 
-    public void saveAllAdtoRedis();
+    List<Ad> findByPosition(String position);
+
+    void saveAdToRedisByPositon(String position);
+
+    void saveAllAdtoRedis();
 
 }

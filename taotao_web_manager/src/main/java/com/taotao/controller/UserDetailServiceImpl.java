@@ -15,17 +15,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserDetailServiceImpl implements UserDetailsService{
+public class UserDetailServiceImpl implements UserDetailsService {
     @Reference
     private AdminService adminService;
 
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("loginName",s);
-        map.put("status","1");
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("loginName", s);
+        map.put("status", "1");
         List<Admin> admins = adminService.findList(map);
-        if(admins.size()==0){
+        if (admins.size() == 0) {
             return null;
         }
 
@@ -37,6 +37,6 @@ public class UserDetailServiceImpl implements UserDetailsService{
             grantedAuthorities.add(new SimpleGrantedAuthority(resKey));
         }*/
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        return new User(s,admins.get(0).getPassword(),grantedAuthorities);
+        return new User(s, admins.get(0).getPassword(), grantedAuthorities);
     }
 }

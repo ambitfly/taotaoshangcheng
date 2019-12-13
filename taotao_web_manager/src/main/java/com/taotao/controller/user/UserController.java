@@ -5,9 +5,12 @@ import com.taotao.entity.PageResult;
 import com.taotao.entity.Result;
 import com.taotao.pojo.user.User;
 import com.taotao.service.user.UserService;
+import org.junit.Test;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -58,6 +61,12 @@ public class UserController {
     public Result delete(String username){
         userService.delete(username);
         return new Result();
+    }
+
+    @Test
+    public void fun() {
+        System.out.println(BCrypt.hashpw("123456", BCrypt.gensalt()));
+
     }
 
 }

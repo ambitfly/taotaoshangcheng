@@ -11,5 +11,5 @@ import java.util.List;
 public interface RoleMapper extends Mapper<Role> {
     @Select("SELECT * FROM tb_role WHERE id IN " +
             " (SELECT role_id FROM tb_admin_role WHERE admin_id = #{adminId})")
-    public List<Role> getRoles(@Param("adminId") Integer adminId);
+    List<Role> getRoles(@Param("adminId") Integer adminId);
 }

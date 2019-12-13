@@ -1,4 +1,5 @@
 package com.taotao.service.impl;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import javax.persistence.Transient;
 import java.util.*;
 
 @Service(interfaceClass = AdminService.class)
@@ -289,11 +289,7 @@ public class AdminServiceImpl implements AdminService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("loginName",name);
         List<Admin> adminList = adminMapper.selectByExample(example);
-        if(adminList.size()!=0){
-            return true;
-        }else{
-            return false;
-        }
+        return adminList.size() != 0;
     }
 
     @Override

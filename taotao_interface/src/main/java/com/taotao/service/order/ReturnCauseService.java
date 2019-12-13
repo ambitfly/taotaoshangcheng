@@ -1,8 +1,10 @@
 package com.taotao.service.order;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.order.ReturnCause;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * returnCause业务逻辑层
@@ -10,26 +12,26 @@ import java.util.*;
 public interface ReturnCauseService {
 
 
-    public List<ReturnCause> findAll();
+    List<ReturnCause> findAll();
 
 
-    public PageResult<ReturnCause> findPage(int page, int size);
+    PageResult<ReturnCause> findPage(int page, int size);
 
 
-    public List<ReturnCause> findList(Map<String,Object> searchMap);
+    List<ReturnCause> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<ReturnCause> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<ReturnCause> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public ReturnCause findById(Integer id);
+    ReturnCause findById(Integer id);
 
-    public void add(ReturnCause returnCause);
-
-
-    public void update(ReturnCause returnCause);
+    void add(ReturnCause returnCause);
 
 
-    public void delete(Integer id);
+    void update(ReturnCause returnCause);
+
+
+    void delete(Integer id);
 
 }

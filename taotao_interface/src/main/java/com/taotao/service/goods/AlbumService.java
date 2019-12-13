@@ -1,8 +1,10 @@
 package com.taotao.service.goods;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Album;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * album业务逻辑层
@@ -10,41 +12,41 @@ import java.util.*;
 public interface AlbumService {
 
 
-    public List<Album> findAll();
+    List<Album> findAll();
 
 
-    public PageResult<Album> findPage(int page, int size);
+    PageResult<Album> findPage(int page, int size);
 
 
-    public List<Album> findList(Map<String,Object> searchMap);
+    List<Album> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Album> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Album> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Album findById(Long id);
+    Album findById(Long id);
 
-    public void add(Album album);
-
-
-    public void update(Album album);
+    void add(Album album);
 
 
-    public void delete(Long id);
+    void update(Album album);
 
-    public void setImageNum(Album album);
 
-    public void setImageNums(List<Album> albums);
+    void delete(Long id);
 
-    public String[] getImageItemsString(Long id);
+    void setImageNum(Album album);
 
-    public void addItem(String imgUrl,Long id);
+    void setImageNums(List<Album> albums);
 
-    public void deleteItem(String imgUrl,Long id);
+    String[] getImageItemsString(Long id);
 
-    public PageResult<String> getImageItemsStringPage(Long id,int page,int size);
+    void addItem(String imgUrl, Long id);
 
-    public void moveItem(String imgUrl,Long removeId,Long moveId);
+    void deleteItem(String imgUrl, Long id);
+
+    PageResult<String> getImageItemsStringPage(Long id, int page, int size);
+
+    void moveItem(String imgUrl, Long removeId, Long moveId);
 
 
 

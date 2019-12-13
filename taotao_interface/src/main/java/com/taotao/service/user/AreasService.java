@@ -1,8 +1,10 @@
 package com.taotao.service.user;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.user.Areas;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * areas业务逻辑层
@@ -10,26 +12,26 @@ import java.util.*;
 public interface AreasService {
 
 
-    public List<Areas> findAll();
+    List<Areas> findAll();
 
 
-    public PageResult<Areas> findPage(int page, int size);
+    PageResult<Areas> findPage(int page, int size);
 
 
-    public List<Areas> findList(Map<String,Object> searchMap);
+    List<Areas> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Areas> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Areas> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Areas findById(String areaid);
+    Areas findById(String areaid);
 
-    public void add(Areas areas);
-
-
-    public void update(Areas areas);
+    void add(Areas areas);
 
 
-    public void delete(String areaid);
+    void update(Areas areas);
+
+
+    void delete(String areaid);
 
 }

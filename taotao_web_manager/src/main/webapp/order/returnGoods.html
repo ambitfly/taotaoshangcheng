@@ -62,6 +62,7 @@
             margin-left: 2px;
             font-size: 20px;
         }
+
         .avatar-uploader .el-upload {
             border: 1px dashed #d9d9d9;
             border-radius: 6px;
@@ -121,20 +122,26 @@
 
         <div class="box" style="width: 70%;margin: 0px auto">
             <div style="margin-top: 10px;margin-bottom: 20px">
-                <el-button plain size="small" @click="searchData()"><span style="padding-left: 10px;padding-right: 10px">全部订单</span></el-button>
-                <el-button plain size="small" @click="searchData(0)"><span style="padding-left: 10px;padding-right: 10px">待处理</span></el-button>
-                <el-button plain size="small" @click="searchData(1)"><span style="padding-left: 10px;padding-right: 10px">退货中</span></el-button>
-                <el-button plain size="small" @click="searchData(2)"><span style="padding-left: 10px;padding-right: 10px">已完成</span></el-button>
-                <el-button plain size="small" @click="searchData(3)"><span style="padding-left: 10px;padding-right: 10px">已拒绝</span></el-button>
+                <el-button plain size="small" @click="searchData()"><span
+                        style="padding-left: 10px;padding-right: 10px">全部订单</span></el-button>
+                <el-button plain size="small" @click="searchData(0)"><span
+                        style="padding-left: 10px;padding-right: 10px">待处理</span></el-button>
+                <el-button plain size="small" @click="searchData(1)"><span
+                        style="padding-left: 10px;padding-right: 10px">退货中</span></el-button>
+                <el-button plain size="small" @click="searchData(2)"><span
+                        style="padding-left: 10px;padding-right: 10px">已完成</span></el-button>
+                <el-button plain size="small" @click="searchData(3)"><span
+                        style="padding-left: 10px;padding-right: 10px">已拒绝</span></el-button>
             </div>
             <div style="border: 1px solid #EEE9E9;background-color: #F7F7F7;padding-bottom: 10px;padding-top: 10px;padding-left: 10px;">
                 <i class="el-icon-search"></i>
                 <span style="color: #5e5e5e">筛选查询</span>
             </div>
-            <div class="filter-container" style="border: 1px solid #f4f4f4;padding-bottom: 0px;padding-top: 10px;padding-left: 30px;margin-bottom: 30px;">
+            <div class="filter-container"
+                 style="border: 1px solid #f4f4f4;padding-bottom: 0px;padding-top: 10px;padding-left: 30px;margin-bottom: 30px;">
                 <!--查询表单-->
                 <el-form :inline="true" size="small">
-                    <el-form-item label="服务单号" >
+                    <el-form-item label="服务单号">
                         <el-input v-model="searchMap.id" placeholder="服务单号" class="filter-item"></el-input>
                     </el-form-item>
                     <el-form-item label="收货人">
@@ -155,8 +162,9 @@
                 <el-button plain size="small" style="margin-left: 600px">导出数据</el-button>
 
             </div>
-            <div >
-                <el-table :data="tableData" border style="width: 100%;font-size: 12px" border="true" :header-cell-style="{background:'#F9FAFC'}" @selection-change="selsChange" >
+            <div>
+                <el-table :data="tableData" border style="width: 100%;font-size: 12px" border="true"
+                          :header-cell-style="{background:'#F9FAFC'}" @selection-change="selsChange">
                     <!--<el-table-column label="发货" width="80" align='center'>
                         <template slot-scope="scope">
                             <input  type="checkbox" @click="addIds(scope.row.id)">
@@ -170,7 +178,7 @@
                             <p>￥{{scope.row.returnMoney/100}}</p>
                         </template>
                     </el-table-column>
-                    <el-table-column  prop="linkman" label="联系人" width="150" align='center'></el-table-column>
+                    <el-table-column prop="linkman" label="联系人" width="150" align='center'></el-table-column>
                     <el-table-column label="申请状态" width="91" align='center'>
                         <template slot-scope="scope">
                             <p v-if="'0'==scope.row.status">待处理</p>
@@ -183,7 +191,9 @@
                     <el-table-column
                             label="操作" width="120" align='center'>
                         <template slot-scope="scope">
-                            <el-button @click="goOrderDetails(scope.row.id)" size="mini" type="text" size="medium">查看详情</el-button>
+                            <el-button @click="goOrderDetails(scope.row.id)" size="mini" type="text" size="medium">
+                                查看详情
+                            </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -229,7 +239,7 @@
                 pojo: {},
                 formVisible: false,
                 imageUrl: '',
-                sels:[],
+                sels: [],
 
 
             }
@@ -246,11 +256,11 @@
                     this.total = response.data.total;
                 });
             },
-            searchData(status){
+            searchData(status) {
                 this.searchMap.status = status;
                 this.fetchData();
             },
-            goOrderDetails(id){
+            goOrderDetails(id) {
             },
             refresh() {
                 location.reload();

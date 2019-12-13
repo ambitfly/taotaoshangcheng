@@ -1,4 +1,5 @@
 package com.taotao.service.impl;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
@@ -13,7 +14,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 

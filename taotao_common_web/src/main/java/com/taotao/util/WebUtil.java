@@ -29,7 +29,7 @@ public class WebUtil {
 
     public static String getCityByIP(String ip) throws JSONException {
         //System.out.println("ip="+ip);
-        if(ip.equals("0:0:0:0:0:0:0:1")||ip.equals("127.0.0.1")){
+        if (ip.equals("0:0:0:0:0:0:0:1") || ip.equals("127.0.0.1")) {
             return "本地";
         }
         try {
@@ -55,7 +55,7 @@ public class WebUtil {
     //浏览器类型
     public static String getBrowserName(String agent) {
         System.out.println(agent);
-        agent=agent.toLowerCase();
+        agent = agent.toLowerCase();
         if (agent.indexOf("msie 7") > 0) {
             return "ie7";
         } else if (agent.indexOf("msie 8") > 0) {

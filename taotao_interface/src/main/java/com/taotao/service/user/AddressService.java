@@ -1,8 +1,10 @@
 package com.taotao.service.user;
+
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.user.Address;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * address业务逻辑层
@@ -10,26 +12,26 @@ import java.util.*;
 public interface AddressService {
 
 
-    public List<Address> findAll();
+    List<Address> findAll();
 
 
-    public PageResult<Address> findPage(int page, int size);
+    PageResult<Address> findPage(int page, int size);
 
 
-    public List<Address> findList(Map<String,Object> searchMap);
+    List<Address> findList(Map<String, Object> searchMap);
 
 
-    public PageResult<Address> findPage(Map<String,Object> searchMap,int page, int size);
+    PageResult<Address> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Address findById(Integer id);
+    Address findById(Integer id);
 
-    public void add(Address address);
-
-
-    public void update(Address address);
+    void add(Address address);
 
 
-    public void delete(Integer id);
+    void update(Address address);
+
+
+    void delete(Integer id);
 
 }
