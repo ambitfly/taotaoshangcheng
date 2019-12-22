@@ -10,12 +10,65 @@
 
     <link rel="stylesheet" type="text/css" href="./css/all.css"/>
     <link rel="stylesheet" type="text/css" href="./css/pages-seckillOrder.css"/>
+    <style>
+
+    </style>
 </head>
 
 <body>
 <div id="app">
     <!-- 头部栏位 -->
     <!--页面顶部-->
+    <!--地址添加编辑-->
+    <div class="editDiv" style="width: 45%;
+            height: 650px;
+            position: absolute;
+            z-index: 8;
+            border: solid 3px #BBBBBB;
+            background-color: white;
+            left: 430px" v-if="flag.edit==1">
+        <div class="head" style="height:25px;background-color: #F3F3F3;border-bottom: solid 1px #C4C4C4;margin-bottom: 25px">
+            <span style="font-weight: 600;font-size: 14px;display: inline-block">&nbsp;&nbsp;{{headTitle}}</span>
+            <span style="margin-left: 566px;display:inline-block;font-size: 18px;cursor: pointer" @click="flag.edit=0">×</span>
+        </div>
+        <div style="margin-left: 25px;color: #999999;font-size: 12px">
+            <div style="margin-bottom: 6px">收货人:</div>
+            <input v-model="pojo.contact" style="height: 25px;width: 220px;margin-bottom: 6px;border: solid 1px #CCCCCC;">
+        </div>
+        <div style="margin-left: 25px;color: #999999;font-size: 12px">
+            <div style="margin-bottom: 6px">所在地区:</div>
+            <div id="addressId" style="width:120px;height:18px;border: solid 1px #CCCCCC;cursor:text;margin-bottom: 6px" @click="openS1()">
+                <span>&nbsp;&nbsp;{{address.address}}</span>
+                <span style="float: right;">∨</span>
+            </div>
+            <select v-model="address.province" style="width: 70px;border: solid 1px #C4C4C4" v-if="flag.s1==1" @change="changeS1(address.province)">
+                <option v-for="province in provinceList" :value="province.id">{{province.name}}</option>
+            </select>
+            <select v-model="address.city" style="width: 70px;border: solid 1px #C4C4C4" v-if="flag.s2==1" @change="changeS2(address.city)">
+                <option v-for="city in cityList" :value="city.id">{{city.name}}</option>
+            </select>
+            <select v-model="address.county" style="width: 70px;border: solid 1px #C4C4C4" v-if="flag.s3==1" @change="changeS3(address.county)">
+                <option v-for="county in countyList" :value="county.id">{{county.name}}</option>
+            </select>
+            <select v-model="address.town" style="width: 70px;border: solid 1px #C4C4C4" v-if="flag.s4==1" @change="changeS4(address.town)">
+                <option v-for="town in townList" :value="town.id">{{town.name}}</option>
+            </select>
+        </div>
+        <div style="margin-left: 25px;color: #999999;font-size: 12px">
+            <div style="margin-bottom: 6px">详细地址:</div>
+            <input v-model="detailAddress" style="height: 25px;width: 300px;margin-bottom: 6px;border: solid 1px #CCCCCC;" placeholder="  选过的地址不用重复填写">
+        </div>
+        <div style="margin-left: 25px;color: #999999;font-size: 12px">
+            <div style="margin-bottom: 6px">手机号码:</div>
+            <input v-model="pojo.phone" style="height: 25px;width: 200px;margin-bottom: 6px;border: solid 1px #CCCCCC;" placeholder="  请您填写收货人手机号码">
+        </div>
+
+        <div>
+            <button style="width: 115px;height: 30px;background-color: #F6F6F6;border: solid 1px #CCCCCC;border-radius: 2px;margin-left: 276px;margin-top: 260px"
+                @click="saveAddress()"
+            >保存收货地址</button>
+        </div>
+    </div>
     <div id="nav-bottom">
         <!--顶部-->
         <div class="nav-top">
@@ -118,7 +171,7 @@
                         <div class="address-title">
                             <span class="title">地址管理</span>
                             <a data-toggle="modal" data-target=".edit" data-keyboard="false"
-                               class="sui-btn  btn-info add-new">添加新地址</a>
+                               class="sui-btn  btn-info add-new" @click="openEditPage()">添加新地址</a>
                             <span class="clearfix"></span>
                         </div>
                         <div class="address-detail">
@@ -132,24 +185,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>刘田田</td>
-                                    <td>北京 北京市 海淀区 上地街道东北旺西路8号中关村软件园9号楼</td>
-                                    <td>1774***********4</td>
+                                <tr v-for="address in addressList">
+                                    <td>{{address.contact}}</td>
+                                    <td>{{address.address}}</td>
+                                    <td>{{address.phone}}</td>
                                     <td>
                                         <a href="#">编辑</a>
                                         <a href="#">删除</a>
-                                        默认地址
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>沈沉</td>
-                                    <td>北京 北京市 海淀区 上地街道东北旺西路8号中关村软件园9号楼</td>
-                                    <td>1774***********4</td>
-                                    <td>
-                                        <a href="#">编辑</a>
-                                        <a href="#">删除</a>
-                                        <a href="#">设为默认</a>
+                                        <span v-if="address.isDefault==1">默认地址</span>
                                     </td>
                                 </tr>
 
@@ -241,6 +284,7 @@
             </div>
         </div>
     </div>
+
     <!-- 底部栏位 -->
     <!--页面底部-->
     <div class="clearfix footer">
@@ -384,13 +428,126 @@
         el: '#app',
         data() {
             return {
-                username: ''
+                username: '',
+                addressList:[],
+                headTitle:'添加收货地址',
+                pojo:{},
+                provinceList:[],
+                cityList:[],
+                countyList:[],
+                townList:[],
+                flag:{'s1':'0','s2':'0','s3':'0','s4':'0','edit':'0'},
+                address:{'province':'','city':'','county':'','town':'','address':''},
+                detailAddress:''
+
+
+
+
             }
         },
         created() {
-            axios.get(`/login/username.do`).then(response => {
-                this.username = response.data.username;
-            })
+            this.getUsername();
+            this.ListAddress();
+        },
+        methods: {
+            getUsername(){
+                axios.get(`/login/username.do`).then(response => {
+                    this.username = response.data.username;
+                })
+            },
+            ListAddress(){
+                axios.get(`/address/findAddress.do`).then(response => {
+                    this.addressList = response.data;
+                })
+            },
+            openS1(){
+                axios.get(`/regions/findByParentId.do?parentId=1`).then(response => {
+                    this.provinceList = response.data;
+                })
+                this.flag.s1 = 1;
+            },
+            openEditPage(){
+                this.flag.s1 = 0;
+                this.flag.s2 = 0;
+                this.flag.s3 = 0;
+                this.flag.s4 = 0;
+                this.address.province = '';
+                this.address.city = '';
+                this.address.county = '';
+                this.address.town = '';
+                this.address.address = '';
+                this.pojo = {};
+                this.flag.edit = 1;
+            },
+            changeS1(id){
+                for(var i=1;i<this.provinceList.length;i++){
+                    if(this.provinceList[i].id==id){
+                        this.address.address = this.provinceList[i].name;
+                        document.getElementById('addressId').style.width = this.address.address.length * 14 + 12 + 'px';
+                    }
+                }
+
+                axios.get(`/regions/findByParentId.do?parentId=${id}`).then(response => {
+                    this.cityList = response.data;
+                })
+                this.flag.s2 = 1;
+            },
+            changeS2(id){
+                for(var i=1;i<this.cityList.length;i++){
+                    if(this.cityList[i].id==id){
+                        this.address.address = this.address.address + '/' + this.cityList[i].name;
+                        document.getElementById('addressId').style.width = this.address.address.length * 13 + 6 + 'px';
+                    }
+                }
+
+                axios.get(`/regions/findByParentId.do?parentId=${id}`).then(response => {
+                    this.countyList = response.data;
+                })
+                this.flag.s3 = 1;
+            },
+            changeS3(id){
+                for(var i=1;i<this.countyList.length;i++){
+                    if(this.countyList[i].id==id){
+                        let ar = this.address.address;
+                        ar = ar + '/'+this.countyList[i].name;
+                        this.address.address = ar;
+                        document.getElementById('addressId').style.width = this.address.address.length * 13 + 2 + 'px';
+                    }
+                }
+
+                axios.get(`/regions/findByParentId.do?parentId=${id}`).then(response => {
+                    this.townList = response.data;
+                })
+                this.flag.s4 = 1;
+            },
+            changeS4(id){
+                for(var i=1;i<this.townList.length;i++){
+                    if(this.townList[i].id==id){
+                        let ar = this.address.address;
+                        ar = ar + '/'+this.townList[i].name;
+                        this.address.address = ar;
+                        document.getElementById('addressId').style.width = this.address.address.length * 13  + 'px';
+                    }
+                }
+
+                this.flag.s1 = 0;
+                this.flag.s2 = 0;
+                this.flag.s3 = 0;
+                this.flag.s4 = 0;
+
+
+            },
+            saveAddress(){
+                this.pojo.address = this.address.address.replace('/','').replace('/','').replace('/','').replace('/','') + " "+this.detailAddress;
+                this.pojo.isDefault = 0;
+
+                axios.post(`/address/add.do`,this.pojo).then(response=>{
+                    if(response.data.code==0){
+                        this.ListAddress();
+                        this.flag.edit = 0;
+                    }
+                })
+            }
         }
     });
 </script>

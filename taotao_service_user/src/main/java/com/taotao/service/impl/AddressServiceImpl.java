@@ -160,4 +160,11 @@ public class AddressServiceImpl implements AddressService {
         return example;
     }
 
+    public List<Address> findAddressByUserName(String username) {
+        Example example = new Example(Address.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("username",username);
+
+        return addressMapper.selectByExample(example);
+    }
 }

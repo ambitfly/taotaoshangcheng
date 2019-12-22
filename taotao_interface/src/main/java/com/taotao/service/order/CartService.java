@@ -63,4 +63,11 @@ public interface CartService {
      * @return
      */
     int preferential(String username);
+
+    /**
+     * 获取更新后的redis中的购物车列表数据
+     * @param username
+     * @return
+     */
+    List<Map<String,Object>> findNewOrderItemList(String username);
 }

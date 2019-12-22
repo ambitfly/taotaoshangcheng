@@ -115,6 +115,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-messaging:5.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.1.5.RELEASE" />
+          <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-impl:2.3.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">

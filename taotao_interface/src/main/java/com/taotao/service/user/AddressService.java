@@ -34,4 +34,6 @@ public interface AddressService {
 
     void delete(Integer id);
 
+    List<Address> findAddressByUserName(String username);
+
 }

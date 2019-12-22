@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.taotao.dao.SkuMapper;
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Sku;
+import com.taotao.pojo.order.OrderItem;
 import com.taotao.service.goods.SkuService;
 import com.taotao.util.CacheKey;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -180,6 +181,36 @@ public class SkuServiceImpl implements SkuService {
 
         }
         return example;
+    }
+
+    public boolean dedutionStock(List<OrderItem> orderItemList) {
+        boolean isDedution = true;
+        for(OrderItem orderItem:orderItemList){
+            Sku sku = findById(orderItem.getSkuId());
+//            System.out.println(sku);
+            if(sku==null){
+                isDedution = false;
+                break;
+            }
+            if(!"1".equals(sku.getStatus())){
+                isDedution = false;
+                break;
+            }
+            if(sku.getNum().intValue()<orderItem.getNum().intValue()){
+                isDedution  =false;
+                break;
+            }
+        }
+
+        //执行扣减
+        if(isDedution){
+            for(OrderItem orderItem:orderItemList){
+                skuMapper.dedutionStock(orderItem.getSkuId(),orderItem.getNum());
+                skuMapper.addSaleNum(orderItem.getSkuId(),orderItem.getNum());
+            }
+        }
+//        System.out.println("isDedution:"+isDedution);
+        return isDedution;
     }
 
     public List<Sku> findBySpuId(String id) {

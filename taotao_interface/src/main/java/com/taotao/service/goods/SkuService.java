@@ -2,6 +2,7 @@ package com.taotao.service.goods;
 
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Sku;
+import com.taotao.pojo.order.OrderItem;
 
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,6 @@ public interface SkuService {
 
     Integer findPrice(String id);
 
-
+    public boolean dedutionStock(List<OrderItem> orderItemList);
 
 }

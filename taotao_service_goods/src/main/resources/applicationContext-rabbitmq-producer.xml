@@ -12,7 +12,12 @@
 	<rabbit:queue name="queue.product_item_delete"/>
 	<rabbit:queue name="queue.elastic_data_add"/>
 	<rabbit:queue name="queue.elastic_data_delete"/>
-	
+
+
+
+
+
+
 	<rabbit:fanout-exchange name="exchange.fanout_put">
 		<rabbit:bindings>
 			<rabbit:binding queue="queue.product_item_create"></rabbit:binding>

@@ -15,7 +15,7 @@ public class AdminImageServiceImpl implements AdminImageService {
     @Autowired
     AdminImageMapper adminImageMapper;
 
-    @Override
+
     public AdminImage findByAdminId(Integer id) {
         Example example = new Example(AdminImage.class);
         Example.Criteria criteria = example.createCriteria();

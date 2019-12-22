@@ -1,6 +1,8 @@
 package com.taotao.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.taotao.dao.OrderConfigMapper;
@@ -9,23 +11,32 @@ import com.taotao.dao.OrderLogMapper;
 import com.taotao.dao.OrderMapper;
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.order.*;
+import com.taotao.service.goods.SkuService;
+import com.taotao.service.order.CartService;
 import com.taotao.service.order.OrderService;
 import com.taotao.util.IdWorker;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderMapper orderMapper;
-
+    @Autowired
+    private IdWorker idWorker;
+    @Autowired
+    private CartService cartService;
+    @Autowired
+    private OrderItemMapper orderItemMapper;
+    @Reference
+    private SkuService skuService;
     /**
      * 返回全部记录
      * @return
@@ -79,12 +90,66 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.selectByPrimaryKey(id);
     }
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
     /**
      * 新增
      * @param order
      */
-    public void add(Order order) {
-        orderMapper.insert(order);
+    @Override
+    public Map<String, Object> add(Order order) {
+
+        List<Map<String,Object>> orderItemList = cartService.findNewOrderItemList(order.getUsername());
+        //提取选中状态的
+        List<OrderItem> orderItems = orderItemList.stream().filter(cart->(boolean)cart.get("checked"))
+                .map(cart->(OrderItem)cart.get("item"))
+                .collect(Collectors.toList());
+
+        if(!skuService.dedutionStock(orderItems)){
+            throw new RuntimeException("扣减库存失败！");
+        }
+        try {
+            //设置订单
+            order.setId(idWorker.nextId()+"");
+            IntStream numStream = orderItems.stream().mapToInt(OrderItem::getNum);
+            IntStream moneyStream = orderItems.stream().mapToInt(OrderItem::getMoney);
+            int totalNum = numStream.sum();
+            int totalMoney = moneyStream.sum();
+            int preMoney = cartService.preferential(order.getUsername());
+            order.setTotalMoney(totalNum);
+            order.setTotalNum(totalMoney);
+            order.setPreMoney(preMoney);
+            order.setPayMoney(totalMoney-preMoney);
+            order.setCreateTime(new Date());
+            order.setOrderStatus("0");//0待付款、1待发货、2已发货、3已完成、4已关闭
+            order.setPayStatus("0");//0未支付、1已支付、2已退款
+            order.setConsignStatus("0");//0未发货、1已发货
+            orderMapper.insert(order);
+
+            //保存订单明细
+            double proportion = (double)order.getPayMoney()/totalMoney;
+
+            for(OrderItem orderItem:orderItems){
+                orderItem.setOrderId(order.getId());
+                orderItem.setId(idWorker.nextId()+"");
+                orderItem.setPayMoney((int)(orderItem.getMoney()*proportion));
+                orderItemMapper.insert(orderItem);
+            }
+            int t = 3/0;
+        } catch (Exception e) {
+            rabbitTemplate.convertAndSend("","queue.skuback", JSON.toJSONString(orderItems));
+            e.printStackTrace();
+            throw new RuntimeException("订单生成失败");
+        }
+
+        //清除选中购物车
+        cartService.deleteCheckedGoods(order.getUsername());
+
+        //返回订单编号和支付的金额
+        Map<String,Object> map = new HashMap<>();
+        map.put("orderId",order.getId());
+        map.put("money",order.getPayMoney());
+        return map;
     }
 
     /**
@@ -202,8 +267,7 @@ public class OrderServiceImpl implements OrderService {
         return example;
     }
 
-    @Autowired
-    OrderItemMapper orderItemMapper;
+
 
     public OrderOrderItem findOrderOrderItemById(String id) {
         OrderOrderItem orderOrderItem = new OrderOrderItem();
@@ -235,8 +299,7 @@ public class OrderServiceImpl implements OrderService {
         }
         return orderList;
     }
-    @Autowired
-    IdWorker idWorker;
+
     @Autowired
     OrderLogMapper orderLogMapper;
     public void deliveryMany(List<Order> orders) {
@@ -296,6 +359,7 @@ public class OrderServiceImpl implements OrderService {
             orderMapper.updateByPrimaryKeySelective(order);
         }
 
-
     }
+
+
 }

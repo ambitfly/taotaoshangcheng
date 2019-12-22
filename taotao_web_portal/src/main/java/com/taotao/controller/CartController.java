@@ -2,11 +2,13 @@ package com.taotao.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.taotao.entity.Result;
+import com.taotao.pojo.order.Order;
+import com.taotao.pojo.user.Address;
 import com.taotao.service.order.CartService;
+import com.taotao.service.order.OrderService;
+import com.taotao.service.user.AddressService;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -18,8 +20,10 @@ import java.util.Map;
 public class CartController {
     @Reference
     private CartService cartService;
-
-
+    @Reference
+    private AddressService addressService;
+    @Reference
+    private OrderService orderService;
     @GetMapping("/findCartList")
     public List<Map<String, Object>> findCartList() {
         return cartService.findCartList(this.getUserName());
@@ -59,6 +63,21 @@ public class CartController {
         return cartService.preferential(this.getUserName());
     }
 
+    @GetMapping("/findNewOrderItemList")
+    public List<Map<String,Object>> findNewOrderItemList(){
+        return cartService.findNewOrderItemList(this.getUserName());
+    }
+
+    @GetMapping("/findAddressByUsername")
+    public List<Address> findAddressByUsername(){
+        return addressService.findAddressByUserName(this.getUserName());
+    }
+
+    @PostMapping("/saveOrder")
+    public Map<String,Object> saveOrder(@RequestBody Order order){
+        order.setUsername(this.getUserName());
+        return orderService.add(order);
+    }
     /**
      * 获取当前登录用户名
      *

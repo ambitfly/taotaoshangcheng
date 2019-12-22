@@ -27,7 +27,7 @@ public interface OrderService {
 
     Order findById(String id);
 
-    void add(Order order);
+
 
 
     void update(Order order);
@@ -42,5 +42,7 @@ public interface OrderService {
     void deliveryMany(List<Order> orders);
 
     void orderTimeOutLogic();
+
+    Map<String,Object> add(Order order);
 
 }
