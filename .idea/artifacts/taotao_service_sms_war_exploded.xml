@@ -19,7 +19,9 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-messaging:5.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.1.5.RELEASE" />
-          <element id="library" level="project" name="Maven: com.qingcheng:qingcheng_common:1.0-SNAPSHOT" />
+          <element id="archive" name="taotao_common-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="taotao_common" />
+          </element>
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.0.5.RELEASE" />

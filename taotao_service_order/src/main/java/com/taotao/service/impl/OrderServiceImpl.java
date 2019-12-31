@@ -24,7 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@Service
+@Service(interfaceClass = OrderService.class)
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -135,7 +135,7 @@ public class OrderServiceImpl implements OrderService {
                 orderItem.setPayMoney((int)(orderItem.getMoney()*proportion));
                 orderItemMapper.insert(orderItem);
             }
-            int t = 3/0;
+
         } catch (Exception e) {
             rabbitTemplate.convertAndSend("","queue.skuback", JSON.toJSONString(orderItems));
             e.printStackTrace();
@@ -361,5 +361,27 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-
+    @Override
+    public void updatePayStatus(String orderId, String transactionId) {
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        if(order!=null&&"0".equals(order.getPayStatus())&&"0".equals(order.getOrderStatus())){
+            order.setPayStatus("1");
+            order.setOrderStatus("1");
+            order.setUpdateTime(new Date());
+            order.setPayTime(new Date());
+            order.setTransactionId(transactionId);
+            orderMapper.updateByPrimaryKeySelective(order);
+            //记录订单变动日志
+            OrderLog orderLog = new OrderLog();
+            orderLog.setId(idWorker.nextId()+"");
+            orderLog.setOperater("system");
+            orderLog.setOperateTime(new Date());
+            orderLog.setOrderId(orderId);
+            orderLog.setRemarks("支付流水号："+transactionId);
+            orderLog.setPayStatus("1");
+            orderLog.setOrderStatus("1");
+            orderLog.setConsignStatus("0");
+            orderLogMapper.insert(orderLog);
+        }
+    }
 }

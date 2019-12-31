@@ -13,7 +13,7 @@ public class SkuTask {
     @Reference
     private StockBackService stockBackService;
 
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 0 0/1 * * ?")
     public void backTask(){
         System.out.println("执行回滚任务！");
         stockBackService.doBack();
