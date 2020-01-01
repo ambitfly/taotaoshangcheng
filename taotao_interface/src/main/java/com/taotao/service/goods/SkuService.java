@@ -43,4 +43,6 @@ public interface SkuService {
 
     public boolean dedutionStock(List<OrderItem> orderItemList);
 
+    boolean backStock(List<OrderItem> orderItemList);
+
 }

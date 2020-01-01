@@ -16,4 +16,18 @@ public interface WxPayService {
      * @param xml
      */
     public void notifyLogic(String xml);
+
+    /**
+     * 查询订单
+     * @param orderId
+     * @return
+     */
+    public Map findNative(String orderId);
+
+    /**
+     * 关闭订单
+     * @param orderId
+     * @return
+     */
+    public Map shutDownNative(String orderId);
 }

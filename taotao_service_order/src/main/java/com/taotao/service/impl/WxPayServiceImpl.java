@@ -84,4 +84,62 @@ public class WxPayServiceImpl implements WxPayService{
         }
 
     }
+
+
+    public Map findNative(String orderId) {
+        Map m = new HashMap();
+        try {
+            //1.封装请求参数
+            Map<String, String> map = new HashMap();
+
+            map.put("appid", config.getAppID());
+            map.put("mch_id", config.getMchID());
+            map.put("nonce_str", WXPayUtil.generateNonceStr());
+            map.put("out_trade_no", orderId);
+            String xmlParam = WXPayUtil.generateSignedXml(map, config.getKey());
+
+            //2.发送请求
+            WXPayRequest wxPayRequest = new WXPayRequest(config);
+            String xmlResult = wxPayRequest.requestWithCert("/pay/orderquery", null, xmlParam, false);
+            System.out.println(xmlResult);
+            //3.解析返回结果
+            Map<String, String> mapResult = WXPayUtil.xmlToMap(xmlResult);
+            m = mapResult;
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return m;
+    }
+
+    @Override
+    public Map shutDownNative(String orderId) {
+        Map m = new HashMap();
+        try {
+            //1.封装请求参数
+            Map<String, String> map = new HashMap();
+
+            map.put("appid", config.getAppID());
+            map.put("mch_id", config.getMchID());
+            map.put("nonce_str", WXPayUtil.generateNonceStr());
+            map.put("out_trade_no", orderId);
+            String xmlParam = WXPayUtil.generateSignedXml(map, config.getKey());
+
+            //2.发送请求
+            WXPayRequest wxPayRequest = new WXPayRequest(config);
+            String xmlResult = wxPayRequest.requestWithCert("/pay/closeorder", null, xmlParam, false);
+            System.out.println(xmlResult);
+            //3.解析返回结果
+            Map<String, String> mapResult = WXPayUtil.xmlToMap(xmlResult);
+            m = mapResult;
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return m;
+    }
 }

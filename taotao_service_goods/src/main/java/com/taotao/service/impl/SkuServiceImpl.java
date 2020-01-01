@@ -213,6 +213,32 @@ public class SkuServiceImpl implements SkuService {
         return isDedution;
     }
 
+    public boolean backStock(List<OrderItem> orderItemList) {
+        boolean isDedution = true;
+        for(OrderItem orderItem:orderItemList){
+            Sku sku = findById(orderItem.getSkuId());
+//            System.out.println(sku);
+            if(sku==null){
+                isDedution = false;
+                break;
+            }
+            if(!"1".equals(sku.getStatus())){
+                isDedution = false;
+                break;
+            }
+        }
+
+        //执行恢复
+        if(isDedution){
+            for(OrderItem orderItem:orderItemList){
+                skuMapper.dedutionStock(orderItem.getSkuId(),-orderItem.getNum());
+                skuMapper.addSaleNum(orderItem.getSkuId(),-orderItem.getNum());
+            }
+        }
+//        System.out.println("isDedution:"+isDedution);
+        return isDedution;
+    }
+
     public List<Sku> findBySpuId(String id) {
         Example example = new Example(Sku.class);
         Example.Criteria criteria = example.createCriteria();
