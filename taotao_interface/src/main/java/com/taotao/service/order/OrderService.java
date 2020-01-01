@@ -61,4 +61,5 @@ public interface OrderService {
      */
     void updatePayStatus(String orderId,String transactionId);
 
+    void shutDownOrder(String orderId);
 }

@@ -14,13 +14,16 @@ import com.taotao.pojo.order.*;
 import com.taotao.service.goods.SkuService;
 import com.taotao.service.order.CartService;
 import com.taotao.service.order.OrderService;
+import com.taotao.service.order.WxPayService;
 import com.taotao.util.IdWorker;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
+
 import java.time.LocalDateTime;
 import java.util.*;
+
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -141,6 +144,8 @@ public class OrderServiceImpl implements OrderService {
             e.printStackTrace();
             throw new RuntimeException("订单生成失败");
         }
+        //发送消息
+        rabbitTemplate.convertAndSend("","queue.ordercreatetest",order.getId());
 
         //清除选中购物车
         cartService.deleteCheckedGoods(order.getUsername());
@@ -383,5 +388,38 @@ public class OrderServiceImpl implements OrderService {
             orderLog.setConsignStatus("0");
             orderLogMapper.insert(orderLog);
         }
+    }
+
+    @Autowired
+    private WxPayService wxPayService;
+    @Override
+    public void shutDownOrder(String orderId) {
+        //关闭微信订单
+        wxPayService.shutDownNative(orderId);
+
+        //更改订单状态
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        order.setOrderStatus("4");
+        orderMapper.updateByPrimaryKeySelective(order);
+
+        //记录订单日志
+        OrderLog orderLog = new OrderLog();
+        orderLog.setId(idWorker.nextId()+"");
+        orderLog.setOperater("system");
+        orderLog.setOperateTime(new Date());
+        orderLog.setOrderId(orderId);
+        orderLog.setRemarks("关闭订单");
+        orderLog.setPayStatus("0");
+        orderLog.setOrderStatus("4");
+        orderLog.setConsignStatus("0");
+        orderLogMapper.insert(orderLog);
+
+        //恢复商品库存
+        Example example = new Example(OrderItem.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("orderId",orderId);
+        List<OrderItem> orderItemList = orderItemMapper.selectByExample(example);
+        skuService.backStock(orderItemList);
+
     }
 }

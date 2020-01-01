@@ -66,4 +66,14 @@ public class WxPayController {
         }
         System.out.println("支付成功回调！");
     }
+
+    @GetMapping("/findNative")
+    public Map findNative(String orderId){
+        return wxPayService.findNative(orderId);
+    }
+
+    @GetMapping("/shutDownNative")
+    public Map shutDownNative(String orderId){
+        return wxPayService.shutDownNative(orderId);
+    }
 }
