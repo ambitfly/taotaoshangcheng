@@ -87,14 +87,15 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * 修改
+     * 修改，更新广告缓存涉及到两个广告位置的广告
+     * 如果一个广告更换位置，就要旧广告位置的广告删除，在新的广告位置添加上这条广告
      * @param ad
      */
     public void update(Ad ad) {
         String oldPosition = adMapper.selectByPrimaryKey(ad.getId()).getPosition();
         adMapper.updateByPrimaryKeySelective(ad);
-        saveAdToRedisByPositon(oldPosition);
-        if(!oldPosition.equals(ad.getPosition())){
+        saveAdToRedisByPositon(oldPosition); //更新
+        if(!oldPosition.equals(ad.getPosition())){//广告位置发生变化时更新
             saveAdToRedisByPositon(ad.getPosition());
         }
     }
