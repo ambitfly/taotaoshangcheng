@@ -82,6 +82,7 @@ public class SkuServiceImpl implements SkuService {
      */
     public void add(Sku sku) {
         skuMapper.insert(sku);
+        redisTemplate.boundHashOps(CacheKey.SKU_PRICE).put(sku.getId(),sku.getPrice());
     }
 
     /**
@@ -90,6 +91,7 @@ public class SkuServiceImpl implements SkuService {
      */
     public void update(Sku sku) {
         skuMapper.updateByPrimaryKeySelective(sku);
+        redisTemplate.boundHashOps(CacheKey.SKU_PRICE).put(sku.getId(),sku.getPrice());
     }
 
     /**
@@ -98,6 +100,7 @@ public class SkuServiceImpl implements SkuService {
      */
     public void delete(String id) {
         skuMapper.deleteByPrimaryKey(id);
+        redisTemplate.boundHashOps(CacheKey.SKU_PRICE).delete(id);
     }
 
     /**
