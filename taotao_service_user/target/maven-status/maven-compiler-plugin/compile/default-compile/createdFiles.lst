@@ -1,0 +1,12 @@
+com\taotao\service\impl\CitiesServiceImpl.class
+com\taotao\dao\ProvincesMapper.class
+com\taotao\service\impl\UserServiceImpl.class
+com\taotao\dao\RegionsMapper.class
+com\taotao\service\impl\AreasServiceImpl.class
+com\taotao\service\impl\ProvincesServiceImpl.class
+com\taotao\dao\CitiesMapper.class
+com\taotao\dao\UserMapper.class
+com\taotao\service\impl\RegionsServiceImpl.class
+com\taotao\service\impl\AddressServiceImpl.class
+com\taotao\dao\AddressMapper.class
+com\taotao\dao\AreasMapper.class

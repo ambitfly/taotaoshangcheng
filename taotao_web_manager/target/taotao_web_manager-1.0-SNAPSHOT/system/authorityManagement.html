@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>权限设置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- 上传图片框样式，不使用上传组件可以删除此样式 -->
+    <style>
+        .topDiv {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border: 1px solid #EEE9E9;
+            background-color: #F7F7F7;
+            margin-bottom: 40px;
+        }
+
+        .strip {
+            display: inline-block;
+            background-color: #1E90FF;
+            width: 5px;
+            height: 22px;
+            margin-left: 100px;
+        }
+
+        .stripText {
+            position: absolute;
+            display: inline-block;
+            margin-left: 10px;
+            padding-bottom: 2px;
+            text-align: center;
+            color: #A3A3A3;
+        }
+
+        .button {
+            cursor: pointer;
+            display: inline-block;
+            background-color: white;
+            border: 1px solid #EEE9E9;
+            width: 80px;
+            height: 25px;
+            margin-left: 20px;
+            color: #5e5e5e;
+        }
+
+        .button:hover {
+            background-color: #F7F7F7;
+        }
+
+        .button span {
+            display: inline-block;
+            margin-left: 5px;
+            font-size: 13px;
+        }
+
+        .button i {
+            display: inline-block;
+            margin-left: 2px;
+            font-size: 20px;
+        }
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+
+        .checkboxBody{
+            border: 1px solid #EEE9E9;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 150px;
+            height: 70px;
+            line-height: 150px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 70px;
+            display: block;
+        }
+
+    </style>
+</head>
+<body class="hold-transition">
+<div id="app">
+
+    <div class="topDiv">
+        <span class="strip"></span>
+        <span class="stripText">权限设置</span>
+        <div class="button" style="margin-left: 855px" @click="refresh">
+            <i class="el-icon-refresh-left"></i>
+            <span>刷新</span>
+        </div>
+        <div class="button" @click="backPage">
+            <i class="el-icon-close"></i>
+            <span>返回</span>
+        </div>
+    </div>
+    <!--<div class="content-header">
+        <h1>管理
+            <small>订单管理</small>
+        </h1>
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>管理</el-breadcrumb-item>
+            <el-breadcrumb-item>订单管理</el-breadcrumb-item>
+        </el-breadcrumb>
+    </div>-->
+
+    <div class="app-container">
+
+        <div style="width: 85%;margin: 0px auto">
+
+
+
+            <div style="border: 1px solid #f4f4f4;padding-bottom: 10px;padding-top: 10px;background-color: #F7F7F7">
+                <img src="../img/001order.png" width="25px" height="20px" style="margin-bottom: 0px;margin-left: 12px">
+                <span style="color: #5e5e5e;font-size: 14px">当前角色：{{pojo.name}}</span>
+
+            </div>
+            <div class="checkboxBody">
+
+                <!--<div  v-for="items in resourceList">
+                    <div style=" border: 1px solid #EEE9E9;background-color: #F3F3F3;">
+                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" style="margin-top: 15px;margin-bottom: 15px;margin-left: 20px">全选</el-checkbox>
+                    </div>
+                    <div style="border: 1px solid #EEE9E9">
+                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange" >
+                                <el-checkbox v-for="item in items" :label="item.id" :key="item.id" style="display: inline-block;width: 169px;padding-bottom: 15px;padding-top: 15px;border-right: 1px solid #EEE9E9;border-bottom: 1px solid #EEE9E9;margin: 0px;padding-left:20px">{{item.name}}</el-checkbox>
+                    </div>
+                </div>-->
+
+                <div class="checkbox-table" v-for="(item, indexkey) in menu" :key="item.id" style="width: 90%;margin: 40px auto;">
+                    <template>
+                        <div style=" border: 1px solid #EEE9E9;background-color: #F9FAFC;">
+                            <el-checkbox class="check1" style="margin-top: 15px;margin-bottom: 15px;margin-left: 20px"  v-model='menusIds' :label="item.id" @change='handleCheck(1,indexkey)'>
+                                {{item.resName}}
+                            </el-checkbox>
+                        </div>
+                        <div style="margin-bottom: 20px;border: 1px solid #EEE9E9">
+                            <div v-for="list in item.children" class="line-check" :key="list.id" style="display: inline-block; " >
+                                <el-checkbox class="check2" @change='handleCheck(2,indexkey)' v-model="menusIds" :label="list.id" style="display: inline-block;width: 166px;padding-bottom: 15px;padding-top: 15px;border-right: 1px solid #EEE9E9;border-bottom: 1px solid #EEE9E9;margin: 0px;padding-left:20px">
+                                    {{list.resName}}
+                                </el-checkbox>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                <div style="margin: auto;width: 100px;padding-bottom: 20px">
+                    <el-button type="primary" @click="sa">保存</el-button>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+
+
+</div>
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
+<script src="/js/elementui.js"></script>
+<script src="/js/util.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                menu: [],
+                pojo: {},
+                menusIds: [],
+                roleId:0
+
+
+            }
+        },
+        created() {
+            this.roleId = getQueryString("roleId");
+            axios.get(`/role/findById.do?id=${this.roleId}`).then(response=>{
+                this.pojo = response.data;
+            })
+            axios.get(`/resource/listResource.do`).then(response=>{
+                this.menu = response.data;
+            })
+            axios.get(`/role/findResourceIdsByRoleId.do?roleId=${this.roleId}`).then(response=>{
+                this.menusIds = response.data;
+            })
+        },
+
+        methods: {
+
+
+            refresh() {
+                location.reload();
+            },
+            close() {
+                if
+                (confirm("您确定要关闭本页吗？")) {
+                    window.opener = null;
+                    window.open('', '_self');
+                    window.close();
+                }
+                else {
+                }
+            },
+            backPage() {
+                location.href = 'role.html'
+            },
+            // 处理选择事件
+            handleCheck(type, a = 0) { // 多选框
+                let self = this;
+                if (type == 2) { // 二级菜单点击
+                    let index = 0;
+                    self.menu[a].children.map(item => {
+                        if (self.menusIds.indexOf(item.id) > -1) {
+                            index += 1;
+                        }
+                    })
+                    if (index > 0) {
+                        if (self.menusIds.indexOf(self.menu[a].id) < 0) {
+                            self.menusIds.push(self.menu[a].id);
+                        }
+                    } else {
+                        if (self.menusIds.indexOf(self.menu[a].id) > 0) {
+                            self.menusIds.splice(self.menusIds.indexOf(self.menu[a].id), 1);
+                        }
+                    }
+                } else {
+                    if (self.menusIds.indexOf(self.menu[a].id) > -1) {
+                        self.menu[a].children.map(item => {
+                            if (self.menusIds.findIndex((n) => n == item.id) < 0) {
+                                self.menusIds.push(item.id)
+                            }
+                        })
+                    } else {
+                        self.menu[a].children.map(item => {
+                            if (self.menusIds.findIndex((n) => n == item.id) > -1) {
+                                self.menusIds.splice(self.menusIds.findIndex((n) => n == item.id), 1);
+                            }
+                        })
+                    }
+                }
+            },
+            //编辑某个菜单
+            handleEdit(obj) {
+                let self = this;
+                self.obj = obj;
+                let array = obj.menuIds ? obj.menuIds.split(',') : []
+                let arr = [];
+                array.map(item => {
+                    arr.push(parseInt(item));
+                })
+                this.menusIds = arr;
+            },
+            // 获取所有菜单列表
+            async _allMenuApi() {
+                let res = await fetchRights();
+                if (res.code == 200) {
+                    this.menu = res.data.allMenus;
+                }
+            },
+
+            sa(){
+                axios.post(`/role/saveRoleResource.do?roleId=${this.roleId}`,this.menusIds).then(response=>{
+                    if(response.data.code==0){
+                        location.href = `role.html`;
+                    }
+                })
+            }
+
+
+
+        }
+    })
+</script>
+</html>

@@ -5,8 +5,11 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.taotao.dao.BrandMapper;
 import com.taotao.dao.SpecMapper;
 import com.taotao.service.goods.SkuSearchService;
+import org.apache.http.HttpHost;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
@@ -19,6 +22,7 @@ import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilde
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +38,7 @@ public class SkuSearchServiceImpl implements SkuSearchService {
     private SpecMapper specMapper;
 
     public Map search(Map<String, String> searchMap) {
+        System.out.println(searchMap);
         //1.封装查询请求
         SearchRequest searchRequest = new SearchRequest("sku");
         searchRequest.types("doc");
@@ -52,7 +57,6 @@ public class SkuSearchServiceImpl implements SkuSearchService {
             TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("categoryName",searchMap.get("category"));
             boolQueryBuilder.filter(termQueryBuilder);
         }
-
         //1.3 品牌分类过滤
         if(searchMap.get("brand")!=null){
             TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("brandName",searchMap.get("brand"));
@@ -82,7 +86,7 @@ public class SkuSearchServiceImpl implements SkuSearchService {
         }
 
         //聚合查询
-        TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders.terms("sku_category").field("categoryName");
+        TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders.terms("sku_category").field("categoryName.keyword");
         searchSourceBuilder.aggregation(termsAggregationBuilder);
 
 
@@ -100,11 +104,12 @@ public class SkuSearchServiceImpl implements SkuSearchService {
             List<Map<String,Object>> resultList = new ArrayList<Map<String, Object>>();
             for(SearchHit searchHit:hits){
                 Map<String,Object> skuMap = searchHit.getSourceAsMap();
+                //System.out.println(skuMap);
                 resultList.add(skuMap);
             }
             resultMap.put("rows",resultList);
 
-            //2.2商品分类列表
+           //2.2商品分类列表
 
             Aggregations aggregations = searchResponse.getAggregations();
             Map<String,Aggregation> aggregationMap = aggregations.getAsMap();
@@ -115,7 +120,6 @@ public class SkuSearchServiceImpl implements SkuSearchService {
                 categoryList.add(bucket.getKeyAsString());
             }
             resultMap.put("categoryList",categoryList);
-
             //2.3 品牌列表
 
             String categoryName = "";
@@ -144,6 +148,43 @@ public class SkuSearchServiceImpl implements SkuSearchService {
             e.printStackTrace();
         } finally {
         }
+        System.out.println(resultMap);
         return resultMap;
     }
+   /*public Map search(Map<String, String> searchMap) {
+       //1.连解rest接口
+       HttpHost http = new HttpHost("127.0.0.1",9200,"http");
+       RestClientBuilder builder = RestClient.builder(http);
+       RestHighLevelClient restHighLevelClient = new RestHighLevelClient(builder);
+
+       //2.封装请求对象
+       SearchRequest searchRequest = new SearchRequest("sku");
+       searchRequest.types("doc");
+       SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+       MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("name",searchMap.get("keywords"));
+       searchSourceBuilder.query(matchQueryBuilder);
+       searchRequest.source(searchSourceBuilder);
+
+       //3.获取响应结果
+       try {
+           SearchResponse searchResponse = restHighLevelClient.search(searchRequest);
+           SearchHits searchHits = searchResponse.getHits();
+           long totalHits = searchHits.getTotalHits();
+           System.out.println("totalHits="+totalHits);
+           SearchHit[] hits = searchHits.getHits();
+           for(SearchHit searchHit:hits){
+               System.out.println(searchHit.getSourceAsString());
+           }
+       } catch (IOException e) {
+           e.printStackTrace();
+       } finally {
+           try {
+               restHighLevelClient.close();
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+       }
+       return new HashMap();
+   }*/
+
 }

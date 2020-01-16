@@ -1,0 +1,8 @@
+0:0:0:0:0:0:0:1 - - [02/Oct/2019:21:14:00 +0800] "GET /categoryReport/yesterday.do HTTP/1.1" 200 229 http-bio-9101-exec-1 157
+0:0:0:0:0:0:0:1 - - [02/Oct/2019:21:22:26 +0800] "GET /categoryReport/yesterday.do HTTP/1.1" 200 96 http-bio-9101-exec-4 435
+0:0:0:0:0:0:0:1 - - [02/Oct/2019:21:22:27 +0800] "GET /categoryReport/yesterday.do HTTP/1.1" 200 96 http-bio-9101-exec-6 312
+0:0:0:0:0:0:0:1 - - [02/Oct/2019:21:24:46 +0800] "GET /categoryReport/yesterday.do HTTP/1.1" 200 2 http-bio-9101-exec-8 378
+0:0:0:0:0:0:0:1 - - [02/Oct/2019:21:32:23 +0800] "GET /categoryReport/yesterday.do HTTP/1.1" 200 2 http-bio-9101-exec-1 288
+0:0:0:0:0:0:0:1 - - [02/Oct/2019:21:32:27 +0800] "GET /categoryReport/yesterday.do HTTP/1.1" 200 2 http-bio-9101-exec-1 9
+0:0:0:0:0:0:0:1 - - [02/Oct/2019:21:33:16 +0800] "GET /categoryReport/yesterday.do HTTP/1.1" 200 388 http-bio-9101-exec-1 170
+0:0:0:0:0:0:0:1 - - [02/Oct/2019:21:38:17 +0800] "GET /categoryReport/yesterday.do HTTP/1.1" 200 426 http-bio-9101-exec-4 375

@@ -66,4 +66,8 @@ public interface SpuService {
     String saveGoodsToRedis(Map<String, Object> pojo, String uuid);
 
     Map<String, Object> findGoodsToRedis(String uuid);
+
+    String[] findAllId();
+
+    void deleteSpecItems();
 }

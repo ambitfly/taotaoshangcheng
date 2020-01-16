@@ -1,0 +1,5 @@
+0:0:0:0:0:0:0:1 - - [03/Oct/2019:21:55:48 +0800] "GET /categoryReport/category1Count?date1=2019-04-15&date2=2019-04-17 HTTP/1.1" 404 1009 http-bio-9101-exec-1 31
+0:0:0:0:0:0:0:1 - - [03/Oct/2019:21:56:48 +0800] "GET /categoryReport/category1Count?date1=2019-04-15&date2=2019-04-17 HTTP/1.1" 404 1009 http-bio-9101-exec-3 1
+0:0:0:0:0:0:0:1 - - [03/Oct/2019:21:57:45 +0800] "GET /categoryReport/category1Count.do?date1=2019-04-15&date2=2019-04-17 HTTP/1.1" 200 120 http-bio-9101-exec-5 377
+0:0:0:0:0:0:0:1 - - [03/Oct/2019:22:11:36 +0800] "GET /categoryReport/category1Count.do?date1=2019-04-15&date2=2019-04-17 HTTP/1.1" 200 11308 http-bio-9101-exec-1 458
+0:0:0:0:0:0:0:1 - - [03/Oct/2019:22:13:53 +0800] "GET /categoryReport/category1Count.do?date1=2019-04-15&date2=2019-04-17 HTTP/1.1" 200 163 http-bio-9101-exec-1 521

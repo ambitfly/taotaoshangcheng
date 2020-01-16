@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                          http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+
+	<!--连接工厂-->
+	<rabbit:connection-factory id="connectionFactory" host="192.168.33.129" port="5672" username="guest" password="guest" publisher-confirms="true"/>
+
+	<!--队列-->
+	<rabbit:queue name="queue.elastic_data_add" />
+	<rabbit:queue name="queue.elastic_data_delete" />
+
+
+	<!--消费者监听类-->
+	<bean id="AddDataMessageConsumer" class="com.taotao.consumer.AddDataMessageConsumer"></bean>
+	<bean id="DeleteDataMessageConsumer" class="com.taotao.consumer.DeleteDataMessageConsumer"></bean>
+
+
+	<rabbit:listener-container connection-factory="connectionFactory" acknowledge="auto" >
+		<rabbit:listener queue-names="queue.elastic_data_add" ref="AddDataMessageConsumer"/>
+		<rabbit:listener queue-names="queue.elastic_data_delete" ref="DeleteDataMessageConsumer"/>
+	</rabbit:listener-container>
+
+</beans>

@@ -130,7 +130,7 @@
                                             </dt>
                                             <dd>
                                                 <em th:each="category3:${category2.menus}">
-                                                    <a href="" th:text="${category3.name}">婚恋/两性</a>
+                                                    <a th:href="@{'/search.do?keywords='}+${category3.name}" th:text="${category3.name}">婚恋/两性</a>
                                                 </em>
                                             </dd>
                                         </dl>

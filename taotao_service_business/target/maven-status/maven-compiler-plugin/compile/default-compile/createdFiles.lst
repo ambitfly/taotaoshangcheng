@@ -1,0 +1,5 @@
+com\taotao\service\impl\Init.class
+com\taotao\service\impl\ActivityServiceImpl.class
+com\taotao\dao\AdMapper.class
+com\taotao\service\impl\AdServiceImpl.class
+com\taotao\dao\ActivityMapper.class

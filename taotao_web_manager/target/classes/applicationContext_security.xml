@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://www.springframework.org/schema/security"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+    <!--配置放行页面-->
+    <http pattern="/login_error.html" security="none"></http>
+    <http pattern="/login.html" security="none"></http>
+    <http pattern="/css/**" security="none"></http>
+    <http pattern="/img/**" security="none"></http>
+    <http pattern="/js/**" security="none"></http>
+    <http pattern="/plugins/**" security="none"></http>
+    <http pattern="/*.ico" security="none"></http>
+    <!-- 页面拦截规则-->
+    <http>
+        <!--所有资源必须有ROLE_ADMIN角色才可以访问-->
+        <intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')"></intercept-url>
+        <intercept-url pattern="/*/*.do" access="hasAnyAuthority('role_admin')" />
+        <!--<intercept-url pattern="/*/find*.do" access="hasAnyAuthority()" />
+        <intercept-url pattern="/admin/update.do" access="hasAnyAuthority()" />
+        <intercept-url pattern="/spu/save.do" access="hasAnyAuthority('goods_add','goods_edit')" />
+        <intercept-url pattern="/spu/audit.do" access="hasAnyAuthority('goods_examine')" />
+        <intercept-url pattern="/spu/pull.do" access="hasAnyAuthority('goods_pull')" />
+        <intercept-url pattern="/spu/pull.do" access="hasAnyAuthority('pullMany')" />
+        <intercept-url pattern="/spu/put.do" access="hasAnyAuthority('goods_put')" />
+        <intercept-url pattern="/spu/put.do" access="hasAnyAuthority('putMany')" />
+        <intercept-url pattern="/spu/logicDelete.do" access="hasAnyAuthority('goods_delete')" />
+        <intercept-url pattern="/spu/delete.do" access="hasAnyAuthority('goods_real_delete')" />
+        <intercept-url pattern="/spu/recovery.do" access="hasAnyAuthority('goods_restore')" />-->
+        <form-login
+                login-page="/login.html"
+                default-target-url="/main.html"
+                authentication-failure-url="/login.html"
+                authentication-success-handler-ref="loginHandler"/>
+        <logout/>
+
+        <csrf disabled="true"></csrf>
+        <headers>
+            <frame-options policy="SAMEORIGIN"/>
+        </headers>
+    </http>
+
+    <!--认证管理器-->
+    <authentication-manager>
+        <authentication-provider user-service-ref="userDetailService">
+            <!--<user-service>
+                <user name="admin" password="$2a$10$8ajBWz.oF/oIGBn6u6O03eviIKKGWsqnO1TBoXZZuIx.NdFq48USm" authorities="ROLE_ADMIN"></user>
+            </user-service>-->
+            <password-encoder ref="bcryptEncoder"></password-encoder>
+        </authentication-provider>
+
+    </authentication-manager>
+    <beans:bean id="userDetailService" class="com.taotao.controller.UserDetailServiceImpl"></beans:bean>
+    <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></beans:bean>
+    <beans:bean id="loginHandler" class="com.taotao.controller.AuthenticationSuccessHandlerImpl"></beans:bean>
+</beans:beans>

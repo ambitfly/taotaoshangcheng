@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>订单详情</title>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .topDiv {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border: 1px solid #EEE9E9;
+      background-color: #F7F7F7;
+      margin-bottom: 40px;
+    }
+
+    .strip {
+      display: inline-block;
+      background-color: #1E90FF;
+      width: 5px;
+      height: 22px;
+      margin-left: 200px;
+    }
+
+    .stripText {
+      position: absolute;
+      display: inline-block;
+      margin-left: 10px;
+      padding-bottom: 2px;
+      text-align: center;
+      color: #A3A3A3;
+    }
+
+    .button {
+      cursor: pointer;
+      display: inline-block;
+      background-color: white;
+      border: 1px solid #EEE9E9;
+      width: 80px;
+      height: 25px;
+      margin-left: 20px;
+      color: #5e5e5e;
+    }
+
+    .button:hover {
+      background-color: #F7F7F7;
+    }
+
+    .button span {
+      display: inline-block;
+      margin-left: 5px;
+      font-size: 13px;
+    }
+
+    .button i {
+      display: inline-block;
+      margin-left: 2px;
+      font-size: 20px;
+    }
+
+    .stepImage {
+      width: 60%;
+      margin: 0px auto;
+      margin-bottom: 40px;
+    }
+
+    .tableHead {
+      margin: 0px auto;
+      width: 70%;
+      font-size: 13px;
+      border: 1px solid #EEE9E9;
+      background-color: #F7F7F7;
+      padding-bottom: 14px;
+      padding-top: 14px;
+      color: #A3A3A3;
+    }
+    .tableHead span{
+      display: inline-block;
+      margin-left: 15px;
+    }
+    .tableBody {
+      margin: 0px auto;
+      width: 70%;
+      height: 500px;
+      border: 1px solid #EEE9E9;
+      padding-top: 15px;
+    }
+
+    .orderMessage {
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+
+    .orderMessage span {
+      display: inline-block;
+      color: #A3A3A3;
+      margin-bottom: 17px;
+      margin-left: 52px;
+    }
+
+    .selectDiv {
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    .headlineDiv {
+      margin-top: 60px;
+      height: 35px;
+      width: 220px;
+      display: inline-block;
+      margin-right: 20px;
+      background-color: #F9FAFC;
+      border: 1px solid #EEE9E9;
+      color: #5e5e5e;
+      text-align: center;
+      font-size: 17px;
+    }
+
+    .headlineDiv span{
+      display: inline-block;
+      margin-top: 5px;
+    }
+
+    .stepDiv {
+      width: 700px;
+      margin-left: 140px;
+      margin-top: 50px;
+    }
+
+
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="topDiv">
+    <span class="strip"></span>
+    <span class="stripText">添加商品</span>
+    <div class="button" style="margin-left: 850px" @click="refresh">
+      <i class="el-icon-refresh-left"></i>
+      <span>刷新</span>
+    </div>
+  </div>
+
+  <div class="tableHead">
+    <span>选择商品分类</span>
+
+  </div>
+
+  <div class="tableBody">
+
+
+    <div class="app-container">
+
+
+      <div class="stepDiv">
+        <el-steps :space="240" :active="1" finish-status="success">
+          <el-step title="选择商品分类"></el-step>
+          <el-step title="填写商品信息"></el-step>
+          <el-step title="填写商品属性"></el-step>
+        </el-steps>
+      </div>
+      <div class="headlineDiv" style="margin-left: 90px"><span >选择一级分类</span></div>
+      <div class="headlineDiv"><span>选择二级分类</span></div>
+      <div class="headlineDiv"><span>选择三级分类</span></div><br>
+        <div class="selectDiv" style="margin-left: 90px">
+          <el-select v-model="pojo.spu.category1Id"  placeholder="请选择">
+            <el-option
+                    v-for="item in category1"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                    >
+            </el-option>
+          </el-select>
+        </div>
+
+      <div class="selectDiv">
+        <el-select v-model="pojo.spu.category2Id"  placeholder="请选择" @blur="getCategory2">
+          <el-option
+                  v-for="item in category2"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                  >
+          </el-option>
+        </el-select>
+      </div>
+
+      <div class="selectDiv">
+        <el-select v-model="pojo.spu.category3Id" placeholder="请选择" @blur="getCategory3">
+          <el-option
+                  v-for="item in category3"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+          </el-option>
+        </el-select>
+      </div>
+    </div>
+
+    <el-button type="primary" @click="save" style="margin-top: 140px;margin-left: 360px">下一步填写商品信息</el-button>
+
+  </div>
+</div>
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
+<script src="/js/elementui.js"></script>
+<script src="/js/util.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                id:'',
+                pojo: {"spu":{},"skuList":[]},
+                categoryList:[],
+                category1:[],
+                category2:[],
+                category3:[],
+                uuid:''
+            }
+        },
+        created() {
+            axios.get(`/category/findByParentId.do?id=0`).then(response=>{
+                this.category1 = response.data;
+                axios.get(`/category/findByParentId.do?id=${this.category1[0].id}`).then(response=>{
+                    this.category2 = response.data;
+                    axios.get(`/category/findByParentId.do?id=${this.category2[0].id}`).then(response=>{
+                        this.category3 = response.data;
+                    });
+                });
+            });
+        },
+        methods: {
+            refresh() {
+                location.reload();
+            },
+            getCategory2(){
+                axios.get(`/category/findByParentId.do?id=${this.pojo.spu.category1Id}`).then(response=>{
+                    this.category2 = response.data;
+                })
+            },
+            getCategory3(){
+                axios.get(`/category/findByParentId.do?id=${this.pojo.spu.category2Id}`).then(response=>{
+                    this.category3 = response.data;
+                })
+            },
+            save(){
+                //保存数据到redis
+
+                axios.post(`/spu/saveGoodsToRedis.do?uuid=${this.uuid}`,this.pojo).then(response=>{
+                    this.uuid = response.data;
+                    //跳转
+                    location.href = 'commitGoodsInfor.html?uuid='+this.uuid;
+                })
+
+            }
+
+        }
+    });
+</script>
+</html>

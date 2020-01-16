@@ -45,4 +45,7 @@ public interface SkuService {
 
     boolean backStock(List<OrderItem> orderItemList);
 
+    void initSkuData();
+
+    void initSkuData(String spuId);
 }

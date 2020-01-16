@@ -1,0 +1,7 @@
+com\taotao\controller\ItemController.class
+com\taotao\controller\WxPayController.class
+com\taotao\controller\SkuController.class
+com\taotao\controller\UserController.class
+com\taotao\controller\CartController.class
+com\taotao\controller\SearchController.class
+com\taotao\controller\IndexController.class

@@ -617,7 +617,7 @@
 						<li class="yui3-u-1-5" th:each="sku:${result.rows}">
 							<div class="list-wrap">
 								<div class="p-img">
-									<a href="item.html"  target="_blank"><img th:src="${sku.image}" /></a>
+									<a th:href="@{'http://item.easy.echosite.cn/item/'}+${sku.item}"  target="_blank"><img th:src="${sku.image}" /></a>
 								</div>
 								<div class="price">
 									<strong>

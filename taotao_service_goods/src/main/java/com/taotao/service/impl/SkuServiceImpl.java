@@ -1,23 +1,27 @@
 package com.taotao.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.taotao.dao.SkuMapper;
+import com.taotao.dao.SpuMapper;
 import com.taotao.entity.PageResult;
 import com.taotao.pojo.goods.Sku;
+import com.taotao.pojo.goods.Spu;
 import com.taotao.pojo.order.OrderItem;
 import com.taotao.service.goods.SkuService;
 import com.taotao.util.CacheKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.List;
-import java.util.Map;
-
-@Service
+import java.security.KeyStore;
+import java.util.*;
+import java.util.Map.Entry;
+@Service(interfaceClass = SkuService.class)
 public class SkuServiceImpl implements SkuService {
 
     @Autowired
@@ -245,7 +249,7 @@ public class SkuServiceImpl implements SkuService {
     public List<Sku> findBySpuId(String id) {
         Example example = new Example(Sku.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("Spuid",id);
+        criteria.andEqualTo("spuId",id);
 
         return skuMapper.selectByExample(example);
     }
@@ -269,8 +273,66 @@ public class SkuServiceImpl implements SkuService {
 
         return (Integer)redisTemplate.boundHashOps(CacheKey.SKU_PRICE).get(id);
     }
+    @Autowired
+    private SpuMapper spuMapper;
+    @Transactional
+    public void initSkuData() {
+        List<Spu> spuList =  spuMapper.selectAll();
+        for(Spu spu:spuList){
+            initSkuData(spu.getId());
+        }
+    }
 
 
+    @Transactional
+    public void initSkuData(String spuId) {
+            Example example = new Example(Sku.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("spuId",spuId);
+            //原始数据
+            List<Sku> skuList = skuMapper.selectByExample(example);
+            //比较组
+            HashSet<Sku> skus = new HashSet<Sku>();
 
+            for(Sku sku:skuList){
 
+                if(skus.size()==0){//比较组为空添加数据
+                    skus.add(sku);
+                }else{
+                    String spec = sku.getSpec();
+                    //原始数据，即待的处理数据
+                    Map<String,String> specMap = JSON.parseObject(spec,Map.class);
+                    boolean isDelete;
+                    isDelete = true;
+                    for(Sku sku1:skus){
+                        Map<String,String> specMap1 = JSON.parseObject(sku1.getSpec(),Map.class);
+                        boolean isLike = true;
+                        for(String key:specMap.keySet()){
+                            if(!specMap.get(key).equals(specMap1.get(key))){
+                                isLike = false;
+//                                System.out.println("待插入："+specMap.get(key)+"比较："+specMap1.get(key)+isLike);
+                            }
+                        }
+                        if(!isLike){
+                            isDelete = false;
+                        }else {
+                            isDelete  = true;
+                            break;
+                        }
+//                        System.out.println("isDelete:"+isDelete);
+                    }
+                    if(isDelete){
+                        skuMapper.delete(sku);
+//                        System.out.println("执行删除："+sku.getSpec());
+                    }else{
+                        skus.add(sku);
+                        /*System.out.println("执行添加："+sku.getSpec());
+                        System.out.println(skus);
+                        System.out.println("==============================");
+                        System.out.println();*/
+                    }
+                }
+
+        }
+    }
 }

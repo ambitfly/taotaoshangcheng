@@ -1,0 +1,15 @@
+com\taotao\service\impl\AdminServiceImpl.class
+com\taotao\dao\AdminImageMapper.class
+com\taotao\dao\MenuMapper.class
+com\taotao\service\impl\MenuServiceImpl.class
+com\taotao\service\impl\ResourceServiceImpl.class
+com\taotao\service\impl\LoginLogServiceImpl.class
+com\taotao\dao\ResourceMenuMapper.class
+com\taotao\dao\AdminRoleMapper.class
+com\taotao\dao\LoginLogMapper.class
+com\taotao\service\impl\AdminImageServiceImpl.class
+com\taotao\dao\RoleMapper.class
+com\taotao\dao\ResourceMapper.class
+com\taotao\dao\AdminMapper.class
+com\taotao\dao\RoleResourceMapper.class
+com\taotao\service\impl\RoleServiceImpl.class

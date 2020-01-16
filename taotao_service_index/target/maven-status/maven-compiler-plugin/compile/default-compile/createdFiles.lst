@@ -1,0 +1,3 @@
+com\taotao\consumer\AddDataMessageConsumer.class
+com\taotao\util\RestClientFactory.class
+com\taotao\consumer\DeleteDataMessageConsumer.class

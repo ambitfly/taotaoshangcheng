@@ -608,4 +608,15 @@ public class SpuServiceImpl implements SpuService {
         DateFormat df2 = DateFormat.getDateTimeInstance();
         System.out.println(df2.format(date));
     }*/
+
+    public String[] findAllId() {
+        return  spuMapper.findAllId();
+    }
+
+    public void deleteSpecItems() {
+        Example example = new Example(Spu.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("specItems","{}");
+        spuMapper.deleteByExample(example);
+    }
 }

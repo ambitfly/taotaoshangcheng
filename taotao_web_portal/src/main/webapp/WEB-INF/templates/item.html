@@ -2779,12 +2779,13 @@
             return {
                 skuId:/*[[${sku.id}]]*/,
                 price: 0,
-                num: 1
+                num: 1,
+				username:''
             }
         },
         created(){
             //读取价格
-            axios.get('http://localhost:9102/sku/findPrice.do?id='+this.skuId).then(response=>{
+            axios.get('http://taotao.easy.echosite.cn/sku/findPrice.do?id='+this.skuId).then(response=>{
             	this.price=(response.data/100).toFixed(2);
 			})
         },
@@ -2796,7 +2797,7 @@
                 }
             },
             toCartList() {
-                location.href = `http://localhost:9102/cart/buy.do?skuId=${this.skuId}&num=${this.num}`
+                location.href = `http://taotao.easy.echosite.cn/cart/buy.do?skuId=${this.skuId}&num=${this.num}`
             }
         }
 	});

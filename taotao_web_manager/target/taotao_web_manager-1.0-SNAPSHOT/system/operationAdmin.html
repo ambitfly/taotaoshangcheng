@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>成员操作</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .topDiv {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border: 1px solid #EEE9E9;
+            background-color: #F7F7F7;
+            margin-bottom: 40px;
+        }
+
+        .strip {
+            display: inline-block;
+            background-color: #1E90FF;
+            width: 5px;
+            height: 22px;
+            margin-left: 200px;
+        }
+
+        .stripText {
+            position: absolute;
+            display: inline-block;
+            margin-left: 10px;
+            padding-bottom: 2px;
+            text-align: center;
+            color: #A3A3A3;
+        }
+
+        .button {
+            cursor: pointer;
+            display: inline-block;
+            background-color: white;
+            border: 1px solid #EEE9E9;
+            width: 80px;
+            height: 25px;
+            margin-left: 20px;
+            color: #5e5e5e;
+        }
+
+        .button:hover {
+            background-color: #F7F7F7;
+        }
+
+        .button span {
+            display: inline-block;
+            margin-left: 5px;
+            font-size: 13px;
+        }
+
+        .button i {
+            display: inline-block;
+            margin-left: 2px;
+            font-size: 20px;
+        }
+
+        .stepImage {
+            width: 60%;
+            margin: 0px auto;
+            margin-bottom: 40px;
+        }
+
+        .tableHead {
+            margin: 0px auto;
+            width: 70%;
+            font-size: 13px;
+            border: 1px solid #EEE9E9;
+            background-color: #F7F7F7;
+            padding-bottom: 14px;
+            padding-top: 14px;
+            color: #A3A3A3;
+        }
+        .tableHead span{
+            display: inline-block;
+            margin-left: 15px;
+        }
+        .tableBody {
+            margin: 0px auto;
+            width: 70%;
+            border: 1px solid #EEE9E9;
+            padding-top: 15px;
+        }
+
+        .orderMessage {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .orderMessage span {
+            display: inline-block;
+            color: #A3A3A3;
+            margin-bottom: 17px;
+            margin-left: 52px;
+        }
+        .getgold_top_head_img {
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="topDiv">
+        <span class="strip"></span>
+        <span class="stripText">{{title}}</span>
+        <div class="button" style="margin-left: 850px" @click="refresh">
+            <i class="el-icon-refresh-left"></i>
+            <span>刷新</span>
+        </div>
+        <div class="button" @click="backPage">
+            <i class="el-icon-close"></i>
+            <span>返回</span>
+        </div>
+    </div>
+
+    <div class="tableHead">
+        <span>{{title}}</span>
+
+    </div>
+
+    <div class="tableBody">
+        <div style="height: 30px"></div>
+        <div style="width: 200px;margin: 0px auto">
+
+        </div>
+        <div>
+
+            <div style="width: 30%;margin-left: 245px;margin-top: 15px">
+                <el-form label-width="80px">
+
+                    <el-form-item label="用户名">
+                        <el-input v-model="pojo.loginName" @blur="confirmLoginName"></el-input>
+                    </el-form-item >
+                    <el-form-item label="所属角色">
+                        <el-select @change="findByRoleId" v-model="pojo.roleIds" placeholder="请选择" multiple>
+                            <el-option
+                                    v-for="item in role"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
+                            >
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="新密码">
+                        <el-input v-model="pojo.newPassword" type="password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码">
+                        <el-input v-model="confirmPassword" type="password" @blur="confirmNewPassword"></el-input>
+                    </el-form-item>
+                    <el-form-item label="是否启用">
+                        <template slot-scope="scope">
+                            <el-switch
+                                    v-model="pojo.status"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949"
+                                    active-value="1"
+                                    inactive-value="0"
+                                    >
+                            </el-switch>
+                        </template>
+                    </el-form-item>
+
+
+                    <el-form-item>
+                        <el-button type="primary" @click="sa()" style="margin-left: 55px">保存</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+    </div>
+</div>
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
+<script src="/js/elementui.js"></script>
+<script src="/js/util.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                pojo:{},
+                confirmPassword:'',
+                isEditSuccess:1,
+                result:{},
+                id:-1,
+                title:'',
+                role:'',
+                roleIds:[],
+                searchMap:{},
+                originLoginName:'',
+
+
+
+
+            }
+        },
+        created() {
+            axios.get(`/role/findAll.do`).then(response=>{
+                this.role = response.data;
+            })
+            this.id = getQueryString("id");
+            if(this.id==-1){
+                this.title = "成员添加"
+            }else{
+                this.title = "成员编辑"
+                axios.get(`/admin/loadAdminById.do?id=${this.id}`).then(response=>{
+                    this.pojo = response.data;
+                    this.originLoginName = response.data.loginName;
+                })
+            }
+
+        },
+        methods: {
+
+            refresh() {
+                location.reload();
+            },
+            backPage() {
+                location.href = 'admin.html'
+            },
+            confirmNewPassword(){
+                if(this.confirmPassword==""){
+                    this.flag2 = false;
+                    this.pojo.newPassword = "";
+                    this.confirmPassword = "";
+                    this.$message({
+                        message: "密码不能为空！",
+                        type: 'error',
+                        offset: 100
+                    });
+                }
+                else if(this.pojo.newPassword!=this.confirmPassword){
+                    this.flag2 = false;
+                    this.pojo.newPassword = "";
+                    this.confirmPassword = "";
+                    this.$message({
+                        message: "两次密码输入不同，请重新输入！",
+                        type: 'error',
+                        offset: 100
+                    });
+                }else{
+                    this.flag2 = true;
+                    this.$message({
+                        message: '密码校验成功！',
+                        type: 'success',
+                        offset: 100
+                    })
+                }
+            },
+            confirmLoginName(){
+                if(this.pojo.loginName==""){
+                    this.$message({
+                        message: "用户名不能空！",
+                        type: 'error',
+                        offset: 100
+                    })
+                    return;
+                }
+                axios.get(`/admin/confirmIsExistLoginName.do?loginName=${this.pojo.loginName}`).then(response=>{
+                    if(this.pojo.loginName==this.originLoginName){
+
+                    }
+                    else if(response.data.code==0){
+                        this.$message({
+                            message: '用户名正确！',
+                            type: 'success',
+                            offset: 100
+                        })
+                    }else{
+                        this.pojo.loginName = this.originLoginName;
+                        this.$message({
+                            message: response.data.message,
+                            type: 'error',
+                            offset: 100
+                        })
+                    }
+                })
+            },
+            sa(){
+                if(this.id==-1){
+                    this.add();
+                }else{
+                    this.edit();
+                }
+            },
+            add(){
+                axios.post(`/admin/add.do`,this.pojo).then(response=>{
+
+                    if(0==response.data.code){
+                        this.backPage();
+                    }
+                })
+
+            },
+            edit(){
+                axios.post(`/admin/updateIncludeRole.do`,this.pojo).then(response=>{
+                    if(0==response.data.code){
+                        this.backPage();
+                    }
+                })
+            },
+            handleAvatarSuccess(res, file) {
+                this.image = file.response;
+            },
+            beforeAvatarUpload(file) {
+//                const isJPG = file.type === 'image/jpeg';
+                const isLt512kb = file.size / 1024 / 512 < 1;
+
+                /* if (!isJPG) {
+                     this.$message.error('上传头像图片只能是 JPG 格式!');
+                 }*/
+                if (!isLt512kb) {
+                    this.$message.error('上传头像图片大小不能超过 512kb!');
+                }
+                return /*isJPG && */isLt512kb;
+            },
+            exit(){
+                axios.post(`/logout`).then(response=>{
+                    parent.location.href = '/login.html';
+                })
+            }
+
+
+        }
+    });
+</script>
+</html>

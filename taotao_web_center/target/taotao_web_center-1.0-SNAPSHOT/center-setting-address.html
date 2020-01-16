@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+    <title>设置-个人信息</title>
+    <link rel="icon" href="./img/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="./css/all.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/pages-seckillOrder.css"/>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<div id="app">
+    <!-- 头部栏位 -->
+    <!--页面顶部-->
+    <!--地址添加编辑-->
+    <div class="editDiv" style="width: 45%;
+            height: 650px;
+            position: absolute;
+            z-index: 8;
+            border: solid 3px #BBBBBB;
+            background-color: white;
+            left: 430px" v-if="flag.edit==1">
+        <div class="head" style="height:25px;background-color: #F3F3F3;border-bottom: solid 1px #C4C4C4;margin-bottom: 25px">
+            <span style="font-weight: 600;font-size: 14px;display: inline-block">&nbsp;&nbsp;{{headTitle}}</span>
+            <span style="margin-left: 566px;display:inline-block;font-size: 18px;cursor: pointer" @click="flag.edit=0">×</span>
+        </div>
+        <div style="margin-left: 25px;color: #999999;font-size: 12px">
+            <div style="margin-bottom: 6px">收货人:</div>
+            <input v-model="pojo.contact" style="height: 25px;width: 220px;margin-bottom: 6px;border: solid 1px #CCCCCC;">
+        </div>
+        <div style="margin-left: 25px;color: #999999;font-size: 12px">
+            <div style="margin-bottom: 6px">所在地区:</div>
+            <div id="addressId" style="width:120px;height:18px;border: solid 1px #CCCCCC;cursor:text;margin-bottom: 6px" @click="openS1()">
+                <span>&nbsp;&nbsp;{{address.address}}</span>
+                <span style="float: right;">∨</span>
+            </div>
+            <select v-model="address.province" style="width: 70px;border: solid 1px #C4C4C4" v-if="flag.s1==1" @change="changeS1(address.province)">
+                <option v-for="province in provinceList" :value="province.id">{{province.name}}</option>
+            </select>
+            <select v-model="address.city" style="width: 70px;border: solid 1px #C4C4C4" v-if="flag.s2==1" @change="changeS2(address.city)">
+                <option v-for="city in cityList" :value="city.id">{{city.name}}</option>
+            </select>
+            <select v-model="address.county" style="width: 70px;border: solid 1px #C4C4C4" v-if="flag.s3==1" @change="changeS3(address.county)">
+                <option v-for="county in countyList" :value="county.id">{{county.name}}</option>
+            </select>
+            <select v-model="address.town" style="width: 70px;border: solid 1px #C4C4C4" v-if="flag.s4==1" @change="changeS4(address.town)">
+                <option v-for="town in townList" :value="town.id">{{town.name}}</option>
+            </select>
+        </div>
+        <div style="margin-left: 25px;color: #999999;font-size: 12px">
+            <div style="margin-bottom: 6px">详细地址:</div>
+            <input v-model="detailAddress" style="height: 25px;width: 300px;margin-bottom: 6px;border: solid 1px #CCCCCC;" placeholder="  选过的地址不用重复填写">
+        </div>
+        <div style="margin-left: 25px;color: #999999;font-size: 12px">
+            <div style="margin-bottom: 6px">手机号码:</div>
+            <input v-model="pojo.phone" style="height: 25px;width: 200px;margin-bottom: 6px;border: solid 1px #CCCCCC;" placeholder="  请您填写收货人手机号码">
+        </div>
+
+        <div>
+            <button style="width: 115px;height: 30px;background-color: #F6F6F6;border: solid 1px #CCCCCC;border-radius: 2px;margin-left: 276px;margin-top: 260px"
+                @click="saveAddress()"
+            >保存收货地址</button>
+        </div>
+    </div>
+    <div id="nav-bottom">
+        <!--顶部-->
+        <div class="nav-top">
+            <div class="top">
+                <div class="py-container">
+                    <div class="shortcut">
+                        <ul class="fl">
+                            <li class="f-item">青橙欢迎您！</li>
+                            <li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a
+                                    href="register.html" target="_blank">免费注册</a></span></li>
+                        </ul>
+                        <div class="fr typelist">
+                            <ul class="types">
+                                <li class="f-item"><span>我的订单</span></li>
+
+                                <li class="f-item"><span><a href="cart.html" target="_blank">我的购物车</a></span></li>
+                                <li class="f-item"><span><a href="home.html" target="_blank">我的青橙</a></span></li>
+                                <li class="f-item"><span>青橙会员</span></li>
+                                <li class="f-item"><span>企业采购</span></li>
+                                <li class="f-item"><span>关注青橙</span></li>
+                                <li class="f-item"><span><a href="cooperation.html" target="_blank">合作招商</a></span></li>
+                                <li class="f-item"><span><a href="shoplogin.html" target="_blank">商家后台</a></span></li>
+                                <li class="f-item"><span>网站导航</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!--头部-->
+            <div class="header">
+                <div class="py-container">
+                    <div class="yui3-g Logo">
+                        <div class="yui3-u Left logoArea">
+                            <a class="logo-bd" title="青橙" href="index.html" target="_blank"></a>
+                        </div>
+                        <div class="yui3-u Rit searchArea">
+                            <div class="search">
+                                <form action="" class="sui-form form-inline">
+                                    <!--searchAutoComplete-->
+                                    <div class="input-append">
+                                        <input type="text" id="autocomplete" class="input-error input-xxlarge"/>
+                                        <button class="sui-btn btn-xlarge btn-danger" type="button">搜索</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--header-->
+    <div id="account">
+        <div class="py-container">
+            <div class="yui3-g home">
+                <!--左侧列表-->
+                <div class="yui3-u-1-6 list">
+
+                    <div class="person-info">
+                        <div class="person-photo"><img src="./img/_/photo.png" alt=""></div>
+                        <div class="person-account">
+                            <span class="name">{{username}}</span>
+                            <span class="safe">账户安全</span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="list-items">
+                        <dl>
+                            <dt><i>·</i> 订单中心</dt>
+                            <dd><a href="center-index.html">我的订单</a></dd>
+                            <dd><a href="center-order-pay.html">待付款</a></dd>
+                            <dd><a href="center-order-send.html">待发货</a></dd>
+                            <dd><a href="center-order-receive.html">待收货</a></dd>
+                            <dd><a href="center-order-evaluate.html">待评价</a></dd>
+                        </dl>
+                        <dl>
+                            <dt><i>·</i> 我的中心</dt>
+                            <dd><a href="center-collect.html">我的收藏</a></dd>
+                            <dd><a href="center-footmark.html">我的足迹</a></dd>
+                        </dl>
+                        <dl>
+                            <dt><i>·</i> 物流消息</dt>
+                        </dl>
+                        <dl>
+                            <dt><i>·</i> 设置</dt>
+                            <dd><a href="center-setting-info.html">个人信息</a></dd>
+                            <dd><a href="center-setting-address.html" class="list-active">地址管理</a></dd>
+                            <dd><a href="center-setting-safe.html">安全管理</a></dd>
+                        </dl>
+                    </div>
+                </div>
+                <!--右侧主内容-->
+                <div class="yui3-u-5-6">
+                    <div class="body userAddress">
+                        <div class="address-title">
+                            <span class="title">地址管理</span>
+                            <a data-toggle="modal" data-target=".edit" data-keyboard="false"
+                               class="sui-btn  btn-info add-new" @click="openEditPage()">添加新地址</a>
+                            <span class="clearfix"></span>
+                        </div>
+                        <div class="address-detail">
+                            <table class="sui-table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>地址</th>
+                                    <th>联系电话</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="address in addressList">
+                                    <td>{{address.contact}}</td>
+                                    <td>{{address.address}}</td>
+                                    <td>{{address.phone}}</td>
+                                    <td>
+                                        <a href="#">编辑</a>
+                                        <a href="#">删除</a>
+                                        <span v-if="address.isDefault==1">默认地址</span>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--新增地址弹出层-->
+                        <div tabindex="-1" role="dialog" data-hasfoot="false" class="sui-modal hide fade edit"
+                             style="width:580px;">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">
+                                            ×
+                                        </button>
+                                        <h4 id="myModalLabel" class="modal-title">新增地址</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="" class="sui-form form-horizontal">
+                                            <div class="control-group">
+                                                <label class="control-label">收货人：</label>
+                                                <div class="controls">
+                                                    <input type="text" class="input-medium">
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">所在地区：</label>
+                                                <div class="controls">
+                                                    <div data-toggle="distpicker">
+                                                        <div class="form-group area">
+                                                            <select class="form-control" id="province1"></select>
+                                                        </div>
+                                                        <div class="form-group area">
+                                                            <select class="form-control" id="city1"></select>
+                                                        </div>
+                                                        <div class="form-group area">
+                                                            <select class="form-control" id="district1"></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">详细地址：</label>
+                                                <div class="controls">
+                                                    <input type="text" class="input-large">
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">联系电话：</label>
+                                                <div class="controls">
+                                                    <input type="text" class="input-medium">
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">邮箱：</label>
+                                                <div class="controls">
+                                                    <input type="text" class="input-medium">
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">地址别名：</label>
+                                                <div class="controls">
+                                                    <input type="text" class="input-medium">
+                                                </div>
+                                                <div class="othername">
+                                                    建议填写常用地址：<a href="#" class="sui-btn btn-default">家里</a>　<a href="#"
+                                                                                                               class="sui-btn btn-default">父母家</a>　<a
+                                                        href="#" class="sui-btn btn-default">公司</a>
+                                                </div>
+                                            </div>
+
+                                        </form>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large">确定
+                                        </button>
+                                        <button type="button" data-dismiss="modal"
+                                                class="sui-btn btn-default btn-large">取消
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部栏位 -->
+    <!--页面底部-->
+    <div class="clearfix footer">
+        <div class="py-container">
+            <div class="footlink">
+                <div class="Mod-service">
+                    <ul class="Mod-Service-list">
+                        <li class="grid-service-item intro  intro1">
+
+                            <i class="serivce-item fl"></i>
+                            <div class="service-text">
+                                <h4>正品保障</h4>
+                                <p>正品保障，提供发票</p>
+                            </div>
+
+                        </li>
+                        <li class="grid-service-item  intro intro2">
+
+                            <i class="serivce-item fl"></i>
+                            <div class="service-text">
+                                <h4>正品保障</h4>
+                                <p>正品保障，提供发票</p>
+                            </div>
+
+                        </li>
+                        <li class="grid-service-item intro  intro3">
+
+                            <i class="serivce-item fl"></i>
+                            <div class="service-text">
+                                <h4>正品保障</h4>
+                                <p>正品保障，提供发票</p>
+                            </div>
+
+                        </li>
+                        <li class="grid-service-item  intro intro4">
+
+                            <i class="serivce-item fl"></i>
+                            <div class="service-text">
+                                <h4>正品保障</h4>
+                                <p>正品保障，提供发票</p>
+                            </div>
+
+                        </li>
+                        <li class="grid-service-item intro intro5">
+
+                            <i class="serivce-item fl"></i>
+                            <div class="service-text">
+                                <h4>正品保障</h4>
+                                <p>正品保障，提供发票</p>
+                            </div>
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix Mod-list">
+                    <div class="yui3-g">
+                        <div class="yui3-u-1-6">
+                            <h4>购物指南</h4>
+                            <ul class="unstyled">
+                                <li>购物流程</li>
+                                <li>会员介绍</li>
+                                <li>生活旅行/团购</li>
+                                <li>常见问题</li>
+                                <li>购物指南</li>
+                            </ul>
+
+                        </div>
+                        <div class="yui3-u-1-6">
+                            <h4>配送方式</h4>
+                            <ul class="unstyled">
+                                <li>上门自提</li>
+                                <li>211限时达</li>
+                                <li>配送服务查询</li>
+                                <li>配送费收取标准</li>
+                                <li>海外配送</li>
+                            </ul>
+                        </div>
+                        <div class="yui3-u-1-6">
+                            <h4>支付方式</h4>
+                            <ul class="unstyled">
+                                <li>货到付款</li>
+                                <li>在线支付</li>
+                                <li>分期付款</li>
+                                <li>邮局汇款</li>
+                                <li>公司转账</li>
+                            </ul>
+                        </div>
+                        <div class="yui3-u-1-6">
+                            <h4>售后服务</h4>
+                            <ul class="unstyled">
+                                <li>售后政策</li>
+                                <li>价格保护</li>
+                                <li>退款说明</li>
+                                <li>返修/退换货</li>
+                                <li>取消订单</li>
+                            </ul>
+                        </div>
+                        <div class="yui3-u-1-6">
+                            <h4>特色服务</h4>
+                            <ul class="unstyled">
+                                <li>夺宝岛</li>
+                                <li>DIY装机</li>
+                                <li>延保服务</li>
+                                <li>品优购E卡</li>
+                                <li>品优购通信</li>
+                            </ul>
+                        </div>
+                        <div class="yui3-u-1-6">
+                            <h4>帮助中心</h4>
+                            <img src="./img/wx_cz.jpg">
+                        </div>
+                    </div>
+                </div>
+                <div class="Mod-copyright">
+                    <ul class="helpLink">
+                        <li>关于我们<span class="space"></span></li>
+                        <li>联系我们<span class="space"></span></li>
+                        <li>关于我们<span class="space"></span></li>
+                        <li>商家入驻<span class="space"></span></li>
+                        <li>营销中心<span class="space"></span></li>
+                        <li>友情链接<span class="space"></span></li>
+                        <li>关于我们<span class="space"></span></li>
+                        <li>营销中心<span class="space"></span></li>
+                        <li>友情链接<span class="space"></span></li>
+                        <li>关于我们</li>
+                    </ul>
+                    <p>地址：北京市昌平区建材城西路金燕龙办公楼一层 邮编：100096 电话：400-618-4000 传真：010-82935100</p>
+                    <p>京ICP备08001421号京公网安备110108007702</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--页面底部END-->
+
+</div>
+
+<script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                username: '',
+                addressList:[],
+                headTitle:'添加收货地址',
+                pojo:{},
+                provinceList:[],
+                cityList:[],
+                countyList:[],
+                townList:[],
+                flag:{'s1':'0','s2':'0','s3':'0','s4':'0','edit':'0'},
+                address:{'province':'','city':'','county':'','town':'','address':''},
+                detailAddress:''
+
+
+
+
+            }
+        },
+        created() {
+            this.getUsername();
+            this.ListAddress();
+        },
+        methods: {
+            getUsername(){
+                axios.get(`/login/username.do`).then(response => {
+                    this.username = response.data.username;
+                })
+            },
+            ListAddress(){
+                axios.get(`/address/findAddress.do`).then(response => {
+                    this.addressList = response.data;
+                })
+            },
+            openS1(){
+                axios.get(`/regions/findByParentId.do?parentId=1`).then(response => {
+                    this.provinceList = response.data;
+                })
+                this.flag.s1 = 1;
+            },
+            openEditPage(){
+                this.flag.s1 = 0;
+                this.flag.s2 = 0;
+                this.flag.s3 = 0;
+                this.flag.s4 = 0;
+                this.address.province = '';
+                this.address.city = '';
+                this.address.county = '';
+                this.address.town = '';
+                this.address.address = '';
+                this.pojo = {};
+                this.flag.edit = 1;
+            },
+            changeS1(id){
+                for(var i=1;i<this.provinceList.length;i++){
+                    if(this.provinceList[i].id==id){
+                        this.address.address = this.provinceList[i].name;
+                        document.getElementById('addressId').style.width = this.address.address.length * 14 + 12 + 'px';
+                    }
+                }
+
+                axios.get(`/regions/findByParentId.do?parentId=${id}`).then(response => {
+                    this.cityList = response.data;
+                })
+                this.flag.s2 = 1;
+            },
+            changeS2(id){
+                for(var i=1;i<this.cityList.length;i++){
+                    if(this.cityList[i].id==id){
+                        this.address.address = this.address.address + '/' + this.cityList[i].name;
+                        document.getElementById('addressId').style.width = this.address.address.length * 13 + 6 + 'px';
+                    }
+                }
+
+                axios.get(`/regions/findByParentId.do?parentId=${id}`).then(response => {
+                    this.countyList = response.data;
+                })
+                this.flag.s3 = 1;
+            },
+            changeS3(id){
+                for(var i=1;i<this.countyList.length;i++){
+                    if(this.countyList[i].id==id){
+                        let ar = this.address.address;
+                        ar = ar + '/'+this.countyList[i].name;
+                        this.address.address = ar;
+                        document.getElementById('addressId').style.width = this.address.address.length * 13 + 2 + 'px';
+                    }
+                }
+
+                axios.get(`/regions/findByParentId.do?parentId=${id}`).then(response => {
+                    this.townList = response.data;
+                })
+                this.flag.s4 = 1;
+            },
+            changeS4(id){
+                for(var i=1;i<this.townList.length;i++){
+                    if(this.townList[i].id==id){
+                        let ar = this.address.address;
+                        ar = ar + '/'+this.townList[i].name;
+                        this.address.address = ar;
+                        document.getElementById('addressId').style.width = this.address.address.length * 13  + 'px';
+                    }
+                }
+
+                this.flag.s1 = 0;
+                this.flag.s2 = 0;
+                this.flag.s3 = 0;
+                this.flag.s4 = 0;
+
+
+            },
+            saveAddress(){
+                this.pojo.address = this.address.address.replace('/','').replace('/','').replace('/','').replace('/','') + " "+this.detailAddress;
+                this.pojo.isDefault = 0;
+
+                axios.post(`/address/add.do`,this.pojo).then(response=>{
+                    if(response.data.code==0){
+                        this.ListAddress();
+                        this.flag.edit = 0;
+                    }
+                })
+            }
+        }
+    });
+</script>
+
+
+</body>
+
+</html>
